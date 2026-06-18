@@ -7,10 +7,12 @@ Public releases and installers for Claudito. The source code repository is priva
 Open PowerShell and run:
 
 ```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/Pedrofariaeva/claudito-releases/master/install.ps1 | iex; Read-Host "Press Enter to close"
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.0/install.ps1 | iex; Read-Host "Press Enter to close"
 ```
 
 Then run `clt`.
+
+If `clt` is not recognized, close PowerShell and open a new window.
 
 ## macOS / Linux — one line
 
