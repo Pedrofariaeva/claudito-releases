@@ -1,30 +1,26 @@
-# Claudito Releases
+# Claudito Windows Installer
 
-Public releases and installers for Claudito.
+Public Windows installer for Claudito. The source code repository is private.
 
-This repository does **not** contain source code. The source code repository is private.
+## Install — one line
 
-## Windows Install (one command)
+Open PowerShell and run:
 
-1. Open **PowerShell** (press `Win + X`, then choose **Terminal** or **PowerShell**).
-2. Copy and paste this entire line, then press **Enter**:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/Pedrofariaeva/claudito-releases/master/install.ps1 | iex
+```
 
-   ```powershell
-   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -Force; Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Pedrofariaeva/claudito-releases/master/install.ps1" -OutFile "$env:TEMP\claudito-install.ps1"; & "$env:TEMP\claudito-install.ps1"
-   ```
+Wait for it to finish, then run:
 
-3. Wait for the installer to finish.
-4. Run:
-   ```powershell
-   clt
-   ```
+```powershell
+clt
+```
 
 If `clt` is not recognized, close PowerShell and open a new window.
 
-## What does the installer do?
+## What it does
 
-- Installs Python 3.11 via `winget` (if not present)
-- Installs Ollama via `winget` (if not present)
-- Downloads and extracts Claudito from this public releases repo
-- Installs Claudito and copies templates/docs to your PC
-- Runs `clt --setup` to configure your name, research folder, and optional Kimi key
+- Installs Python 3.11 via `winget` (if missing)
+- Installs Ollama via `winget` (if missing)
+- Downloads the latest Claudito release from this public repo
+- Installs Claudito and copies templates/config to your PC
