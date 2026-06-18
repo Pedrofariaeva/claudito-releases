@@ -1,8 +1,8 @@
-# Claudito Windows Installer
+# Claudito Releases
 
-Public Windows installer for Claudito. The source code repository is private.
+Public releases and installers for Claudito. The source code repository is private.
 
-## Install — one line
+## Windows — one line
 
 Open PowerShell and run:
 
@@ -10,17 +10,14 @@ Open PowerShell and run:
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/Pedrofariaeva/claudito-releases/master/install.ps1 | iex; Read-Host "Press Enter to close"
 ```
 
-Wait for it to finish, then run:
+Then run `clt`.
 
-```powershell
-clt
+## macOS / Linux — one line
+
+Open Terminal and run:
+
+```bash
+curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.0/claudito-external-v2.2.0-macos.tar.gz -o claudito.tar.gz && tar -xzf claudito.tar.gz && cd claudito-external-v2.2.0 && ./install.sh
 ```
 
-If `clt` is not recognized, close PowerShell and open a new window.
-
-## What it does
-
-- Installs Python 3.11 via `winget` (if missing)
-- Installs Ollama via `winget` (if missing)
-- Downloads the latest Claudito release from this public repo
-- Installs Claudito and copies templates/config to your PC
+Then run `clt`.
