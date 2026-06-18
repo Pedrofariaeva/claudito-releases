@@ -32,10 +32,24 @@ function Refresh-Path {
     $env:Path = "$machinePath;$userPath"
 }
 
+function Test-PythonHasPip {
+    param([string]$PythonExe)
+    & $PythonExe -m pip --version 2>&1 | Out-Null
+    return $LASTEXITCODE -eq 0
+}
+
 function Find-PythonExe {
     Refresh-Path
-    if (Test-Command "python3") { return "python3" }
-    if (Test-Command "python") { return "python" }
+
+    # On Windows, 'python3' is often a broken Microsoft Store shim. Prefer 'python'.
+    $commands = @("python", "python3")
+    foreach ($cmd in $commands) {
+        if (Test-Command $cmd) {
+            if (Test-PythonHasPip $cmd) {
+                return $cmd
+            }
+        }
+    }
 
     # Common Python install paths from winget
     $candidates = @(
@@ -45,20 +59,14 @@ function Find-PythonExe {
         "C:\Python311\python.exe"
         "C:\Python310\python.exe"
         "C:\Python39\python.exe"
-        Join-Path $env:USERPROFILE "AppData\Local\Microsoft\WindowsApps\python.exe"
-        Join-Path $env:USERPROFILE "AppData\Local\Microsoft\WindowsApps\python3.exe"
     )
     foreach ($candidate in $candidates) {
         if (Test-Path $candidate) {
-            return $candidate
+            if (Test-PythonHasPip $candidate) {
+                return $candidate
+            }
         }
     }
-    return $null
-}
-
-function Get-PythonExe {
-    if (Test-Command "python3") { return "python3" }
-    if (Test-Command "python") { return "python" }
     return $null
 }
 
@@ -100,9 +108,15 @@ try {
 
     Write-Log "  ✓ Using Python: $Python"
 
-    & $Python -m pip --version | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        throw "pip not found. Reinstall Python with 'Add Python to PATH' checked."
+    # ─── Ensure pip is available ─────────────────────────────────────────
+
+    if (-not (Test-PythonHasPip $Python)) {
+        Write-Log "  → pip not found; trying to install it..."
+        & $Python -m ensurepip --default-pip 2>&1 | Out-Null
+        if (-not (Test-PythonHasPip $Python)) {
+            throw "pip is missing. Reinstall Python from https://www.python.org/downloads/ and check 'Add Python to PATH'."
+        }
+        Write-Log "  ✓ pip installed via ensurepip"
     }
     Write-Log "  ✓ Found pip"
 
