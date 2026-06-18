@@ -25,6 +25,37 @@ function Test-Command {
     return [bool](Get-Command -Name $Name -ErrorAction SilentlyContinue)
 }
 
+function Refresh-Path {
+    # Reload PATH from registry so newly installed apps are found in this session
+    $machinePath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
+    $userPath = [System.Environment]::GetEnvironmentVariable("Path", "User")
+    $env:Path = "$machinePath;$userPath"
+}
+
+function Find-PythonExe {
+    Refresh-Path
+    if (Test-Command "python3") { return "python3" }
+    if (Test-Command "python") { return "python" }
+
+    # Common Python install paths from winget
+    $candidates = @(
+        Join-Path $env:LOCALAPPDATA "Programs\Python\Python311\python.exe"
+        Join-Path $env:LOCALAPPDATA "Programs\Python\Python310\python.exe"
+        Join-Path $env:LOCALAPPDATA "Programs\Python\Python39\python.exe"
+        "C:\Python311\python.exe"
+        "C:\Python310\python.exe"
+        "C:\Python39\python.exe"
+        Join-Path $env:USERPROFILE "AppData\Local\Microsoft\WindowsApps\python.exe"
+        Join-Path $env:USERPROFILE "AppData\Local\Microsoft\WindowsApps\python3.exe"
+    )
+    foreach ($candidate in $candidates) {
+        if (Test-Path $candidate) {
+            return $candidate
+        }
+    }
+    return $null
+}
+
 function Get-PythonExe {
     if (Test-Command "python3") { return "python3" }
     if (Test-Command "python") { return "python" }
@@ -51,26 +82,29 @@ try {
 
     # ─── Install Python if missing ───────────────────────────────────────
 
-    if (-not (Get-PythonExe)) {
+    $Python = Find-PythonExe
+    if (-not $Python) {
         Write-Log "  → Installing Python..."
         & winget install --id Python.Python.3.11 --scope user --accept-source-agreements --accept-package-agreements
         if ($LASTEXITCODE -ne 0) {
             throw "Python installation failed. Install manually from https://www.python.org/downloads/"
         }
-        Write-Log "  ✓ Python installed"
-        Write-Log "  ⚠ If the next step fails, close and reopen PowerShell, then run 'clt'."
+        Write-Log "  ✓ Python installed via winget"
+
+        # Try again to find Python (refresh PATH + common paths)
+        $Python = Find-PythonExe
+        if (-not $Python) {
+            throw "Python was installed but is not on PATH. Close PowerShell, reopen it, and run 'clt'."
+        }
     }
 
-    $Python = Get-PythonExe
-    if (-not $Python) {
-        throw "Python not found on PATH. Reopen PowerShell and try again."
-    }
+    Write-Log "  ✓ Using Python: $Python"
 
     & $Python -m pip --version | Out-Null
     if ($LASTEXITCODE -ne 0) {
         throw "pip not found. Reinstall Python with 'Add Python to PATH' checked."
     }
-    Write-Log "  ✓ Found Python + pip"
+    Write-Log "  ✓ Found pip"
 
     # ─── Install Ollama if missing ───────────────────────────────────────
 
