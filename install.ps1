@@ -5,8 +5,8 @@
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.1"
-$ZipName = "claudito-external-v2.2.1-windows.zip"
+$Version = "v2.2.2"
+$ZipName = "claudito-external-v2.2.2-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -92,18 +92,30 @@ try {
 
     $Python = Find-PythonExe
     if (-not $Python) {
-        Write-Log "  → Installing Python..."
+        Write-Log "  → Python not found. Trying winget..."
         & winget install --id Python.Python.3.11 --scope user --accept-source-agreements --accept-package-agreements
-        if ($LASTEXITCODE -ne 0) {
-            throw "Python installation failed. Install manually from https://www.python.org/downloads/"
-        }
-        Write-Log "  ✓ Python installed via winget"
-
-        # Try again to find Python (refresh PATH + common paths)
         $Python = Find-PythonExe
-        if (-not $Python) {
-            throw "Python was installed but is not on PATH. Close PowerShell, reopen it, and run 'clt'."
+    }
+
+    if (-not $Python) {
+        Write-Log "  → winget did not make Python available. Downloading from python.org..."
+        $PythonInstaller = Join-Path $env:TEMP "python-3.11.9-amd64.exe"
+        try {
+            Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe" -OutFile $PythonInstaller -UseBasicParsing
+        } catch {
+            throw "Could not download Python installer: $_"
         }
+        Write-Log "  → Running Python installer (this may take a minute)..."
+        & $PythonInstaller /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
+        if ($LASTEXITCODE -ne 0) {
+            throw "Python installer failed with code $LASTEXITCODE"
+        }
+        Start-Sleep -Seconds 5
+        $Python = Find-PythonExe
+    }
+
+    if (-not $Python) {
+        throw "Python could not be installed automatically. Install Python 3.11 manually from https://www.python.org/downloads/ and check 'Add Python to PATH'."
     }
 
     Write-Log "  ✓ Using Python: $Python"
@@ -152,7 +164,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.1"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.2"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
