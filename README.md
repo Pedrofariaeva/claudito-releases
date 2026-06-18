@@ -7,7 +7,7 @@ Public Windows installer for Claudito. The source code repository is private.
 Open PowerShell and run:
 
 ```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/Pedrofariaeva/claudito-releases/master/install.ps1 | iex
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://raw.githubusercontent.com/Pedrofariaeva/claudito-releases/master/install.ps1 | iex; Read-Host "Press Enter to close"
 ```
 
 Wait for it to finish, then run:
