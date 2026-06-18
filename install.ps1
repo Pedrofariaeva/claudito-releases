@@ -8,8 +8,8 @@
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.1.0"
-$ZipName = "claudito-external-v2.1.0-windows.zip"
+$Version = "v2.2.0"
+$ZipName = "claudito-external-v2.2.0-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -66,7 +66,7 @@ try {
     exit 1
 }
 
-$ExtractedDir = Join-Path $TempDir "claudito-external-v2.1.0"
+$ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.0"
 if (-not (Test-Path $ExtractedDir)) {
     Write-Host "  ✗ Extracted folder not found at $ExtractedDir" -ForegroundColor Red
     exit 1
