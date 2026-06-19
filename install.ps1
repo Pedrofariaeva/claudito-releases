@@ -250,7 +250,9 @@ try {
 
     Write-Log "  → Installing Claudito..."
     Push-Location $ExtractedDir
-    & $Python -m pip install . 2>&1 | Tee-Object -FilePath $LogFile -Append | Out-Host
+    & $Python -m pip install . 2>&1 |
+        ForEach-Object { if ($_ -is [System.Management.Automation.ErrorRecord]) { $_.ToString() } else { $_ } } |
+        Tee-Object -FilePath $LogFile -Append | Out-Host
     Pop-Location
     if ($LASTEXITCODE -ne 0) { throw "pip install failed." }
 
