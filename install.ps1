@@ -108,7 +108,7 @@ function Resolve-PythonExe {
             return $name
         }
     }
-    $msg = "Windows is redirecting 'python' to the Microsoft Store.`n`n" +
+    $msg = "Windows is redirecting '" + "python" + "' to the Microsoft Store.`n`n" +
            "Claudito needs the real Python that is already installed on this PC.`n`n" +
            "Remove the Microsoft Store shortcut and continue installation?"
     $answer = Show-Popup -Message $msg -Buttons YesNo -Icon Question
