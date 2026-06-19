@@ -25,6 +25,17 @@ function Test-Command {
     return [bool](Get-Command -Name $Name -ErrorAction SilentlyContinue)
 }
 
+function Show-Popup {
+    param(
+        [string]$Message,
+        [string]$Title = "Claudito Installer",
+        [System.Windows.Forms.MessageBoxButtons]$Buttons = [System.Windows.Forms.MessageBoxButtons]::OK,
+        [System.Windows.Forms.MessageBoxIcon]$Icon = [System.Windows.Forms.MessageBoxIcon]::Information
+    )
+    Add-Type -AssemblyName System.Windows.Forms | Out-Null
+    return [System.Windows.Forms.MessageBox]::Show($Message, $Title, $Buttons, $Icon)
+}
+
 function Refresh-Path {
     # Reload PATH from registry so newly installed apps are found in this session
     $machinePath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
@@ -38,36 +49,159 @@ function Test-PythonHasPip {
     return $LASTEXITCODE -eq 0
 }
 
-function Find-PythonExe {
-    Refresh-Path
+function Test-IsMicrosoftStoreAlias {
+    param([string]$Name)
+    $cmd = Get-Command -Name $Name -ErrorAction SilentlyContinue
+    if (-not $cmd) { return $false }
 
-    # On Windows, 'python3' is often a broken Microsoft Store shim. Prefer 'python'.
-    $commands = @("python", "python3")
-    foreach ($cmd in $commands) {
-        if (Test-Command $cmd) {
-            if (Test-PythonHasPip $cmd) {
-                return $cmd
-            }
-        }
+    if ($cmd.Source -like "*\Microsoft\WindowsApps\*") {
+        return $true
     }
 
-    # Common Python install paths from winget
-    $candidates = @(
-        Join-Path $env:LOCALAPPDATA "Programs\Python\Python311\python.exe"
-        Join-Path $env:LOCALAPPDATA "Programs\Python\Python310\python.exe"
-        Join-Path $env:LOCALAPPDATA "Programs\Python\Python39\python.exe"
-        "C:\Python311\python.exe"
-        "C:\Python310\python.exe"
-        "C:\Python39\python.exe"
+    try {
+        $output = & $Name --version 2>&1 | Out-String
+    } catch {
+        $output = $_ | Out-String
+    }
+    $storePatterns = @(
+        "Microsoft Store",
+        "Microsoft.Store",
+        "executar sem argumentos para instalar",
+        "run without arguments to install",
+        "desativar este atalho",
+        "disable this shortcut"
     )
-    foreach ($candidate in $candidates) {
-        if (Test-Path $candidate) {
-            if (Test-PythonHasPip $candidate) {
-                return $candidate
-            }
+    foreach ($pattern in $storePatterns) {
+        if ($output -like "*$pattern*") { return $true }
+    }
+    return $false
+}
+
+function Find-RealPython {
+    $candidates = @()
+
+    $userBase = Join-Path $env:LOCALAPPDATA "Programs\Python"
+    if (Test-Path $userBase) {
+        $candidates += Get-ChildItem -Path $userBase -Directory -Filter "Python3*" -ErrorAction SilentlyContinue |
+            ForEach-Object { Join-Path $_.FullName "python.exe" }
+    }
+
+    $candidates += Get-ChildItem -Path "C:\Program Files\Python*" -Filter "python.exe" -Recurse -ErrorAction SilentlyContinue |
+        ForEach-Object { $_.FullName }
+    $candidates += Get-ChildItem -Path "C:\Python3*" -Filter "python.exe" -Recurse -ErrorAction SilentlyContinue |
+        ForEach-Object { $_.FullName }
+
+    foreach ($exe in $candidates) {
+        if ((Test-Path $exe) -and (Test-PythonHasPip $exe)) {
+            return $exe
         }
     }
     return $null
+}
+
+function Disable-MicrosoftStoreAlias {
+    param([string]$Name)
+    $aliasPath = Join-Path $env:LOCALAPPDATA "Microsoft\WindowsApps\$Name.exe"
+    if (-not (Test-Path $aliasPath)) { return $true }
+    try {
+        Remove-Item -Path $aliasPath -Force -ErrorAction Stop
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+function Resolve-PythonExe {
+    Refresh-Path
+
+    foreach ($name in @("python", "python3")) {
+        if ((Test-Command $name) -and -not (Test-IsMicrosoftStoreAlias $name) -and (Test-PythonHasPip $name)) {
+            return $name
+        }
+    }
+
+    # Microsoft Store alias detected.
+    $msg = "Windows is redirecting 'python' to the Microsoft Store.`n`n" +
+           "Claudito needs the real Python that is already installed on this PC.`n`n" +
+           "Remove the Microsoft Store shortcut and continue installation?"
+    $answer = Show-Popup -Message $msg -Buttons YesNo -Icon Question
+    if ($answer -ne [System.Windows.Forms.DialogResult]::Yes) {
+        Write-Log "  Installation cancelled by user."
+        exit 0
+    }
+
+    foreach ($name in @("python", "python3")) {
+        Disable-MicrosoftStoreAlias $name | Out-Null
+    }
+    Get-Command python, python3 -ErrorAction SilentlyContinue | Out-Null
+
+    foreach ($name in @("python", "python3")) {
+        if ((Test-Command $name) -and -not (Test-IsMicrosoftStoreAlias $name) -and (Test-PythonHasPip $name)) {
+            return $name
+        }
+    }
+
+    $realPython = Find-RealPython
+    if ($realPython) {
+        Write-Log "  → Found real Python at $realPython"
+        return $realPython
+    }
+    return $null
+}
+
+function Download-File {
+    param(
+        [string]$Url,
+        [string]$OutPath,
+        [int]$MaxRetries = 3
+    )
+
+    Write-Log "  → Downloading from:"
+    Write-Log "      $Url"
+
+    # 1. Invoke-WebRequest with retries
+    for ($i = 1; $i -le $MaxRetries; $i++) {
+        try {
+            Write-Log "  → Attempt $i/$MaxRetries via Invoke-WebRequest..."
+            Invoke-WebRequest -Uri $Url -OutFile $OutPath -UseBasicParsing -TimeoutSec 180
+            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) {
+                return
+            }
+        } catch {
+            Write-Log "  ⚠ Attempt $i failed: $_"
+            if ($i -lt $MaxRetries) {
+                Start-Sleep -Seconds (3 * $i)
+            }
+        }
+    }
+
+    # 2. Fallback to curl.exe (ships with Windows 10 1803+)
+    if (Test-Command "curl.exe") {
+        Write-Log "  → Trying curl.exe fallback..."
+        try {
+            & curl.exe -fsSL -o $OutPath $Url --max-time 180 2>&1 | Out-Null
+            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) {
+                return
+            }
+        } catch {
+            Write-Log "  ⚠ curl.exe failed: $_"
+        }
+    }
+
+    # 3. Fallback to bitsadmin
+    if (Test-Command "bitsadmin.exe") {
+        Write-Log "  → Trying bitsadmin fallback..."
+        try {
+            & bitsadmin.exe /transfer claudito /download /priority normal $Url $OutPath 2>&1 | Out-Null
+            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) {
+                return
+            }
+        } catch {
+            Write-Log "  ⚠ bitsadmin failed: $_"
+        }
+    }
+
+    throw "Could not download file after $MaxRetries attempts and all fallbacks.`nURL: $Url"
 }
 
 try {
@@ -90,28 +224,24 @@ try {
 
     # ─── Install Python if missing ───────────────────────────────────────
 
-    $Python = Find-PythonExe
+    $Python = Resolve-PythonExe
     if (-not $Python) {
         Write-Log "  → Python not found. Trying winget..."
         & winget install --id Python.Python.3.11 --scope user --accept-source-agreements --accept-package-agreements
-        $Python = Find-PythonExe
+        $Python = Resolve-PythonExe
     }
 
     if (-not $Python) {
         Write-Log "  → winget did not make Python available. Downloading from python.org..."
         $PythonInstaller = Join-Path $env:TEMP "python-3.11.9-amd64.exe"
-        try {
-            Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe" -OutFile $PythonInstaller -UseBasicParsing
-        } catch {
-            throw "Could not download Python installer: $_"
-        }
+        Download-File -Url "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe" -OutPath $PythonInstaller
         Write-Log "  → Running Python installer (this may take a minute)..."
         & $PythonInstaller /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
         if ($LASTEXITCODE -ne 0) {
             throw "Python installer failed with code $LASTEXITCODE"
         }
         Start-Sleep -Seconds 5
-        $Python = Find-PythonExe
+        $Python = Resolve-PythonExe
     }
 
     if (-not $Python) {
@@ -151,11 +281,7 @@ try {
     Write-Log "  → Downloading Claudito $Version ..."
     New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
-    try {
-        Invoke-WebRequest -Uri $DownloadUrl -OutFile $ZipPath -UseBasicParsing
-    } catch {
-        throw "Download failed: $_"
-    }
+    Download-File -Url $DownloadUrl -OutPath $ZipPath
 
     Write-Log "  → Extracting..."
     try {
