@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.7/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.8/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.7"
-$ZipName = "claudito-external-v2.2.7-windows.zip"
+$Version = "v2.2.8"
+$ZipName = "claudito-external-v2.2.8-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,18 +243,19 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.7"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.8"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
 
     Write-Log "  → Installing Claudito..."
     Push-Location $ExtractedDir
-    & $Python -m pip install . 2>&1 |
-        ForEach-Object { if ($_ -is [System.Management.Automation.ErrorRecord]) { $_.ToString() } else { $_ } } |
-        Tee-Object -FilePath $LogFile -Append | Out-Host
+    $PipLog = Join-Path $TempDir "pip-install.log"
+    & $Python -m pip install . > $PipLog 2>&1
+    $PipExit = $LASTEXITCODE
+    Get-Content -Path $PipLog -ErrorAction SilentlyContinue | Tee-Object -FilePath $LogFile -Append | Out-Host
     Pop-Location
-    if ($LASTEXITCODE -ne 0) { throw "pip install failed." }
+    if ($PipExit -ne 0) { throw "pip install failed with exit code $PipExit." }
 
     Write-Log "  → Copying templates..."
     New-Item -ItemType Directory -Path $ConfigDir -Force | Out-Null
