@@ -5,8 +5,8 @@
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.2"
-$ZipName = "claudito-external-v2.2.2-windows.zip"
+$Version = "v2.2.3"
+$ZipName = "claudito-external-v2.2.3-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -37,7 +37,6 @@ function Show-Popup {
 }
 
 function Refresh-Path {
-    # Reload PATH from registry so newly installed apps are found in this session
     $machinePath = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
     $userPath = [System.Environment]::GetEnvironmentVariable("Path", "User")
     $env:Path = "$machinePath;$userPath"
@@ -53,11 +52,7 @@ function Test-IsMicrosoftStoreAlias {
     param([string]$Name)
     $cmd = Get-Command -Name $Name -ErrorAction SilentlyContinue
     if (-not $cmd) { return $false }
-
-    if ($cmd.Source -like "*\Microsoft\WindowsApps\*") {
-        return $true
-    }
-
+    if ($cmd.Source -like "*\Microsoft\WindowsApps\*") { return $true }
     try {
         $output = & $Name --version 2>&1 | Out-String
     } catch {
@@ -79,22 +74,17 @@ function Test-IsMicrosoftStoreAlias {
 
 function Find-RealPython {
     $candidates = @()
-
     $userBase = Join-Path $env:LOCALAPPDATA "Programs\Python"
     if (Test-Path $userBase) {
         $candidates += Get-ChildItem -Path $userBase -Directory -Filter "Python3*" -ErrorAction SilentlyContinue |
             ForEach-Object { Join-Path $_.FullName "python.exe" }
     }
-
     $candidates += Get-ChildItem -Path "C:\Program Files\Python*" -Filter "python.exe" -Recurse -ErrorAction SilentlyContinue |
         ForEach-Object { $_.FullName }
     $candidates += Get-ChildItem -Path "C:\Python3*" -Filter "python.exe" -Recurse -ErrorAction SilentlyContinue |
         ForEach-Object { $_.FullName }
-
     foreach ($exe in $candidates) {
-        if ((Test-Path $exe) -and (Test-PythonHasPip $exe)) {
-            return $exe
-        }
+        if ((Test-Path $exe) -and (Test-PythonHasPip $exe)) { return $exe }
     }
     return $null
 }
@@ -113,14 +103,11 @@ function Disable-MicrosoftStoreAlias {
 
 function Resolve-PythonExe {
     Refresh-Path
-
     foreach ($name in @("python", "python3")) {
         if ((Test-Command $name) -and -not (Test-IsMicrosoftStoreAlias $name) -and (Test-PythonHasPip $name)) {
             return $name
         }
     }
-
-    # Microsoft Store alias detected.
     $msg = "Windows is redirecting 'python' to the Microsoft Store.`n`n" +
            "Claudito needs the real Python that is already installed on this PC.`n`n" +
            "Remove the Microsoft Store shortcut and continue installation?"
@@ -129,18 +116,15 @@ function Resolve-PythonExe {
         Write-Log "  Installation cancelled by user."
         exit 0
     }
-
     foreach ($name in @("python", "python3")) {
         Disable-MicrosoftStoreAlias $name | Out-Null
     }
     Get-Command python, python3 -ErrorAction SilentlyContinue | Out-Null
-
     foreach ($name in @("python", "python3")) {
         if ((Test-Command $name) -and -not (Test-IsMicrosoftStoreAlias $name) -and (Test-PythonHasPip $name)) {
             return $name
         }
     }
-
     $realPython = Find-RealPython
     if ($realPython) {
         Write-Log "  → Found real Python at $realPython"
@@ -155,57 +139,40 @@ function Download-File {
         [string]$OutPath,
         [int]$MaxRetries = 3
     )
-
     Write-Log "  → Downloading from:"
     Write-Log "      $Url"
-
-    # 1. Invoke-WebRequest with retries
     for ($i = 1; $i -le $MaxRetries; $i++) {
         try {
             Write-Log "  → Attempt $i/$MaxRetries via Invoke-WebRequest..."
             Invoke-WebRequest -Uri $Url -OutFile $OutPath -UseBasicParsing -TimeoutSec 180
-            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) {
-                return
-            }
+            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) { return }
         } catch {
             Write-Log "  ⚠ Attempt $i failed: $_"
-            if ($i -lt $MaxRetries) {
-                Start-Sleep -Seconds (3 * $i)
-            }
+            if ($i -lt $MaxRetries) { Start-Sleep -Seconds (3 * $i) }
         }
     }
-
-    # 2. Fallback to curl.exe (ships with Windows 10 1803+)
     if (Test-Command "curl.exe") {
         Write-Log "  → Trying curl.exe fallback..."
         try {
             & curl.exe -fsSL -o $OutPath $Url --max-time 180 2>&1 | Out-Null
-            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) {
-                return
-            }
+            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) { return }
         } catch {
             Write-Log "  ⚠ curl.exe failed: $_"
         }
     }
-
-    # 3. Fallback to bitsadmin
     if (Test-Command "bitsadmin.exe") {
         Write-Log "  → Trying bitsadmin fallback..."
         try {
             & bitsadmin.exe /transfer claudito /download /priority normal $Url $OutPath 2>&1 | Out-Null
-            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) {
-                return
-            }
+            if ((Test-Path $OutPath) -and (Get-Item $OutPath).Length -gt 1024) { return }
         } catch {
             Write-Log "  ⚠ bitsadmin failed: $_"
         }
     }
-
     throw "Could not download file after $MaxRetries attempts and all fallbacks.`nURL: $Url"
 }
 
 try {
-    # Ensure TLS 1.2 is enabled for downloads on older Windows
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
     Write-Log ""
@@ -215,14 +182,10 @@ try {
     Write-Log "============================================="
     Write-Log ""
 
-    # ─── Ensure winget is available ──────────────────────────────────────
-
     if (-not (Test-Command "winget")) {
         throw "winget is not available. Install Python and Ollama manually.`n  Python: https://www.python.org/downloads/`n  Ollama: https://ollama.com/download/windows"
     }
     Write-Log "  ✓ Found winget"
-
-    # ─── Install Python if missing ───────────────────────────────────────
 
     $Python = Resolve-PythonExe
     if (-not $Python) {
@@ -237,9 +200,7 @@ try {
         Download-File -Url "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe" -OutPath $PythonInstaller
         Write-Log "  → Running Python installer (this may take a minute)..."
         & $PythonInstaller /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
-        if ($LASTEXITCODE -ne 0) {
-            throw "Python installer failed with code $LASTEXITCODE"
-        }
+        if ($LASTEXITCODE -ne 0) { throw "Python installer failed with code $LASTEXITCODE" }
         Start-Sleep -Seconds 5
         $Python = Resolve-PythonExe
     }
@@ -247,10 +208,7 @@ try {
     if (-not $Python) {
         throw "Python could not be installed automatically. Install Python 3.11 manually from https://www.python.org/downloads/ and check 'Add Python to PATH'."
     }
-
     Write-Log "  ✓ Using Python: $Python"
-
-    # ─── Ensure pip is available ─────────────────────────────────────────
 
     if (-not (Test-PythonHasPip $Python)) {
         Write-Log "  → pip not found; trying to install it..."
@@ -261,8 +219,6 @@ try {
         Write-Log "  ✓ pip installed via ensurepip"
     }
     Write-Log "  ✓ Found pip"
-
-    # ─── Install Ollama if missing ───────────────────────────────────────
 
     if (-not (Test-Command "ollama")) {
         Write-Log "  → Installing Ollama..."
@@ -276,11 +232,8 @@ try {
         Write-Log "  ✓ Found Ollama"
     }
 
-    # ─── Download and extract Claudito ───────────────────────────────────
-
     Write-Log "  → Downloading Claudito $Version ..."
     New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
-
     Download-File -Url $DownloadUrl -OutPath $ZipPath
 
     Write-Log "  → Extracting..."
@@ -290,22 +243,16 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.2"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.3"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
-
-    # ─── Install Claudito ────────────────────────────────────────────────
 
     Write-Log "  → Installing Claudito..."
     Push-Location $ExtractedDir
     & $Python -m pip install . 2>&1 | Tee-Object -FilePath $LogFile -Append | Out-Host
     Pop-Location
-    if ($LASTEXITCODE -ne 0) {
-        throw "pip install failed."
-    }
-
-    # ─── Copy templates and default config ───────────────────────────────
+    if ($LASTEXITCODE -ne 0) { throw "pip install failed." }
 
     Write-Log "  → Copying templates..."
     New-Item -ItemType Directory -Path $ConfigDir -Force | Out-Null
