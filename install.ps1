@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.9/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.10/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.9"
-$ZipName = "claudito-external-v2.2.9-windows.zip"
+$Version = "v2.2.10"
+$ZipName = "claudito-external-v2.2.10-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +243,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.9"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.10"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
@@ -266,7 +266,7 @@ try {
     if (Test-Path $TemplateSrc) {
         Copy-Item -Path "$TemplateSrc\*" -Destination $ConfigDir -Recurse -Force
     }
-    $DefaultConfig = Join-Path $ExtractedDir "default_config" "config.json"
+    $DefaultConfig = Join-Path (Join-Path $ExtractedDir "default_config") "config.json"
     if (Test-Path $DefaultConfig) {
         $ConfigFile = Join-Path $ConfigDir "config.json"
         if (-not (Test-Path $ConfigFile)) {
