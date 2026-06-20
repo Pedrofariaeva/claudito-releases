@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.8/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.9/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.8"
-$ZipName = "claudito-external-v2.2.8-windows.zip"
+$Version = "v2.2.9"
+$ZipName = "claudito-external-v2.2.9-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +243,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.8"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.9"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
@@ -251,8 +251,11 @@ try {
     Write-Log "  → Installing Claudito..."
     Push-Location $ExtractedDir
     $PipLog = Join-Path $TempDir "pip-install.log"
+    $OldEAP = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
     & $Python -m pip install . > $PipLog 2>&1
     $PipExit = $LASTEXITCODE
+    $ErrorActionPreference = $OldEAP
     Get-Content -Path $PipLog -ErrorAction SilentlyContinue | Tee-Object -FilePath $LogFile -Append | Out-Host
     Pop-Location
     if ($PipExit -ne 0) { throw "pip install failed with exit code $PipExit." }
