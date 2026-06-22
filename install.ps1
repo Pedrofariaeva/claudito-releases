@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.13/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.14/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.13"
-$ZipName = "claudito-external-v2.2.13-windows.zip"
+$Version = "v2.2.14"
+$ZipName = "claudito-external-v2.2.14-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +243,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.13"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.14"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
@@ -262,15 +262,27 @@ try {
 
     Write-Log "  → Copying templates..."
     New-Item -ItemType Directory -Path $ConfigDir -Force | Out-Null
+    $TemplateDst = Join-Path $ConfigDir "templates"
+    New-Item -ItemType Directory -Path $TemplateDst -Force | Out-Null
     $TemplateSrc = Join-Path $ExtractedDir "templates"
     if (Test-Path $TemplateSrc) {
-        Copy-Item -Path "$TemplateSrc\*" -Destination $ConfigDir -Recurse -Force
+        Copy-Item -Path "$TemplateSrc\*" -Destination $TemplateDst -Recurse -Force
     }
     $DefaultConfig = Join-Path (Join-Path $ExtractedDir "default_config") "config.json"
+    $ConfigFile = Join-Path $ConfigDir "config.json"
     if (Test-Path $DefaultConfig) {
-        $ConfigFile = Join-Path $ConfigDir "config.json"
         if (-not (Test-Path $ConfigFile)) {
             Copy-Item -Path $DefaultConfig -Destination $ConfigFile -Force
+        }
+    }
+    # Ensure template_dir points to the installed templates folder
+    if (Test-Path $ConfigFile) {
+        try {
+            $cfg = Get-Content -Path $ConfigFile -Raw | ConvertFrom-Json
+            $cfg.template_dir = $TemplateDst
+            $cfg | ConvertTo-Json -Depth 10 | Set-Content -Path $ConfigFile -Encoding UTF8
+        } catch {
+            Write-Log "  ⚠ Could not update template_dir in config: $_"
         }
     }
 
