@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.18/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.19/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.18"
-$ZipName = "claudito-external-v2.2.18-windows.zip"
+$Version = "v2.2.19"
+$ZipName = "claudito-external-v2.2.19-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +243,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.18"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.19"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
@@ -253,7 +253,7 @@ try {
     $PipLog = Join-Path $TempDir "pip-install.log"
     $OldEAP = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
-    & $Python -m pip install . > $PipLog 2>&1
+    & $Python -m pip install --upgrade --force-reinstall . > $PipLog 2>&1
     $PipExit = $LASTEXITCODE
     $ErrorActionPreference = $OldEAP
     Get-Content -Path $PipLog -ErrorAction SilentlyContinue | Tee-Object -FilePath $LogFile -Append | Out-Host
