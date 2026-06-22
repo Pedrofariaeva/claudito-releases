@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.16/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.17/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.16"
-$ZipName = "claudito-external-v2.2.16-windows.zip"
+$Version = "v2.2.17"
+$ZipName = "claudito-external-v2.2.17-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +243,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.16"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.17"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
