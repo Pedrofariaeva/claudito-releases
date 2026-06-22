@@ -7,7 +7,7 @@ Public releases and installers for Claudito. The source code repository is priva
 Open PowerShell and run:
 
 ```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.21/install.ps1 | iex; Read-Host "Press Enter to close"
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.22/install.ps1 | iex; Read-Host "Press Enter to close"
 ```
 
 Then run `clt`.
@@ -19,7 +19,7 @@ If `clt` is not recognized, close PowerShell and open a new window.
 Open Terminal and run:
 
 ```bash
-curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.21/claudito-external-v2.2.21-macos.tar.gz -o claudito.tar.gz && tar -xzf claudito.tar.gz && cd claudito-external-v2.2.21 && ./install.sh
+curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.22/claudito-external-v2.2.22-macos.tar.gz -o claudito.tar.gz && tar -xzf claudito.tar.gz && cd claudito-external-v2.2.22 && ./install.sh
 ```
 
 Then run `clt`.
