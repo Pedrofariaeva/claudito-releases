@@ -1,12 +1,15 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.26/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.27/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
+# Optional invite token passed via environment variable
+$InviteToken = $env:CLAUDITO_INVITE_TOKEN
+
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.26"
-$ZipName = "claudito-external-v2.2.26-windows.zip"
+$Version = "v2.2.27"
+$ZipName = "claudito-external-v2.2.27-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +246,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.26"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.27"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
@@ -297,9 +300,14 @@ try {
         }
     }
 
-    # First-time setup creates the user, default profile, and research root.
-    Write-Log "  → Running first-time setup..."
-    & $Python -m claudito --setup
+    # First-time setup or invite acceptance
+    if ($InviteToken) {
+        Write-Log "  → Accepting invitation..."
+        & $Python -m claudito --invite $InviteToken
+    } else {
+        Write-Log "  → Running first-time setup..."
+        & $Python -m claudito --setup
+    }
 
     Write-Log ""
     Write-Log "============================================="
