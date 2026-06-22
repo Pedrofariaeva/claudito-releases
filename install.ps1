@@ -1,12 +1,12 @@
 # Claudito Windows Installer
 # One-liner:
-#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.15/install.ps1 | iex
+#   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/download/v2.2.16/install.ps1 | iex
 
 $ErrorActionPreference = "Stop"
 
 $ReleaseRepo = "Pedrofariaeva/claudito-releases"
-$Version = "v2.2.15"
-$ZipName = "claudito-external-v2.2.15-windows.zip"
+$Version = "v2.2.16"
+$ZipName = "claudito-external-v2.2.16-windows.zip"
 $DownloadUrl = "https://github.com/$ReleaseRepo/releases/download/$Version/$ZipName"
 
 $TempDir = Join-Path $env:TEMP "claudito-install-$(Get-Random)"
@@ -243,7 +243,7 @@ try {
         throw "Extraction failed: $_"
     }
 
-    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.15"
+    $ExtractedDir = Join-Path $TempDir "claudito-external-v2.2.16"
     if (-not (Test-Path $ExtractedDir)) {
         throw "Extracted folder not found at $ExtractedDir"
     }
@@ -271,7 +271,16 @@ try {
     $DefaultConfig = Join-Path (Join-Path $ExtractedDir "default_config") "config.json"
     $ConfigFile = Join-Path $ConfigDir "config.json"
     if (Test-Path $DefaultConfig) {
-        if (-not (Test-Path $ConfigFile)) {
+        $configValid = $false
+        if (Test-Path $ConfigFile) {
+            try {
+                $null = Get-Content -Path $ConfigFile -Raw | ConvertFrom-Json
+                $configValid = $true
+            } catch {
+                Write-Log "  → Existing config.json is not valid JSON; replacing with default..."
+            }
+        }
+        if (-not $configValid) {
             Copy-Item -Path $DefaultConfig -Destination $ConfigFile -Force
         }
     }
@@ -281,11 +290,16 @@ try {
             $cfg = Get-Content -Path $ConfigFile -Raw | ConvertFrom-Json
             $cfg.template_dir = $TemplateDst
             $cfgJson = $cfg | ConvertTo-Json -Depth 10
-            [System.IO.File]::WriteAllText($ConfigFile, $cfgJson, [System.Text.Encoding]::UTF8)
+            $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+            [System.IO.File]::WriteAllText($ConfigFile, $cfgJson, $utf8NoBom)
         } catch {
             Write-Log "  ⚠ Could not update template_dir in config: $_"
         }
     }
+
+    # First-time setup creates the user, default profile, and research root.
+    Write-Log "  → Running first-time setup..."
+    & $Python -m claudito --setup
 
     Write-Log ""
     Write-Log "============================================="
