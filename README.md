@@ -1,5 +1,10 @@
 # Claudito Releases
 
+[![Latest release](https://img.shields.io/github/v/release/Pedrofariaeva/claudito-releases?label=latest%20version&color=blue)](https://github.com/Pedrofariaeva/claudito-releases/releases/latest)
+
+**The badge above always shows the current version** — it is read from the
+releases themselves, so it cannot go out of date.
+
 Public installers for Claudito. The source code repository is private.
 
 **These commands always install the newest version.** They carry no version
@@ -24,11 +29,11 @@ curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/do
 The installer opens Claudito when it finishes. Afterwards, start it with `clt`.
 If `clt` is not recognised, close the terminal and open a new one.
 
-## Latest version
+## Which version am I getting?
 
-See **[Releases](https://github.com/Pedrofariaeva/claudito-releases/releases)**.
-The newest release is the only one you should install; older ones are kept for
-reference only.
+The one in the badge at the top — the commands above always fetch the newest
+release. Older releases are kept for reference only; there is no reason to
+install one.
 
 Claudito updates itself: every time you run `clt` it checks for a newer version
 and installs it. You never need to run the commands above twice.
