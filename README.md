@@ -7,6 +7,9 @@ releases themselves, so it cannot go out of date.
 
 Public installers for Claudito. The source code repository is private.
 
+**[What Claudito does →](https://pedrofariaeva.github.io/claudito-releases/)** — the full
+list of features, in plain language.
+
 **These commands always install the newest version.** They carry no version
 number, so they never go out of date.
 
