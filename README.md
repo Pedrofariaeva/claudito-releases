@@ -8,7 +8,7 @@ releases themselves, so it cannot go out of date.
 Public installers for Claudito. The source code repository is private.
 
 **These commands always install the newest version.** They carry no version
-number, so they never go out of date — see *Latest version* below.
+number, so they never go out of date.
 
 ## Windows — one line
 
