@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Nine steps from an empty Claudito to a project your colleagues can open.">
+<title>Your First Project</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:      #F3F5F1;
+    --surface:    #FBFCFA;
+    --ink:        #1A1D19;
+    --ink-soft:   #4E554B;
+    --ink-faint:  #7C8478;
+    --rule:       #DCE0D6;
+    --accent:     #5F8A1B;
+    --accent-dim: #EBF1DF;
+    --code-bg:    #ECEFE7;
+    --shadow:     0 1px 2px rgba(26,29,25,.05), 0 8px 24px -16px rgba(26,29,25,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #131612;
+      --surface:    #1B1F19;
+      --ink:        #E9EDE4;
+      --ink-soft:   #AFB8A8;
+      --ink-faint:  #7E8777;
+      --rule:       #2C3228;
+      --accent:     #A6CE39;
+      --accent-dim: #232A19;
+      --code-bg:    #202619;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #131612;
+    --surface:    #1B1F19;
+    --ink:        #E9EDE4;
+    --ink-soft:   #AFB8A8;
+    --ink-faint:  #7E8777;
+    --rule:       #2C3228;
+    --accent:     #A6CE39;
+    --accent-dim: #232A19;
+    --code-bg:    #202619;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+  }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; }
+
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: Newsreader, Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 1.1rem 0 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    margin-top: 1.6rem;
+    font-size: .82rem;
+    color: var(--ink-faint);
+  }
+  .meta b { color: var(--ink-soft); font-weight: 500; }
+
+  /* ── premise ──────────────────────────────────────────── */
+  .premise {
+    margin: 2.6rem 0 0;
+    padding: 1.5rem 1.7rem;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+  }
+  .premise p { margin: 0; max-width: 68ch; }
+  .premise p + p { margin-top: .8rem; }
+
+  /* ── sections ─────────────────────────────────────────── */
+  section { margin-top: 3.4rem; }
+
+  h2 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    margin: 0 0 .35rem;
+    text-wrap: balance;
+  }
+
+  .why {
+    color: var(--ink-soft);
+    max-width: 66ch;
+    margin: 0 0 1.4rem;
+  }
+  .why strong { color: var(--ink); font-weight: 600; }
+
+  /* ── command tables ───────────────────────────────────── */
+  .cmds {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  td {
+    padding: .62rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.cmd {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82rem;
+    color: var(--accent);
+    white-space: nowrap;
+    width: 1%;
+    font-weight: 500;
+  }
+  td.does { color: var(--ink-soft); font-size: .93rem; }
+
+  /* ── highlight cards ──────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1.4rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.15rem 1.25rem;
+    box-shadow: var(--shadow);
+  }
+  .card h3 {
+    font-size: .95rem;
+    font-weight: 600;
+    margin: 0 0 .4rem;
+    letter-spacing: -.005em;
+  }
+  .card p { margin: 0; font-size: .89rem; color: var(--ink-soft); }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .86em;
+    background: var(--code-bg);
+    padding: .12em .38em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  /* ── the syntax sheet ─────────────────────────────────── */
+  .syntax {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .1rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  .syntax dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82rem;
+    color: var(--accent);
+    white-space: nowrap;
+    padding: .3rem 0;
+    font-weight: 500;
+  }
+  .syntax dd {
+    margin: 0;
+    padding: .3rem 0;
+    font-size: .9rem;
+    color: var(--ink-soft);
+  }
+
+  /* ── closing ──────────────────────────────────────────── */
+  .close {
+    margin-top: 3.6rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--ink);
+    font-size: .88rem;
+    color: var(--ink-faint);
+    max-width: 66ch;
+  }
+  .close b { color: var(--ink-soft); font-weight: 500; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+<style>
+  /* ── the walkthrough ─────────────────────────────────── */
+  .steps { counter-reset: step; margin-top: 2.2rem; display: grid; gap: 1.1rem; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.3rem 1.5rem 1.4rem 3.6rem;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 1.25rem; top: 1.3rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-dim);
+    width: 1.6rem; height: 1.6rem;
+    display: grid; place-items: center;
+    border-radius: 50%;
+  }
+  .step h2 {
+    font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    margin: 0 0 .5rem;
+  }
+  .step p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 60ch; }
+  .step p + p { margin-top: .55rem; }
+
+  .type {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .55rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .88rem;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .4rem .75rem;
+    margin: .1rem 0 .7rem;
+    color: var(--ink);
+  }
+  .type b {
+    font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    font-weight: 500;
+    font-size: .72rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .watch {
+    margin-top: .7rem;
+    padding-left: .85rem;
+    border-left: 2px solid var(--rule);
+    font-size: .89rem;
+    color: var(--ink-faint);
+  }
+  .watch b { color: var(--ink-soft); font-weight: 500; }
+
+  .first { border-left: 3px solid var(--accent); }
+
+  .callout {
+    margin: 2.4rem 0 0;
+    padding: 1.3rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+  }
+  .callout h2 { font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+                font-size: 1rem; font-weight: 600; margin: 0 0 .5rem; }
+  .callout p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 64ch; }
+  .callout p + p { margin-top: .55rem; }
+
+  pre.cmd {
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .85rem 1rem;
+    overflow-x: auto;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .8rem;
+    line-height: 1.5;
+    margin: .8rem 0 0;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Getting started</p>
+    <h1>Your First Project</h1>
+    <p class="standfirst">Nine steps, in order, from an empty Claudito to a project your colleagues can open.</p>
+    <div class="meta">
+      <span><b>Takes</b> about an hour, most of it waiting for the search</span>
+      <span><b>You need</b> Claudito installed, and an ORCID</span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <h2>Before you begin</h2>
+    <p>Open a terminal and type <code>clt</code>. Claudito prints its version on the first line — if you are reporting a problem to Pedro, that line is the first thing he needs.</p>
+    <p>Everything below is typed at Claudito's own prompt, not in the terminal.</p>
+  </div>
+
+  <div class="steps">
+
+    <div class="step first">
+      <h2>Create a project</h2>
+      <div class="type"><b>type</b> n</div>
+      <p>At the list of projects, <code>n</code> starts a new one. Give it a short codename — no spaces.</p>
+      <p class="watch"><b>You should see:</b> a confirmation naming the project, and whether it joined a team.</p>
+    </div>
+
+    <div class="step">
+      <h2>Create a team</h2>
+      <div class="type"><b>type</b> t</div>
+      <p>A team is the people you share work with. Create one and give it a name.</p>
+      <p class="watch"><b>Why it matters:</b> projects are shared through a team, never person to person. No team, no sharing.</p>
+    </div>
+
+    <div class="step">
+      <h2>Check the project is in the team</h2>
+      <div class="type"><b>type</b> project team</div>
+      <p>A project you create while working in a team joins it automatically, and Claudito says so when it is created. This confirms it.</p>
+      <p class="watch"><b>If it says the project is private,</b> put it in the team with <code>project team &lt;name&gt;</code>. A project outside a team is invisible to everyone else, and that looks exactly like broken sharing.</p>
+    </div>
+
+    <div class="step">
+      <h2>Invite someone</h2>
+      <div class="type"><b>type</b> invite</div>
+      <p>You are asked for their ORCID, then their e-mail address. Invite somebody who is not already in one of your teams — that is the case worth testing.</p>
+      <p class="watch"><b>Tell them:</b> a confirmation code is e-mailed to them, and it can land in spam. They should search for <code>trackonperformance</code> if they cannot find it.</p>
+    </div>
+
+    <div class="step">
+      <h2>Write the abstract</h2>
+      <div class="type"><b>type</b> abstract</div>
+      <p>A few lines on what the project is about. Save the file and close it.</p>
+      <p class="watch"><b>Worth doing before the search:</b> Claudito can search from what you have written, rather than from a query you type.</p>
+    </div>
+
+    <div class="step">
+      <h2>Find the papers</h2>
+      <div class="type"><b>type</b> harvest</div>
+      <p>Searches every database you have access to, in one pass, and removes papers that appear in more than one of them.</p>
+      <p class="watch"><b>This takes a while.</b> It reports how many papers it found and how many arrived with a PDF.</p>
+    </div>
+
+    <div class="step">
+      <h2>Look at what came back</h2>
+      <div class="type"><b>type</b> ref list</div>
+      <p>Then <code>ref organise</code> to sort the papers into the shape of your document, and <code>screen all</code> to judge which are relevant.</p>
+      <p class="watch"><b>Look at the folders</b> it created under <code>references</code>. That structure is what your writing will follow.</p>
+    </div>
+
+    <div class="step">
+      <h2>Write the project plan</h2>
+      <div class="type"><b>type</b> plan</div>
+      <p>Write what you intend to do. Save and close the file, then type <code>plan</code> again and check your text is there.</p>
+      <p class="watch"><b>While you are in the file:</b> <code>format</code> shows how to add a figure, a table or an equation without knowing LaTeX.</p>
+    </div>
+
+    <div class="step">
+      <h2>Leave properly</h2>
+      <div class="type"><b>type</b> clt</div>
+      <p>This saves your session, commits the work and uploads it. It is the step people skip.</p>
+      <p class="watch"><b>Closing the window instead</b> leaves everything on your own computer. Your colleagues see nothing, and it looks as though sharing is broken.</p>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <h2>Then ask your colleague to check</h2>
+    <p>They run <code>clt</code>. Your project should be in their list, with its contents.</p>
+    <p>If it is not, send Pedro three things: the version line from the first screen, what you typed, and a photograph of the screen. Those three make a problem findable; a description of it usually does not.</p>
+  </div>
+
+  <p class="close">Every command here has a longer form behind <b>help</b>, and <b>cheatsheet</b> lists the ones used most. If a project ever grows past a few gigabytes, <b>clean</b> shows what it is carrying that it no longer needs.</p>
+
+</div>
+</body>
+</html>
