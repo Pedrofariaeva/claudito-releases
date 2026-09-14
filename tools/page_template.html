@@ -276,11 +276,55 @@
   /* spacing that used to be written inline */
   .callout p.after-places { margin-top: .9rem; }
   .step p + .seq { margin-top: .6rem; }
+
+  /* copyable commands */
+  .code { position: relative; margin: .55rem 0 .15rem; }
+  .code pre {
+    margin: 0;
+    padding: .7rem 4.8rem .7rem .85rem;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .74rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: var(--ink);
+  }
+  .copy {
+    position: absolute; top: .4rem; right: .4rem;
+    font: 500 .72rem "IBM Plex Sans", ui-sans-serif, sans-serif;
+    padding: .3rem .65rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .copy:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .callout .watch, .callout .warn { margin-top: .75rem; }
 </style>
 </head>
 <body>
 <div class="wrap">
 {{CONTENT}}
 </div>
+<script>
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".copy") : null;
+    if (!btn) return;
+    var pre = btn.parentNode.querySelector("pre");
+    function said(word) { btn.textContent = word; setTimeout(function () { btn.textContent = "Copy"; }, 1800); }
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      said("Press \u2318C / Ctrl+C");
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(pre.textContent).then(function () { said("Copied"); }, selectIt);
+    } else { selectIt(); }
+  });
+</script>
 </body>
 </html>

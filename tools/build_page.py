@@ -21,7 +21,7 @@ OUT = os.path.join(ROOT, "getting-started.html")
 TEMPLATE = os.path.join(ROOT, "tools", "page_template.html")
 
 HEADER_KEYS = ("TITLE", "EYEBROW", "SUBTITLE", "TAKES", "YOU NEED")
-ITEM_KEYS = ("WHERE", "TYPE", "THEY TYPE", "NOTE", "WARNING", "PLACE", "PROMPT")
+ITEM_KEYS = ("WHERE", "TYPE", "THEY TYPE", "NOTE", "WARNING", "PLACE", "PROMPT", "CODE")
 
 
 def inline(text):
@@ -40,6 +40,9 @@ def inline(text):
     t = re.sub(r"`([^`]*)`", stash, text)
     t = html.escape(t, quote=False)
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
+    # a bare web address becomes a link; trailing punctuation stays outside it
+    t = re.sub(r"(https?://[^\s<\x00]*[^\s<\x00.,;:!?)])",
+               r'<a href="\1">\1</a>', t)
     return re.sub(r"\x00(\d+)\x00", lambda m: codes[int(m.group(1))], t)
 
 
@@ -55,6 +58,13 @@ def commands(text, label):
         elif seg.strip():
             out.append('<span class="then">%s</span>' % inline(seg.strip()))
     return '<div class="seq">' + "".join(out) + "</div>"
+
+
+def code_block(text, pad):
+    """A command to paste, shown in full, with a Copy button."""
+    return ('%s<div class="code"><pre>%s</pre>'
+            '<button class="copy" type="button">Copy</button></div>'
+            % (pad, html.escape(text, quote=False)))
 
 
 def parse(lines):
@@ -106,10 +116,16 @@ def render_box(b):
                 h.append("    </div>")
             in_places = in_place = False
             after = True
-        elif key == "P":
+        elif key in ("P", "NOTE", "WARNING", "CODE"):
             pad = "        " if in_place else "    "
-            cls = ' class="after-places"' if after else ""
-            h.append("%s<p%s>%s</p>" % (pad, cls, inline(val)))
+            if key == "CODE":
+                h.append(code_block(val, pad))
+            else:
+                cls = {"NOTE": "watch", "WARNING": "warn"}.get(key, "")
+                if after:
+                    cls = (cls + " after-places").strip()
+                attr = ' class="%s"' % cls if cls else ""
+                h.append("%s<p%s>%s</p>" % (pad, attr, inline(val)))
             after = False
     if in_place:
         h.append("      </div>")
@@ -133,6 +149,8 @@ def render_step(b, first):
             h.append('      <p class="watch">%s</p>' % inline(val))
         elif key == "WARNING":
             h.append('      <p class="warn">%s</p>' % inline(val))
+        elif key == "CODE":
+            h.append(code_block(val, "      "))
         elif key == "P":
             h.append("      <p>%s</p>" % inline(val))
     h.append("    </div>")

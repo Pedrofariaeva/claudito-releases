@@ -6,6 +6,8 @@
 //
 //   **bold**              makes words bold
 //   `clt`                 shows a command in a grey box
+//   https://...           a web address becomes a link by itself
+//   CODE: a long command  a full-width command with a Copy button
 //
 //   === BOX: Title        a shaded box with a title
 //   === STEP: Title       a numbered step (the numbers are automatic)
@@ -26,17 +28,45 @@
 //     END PLACES
 // ─────────────────────────────────────────────────────────────────────
 
-TITLE: Your First Project
+TITLE: Your First Claudito Project
 EYEBROW: Getting started
-SUBTITLE: Nine steps, in order, from an empty Claudito to a project your colleagues can open.
-TAKES: about an hour, most of it waiting for the search
-YOU NEED: Claudito installed, your ORCID, and a colleague to invite
+SUBTITLE: Nine steps, from a simple project to teams sync
+TAKES: about 30min well dedicated, including the search, screen, edit and publish latex files
+YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email
 
 
-=== BOX: Before you begin
-Open **Terminal** on a Mac, or **PowerShell** on Windows. Type `clt` and press Enter.
+=== BOX: Prepare 1 — install Claudito
+Do this once, before step 1. It takes about 10 minutes the first time.
+Find your computer below, open the program it names, copy the one-line code, paste it in, and press Enter.
+
+PLACE: On a Mac
+Open **Terminal**: press **Cmd + Space**, type `Terminal` and press Enter. Paste this line and press Enter:
+CODE: (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
+
+PLACE: On Windows
+Open **PowerShell**: press the **Windows key**, type `PowerShell` and press Enter. Paste this line and press Enter:
+CODE: [Net.ServicePointManager]::SecurityProtocol='Tls12'; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; try { irm https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/install.ps1 | iex } catch { irm https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/install.ps1 | iex }
+
+END PLACES
+The same one-line codes are always on GitHub: https://github.com/Pedrofariaeva/claudito-releases
+WARNING: **Only in Terminal or PowerShell.** Do not use other editors
+NOTE: If it says **it cannot connect,** run the same line again. It tries GitHub first and a mirror second, and a slow connection often needs a second try.
+
+
+=== BOX: Prepare 2 — Setup questions
+After install, Claudito requires some information:
+**Your name,** (Whatever you want to be) your **ORCID** and your **e-mail** (pref.to use your ORCIDs E-mail) 
+Teams invitation work with ORCID number and email, so type it carefully.
+**Which folder is your research:** You can accept the folder Claudito suggests, unless you already have one, give it.
+**genAI engines:** Ollama, Kimi or/and Claude. We recommend at least **Ollama**, press Enter to skip if you don't want any. You can add it later with `setup`.
+**GitLab:** this is what shares your projects with a team. Type your GitLab username; Claudito then opens GitLab in your browser with the form already filled in. Click **Create personal access token**, copy the token, and paste it back into the window.
+NOTE: **No GitLab account yet?** Create one free at https://gitlab.com first, with the same e-mail you give Claudito. Invitations to your team's projects are sent to that address.
+
+
+=== BOX: Prepare 3 — check it works
+Close the window, open a new **Terminal** or **PowerShell**, type `clt` and press Enter.
 The first line shows your version, for example `✓ claudito v2.11.04`. If you ever report a problem, that line is the first thing Pedro needs.
-If you skipped your name, ORCID or GitLab details while installing, type `setup` first.
+NOTE: **If `clt` is not recognised,** close the window and open a new one. **If you skipped a question** during setup, type `setup` at the project list to answer it now.
 
 
 === BOX: There are two places you type. Know which one you are in.
@@ -58,7 +88,7 @@ If Claudito answers **“Invalid choice”**, you are at the project list. Type 
 WHERE: At the project list
 TYPE: `n`
 Give it a short codename with no spaces. It appears in your list with a number next to it.
-NOTE: **If you have no team yet,** the project is private for now. That is expected, and the next step fixes it.
+NOTE: **If you have no team yet,** the project is private for now. That is expected, and the next step fixes it. If you already have teams, see **Projects and teams** below the steps.
 
 
 === STEP: Create a team, and put your project in it
@@ -119,6 +149,25 @@ WARNING: **Leave with `clt`, never by closing the window.** `clt` saves your wor
 WHERE: On your colleague's computer
 THEY TYPE: `clt`
 Your project should be in their project list, with its contents: the abstract, the references and your plan.
+
+
+=== BOX: Projects and teams
+Which team a new project joins depends on how many teams you have when you create it:
+
+PLACE: No team yet
+The project is private. Only you can see it.
+
+PLACE: One team
+The project joins that team **automatically**. You are not asked.
+
+PLACE: Several teams
+Claudito asks **“Which team is this project for?”** Type its number, or choose the last option, **No team — keep it to myself**.
+
+END PLACES
+**To move a project to another team,** open it and type `project team other-team-name`.
+**To take a project out of its team,** open it and type `project team none`. It stops being shared from then on; colleagues who already downloaded it keep their copy.
+**To make a private project when you have one team,** create it, then open it and type `project team none`.
+NOTE: **To see your teams,** type `t` and then `1`. The project list shows each project's team after its name, like `@aonipepe`.
 
 
 === BOX: If something doesn't work
