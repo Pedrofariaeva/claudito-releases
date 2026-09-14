@@ -1,0 +1,130 @@
+// ─────────────────────────────────────────────────────────────────────
+// HOW TO EDIT THIS PAGE
+//
+//   Edit this file and save it. The web page rebuilds itself.
+//   Lines starting with // are notes like this one and never appear.
+//
+//   **bold**              makes words bold
+//   `clt`                 shows a command in a grey box
+//
+//   === BOX: Title        a shaded box with a title
+//   === STEP: Title       a numbered step (the numbers are automatic)
+//   === FOOTER            the small print at the very bottom
+//
+//   Inside a STEP:
+//     WHERE:  At the project list      the grey label under the title
+//     TYPE:   `t` then `3`             the commands to type, in order
+//     THEY TYPE: `clt`                 the same, for your colleague
+//     NOTE:    ...                     a quiet side note
+//     WARNING: ...                     an orange warning box
+//     any other line                   a normal paragraph
+//
+//   Inside a BOX, to show the two prompts side by side:
+//     PLACE:  The project list
+//     PROMPT: Which one? [number/n/o/q/help]:
+//     (the lines under it describe that place)
+//     END PLACES
+// ─────────────────────────────────────────────────────────────────────
+
+TITLE: Your First Project
+EYEBROW: Getting started
+SUBTITLE: Nine steps, in order, from an empty Claudito to a project your colleagues can open.
+TAKES: about an hour, most of it waiting for the search
+YOU NEED: Claudito installed, your ORCID, and a colleague to invite
+
+
+=== BOX: Before you begin
+Open **Terminal** on a Mac, or **PowerShell** on Windows. Type `clt` and press Enter.
+The first line shows your version, for example `✓ claudito v2.11.04`. If you ever report a problem, that line is the first thing Pedro needs.
+If you skipped your name, ORCID or GitLab details while installing, type `setup` first.
+
+
+=== BOX: There are two places you type. Know which one you are in.
+Most confusion comes from typing a command in the wrong one.
+
+PLACE: The project list
+PROMPT: Which one? [number/n/o/q/help]:
+Here you create a project (`n`), manage teams (`t`), and **open a project by typing its number**.
+
+PLACE: Inside a project
+PROMPT: [personal | myproject | Ollama] >
+The prompt shows your project's name. Everything else here (invite, abstract, harvest, plan) **only works in this one**.
+
+END PLACES
+If Claudito answers **“Invalid choice”**, you are at the project list. Type your project's number, then try again.
+
+
+=== STEP: Create a project
+WHERE: At the project list
+TYPE: `n`
+Give it a short codename with no spaces. It appears in your list with a number next to it.
+NOTE: **If you have no team yet,** the project is private for now. That is expected, and the next step fixes it.
+
+
+=== STEP: Create a team, and put your project in it
+WHERE: At the project list, then inside the project
+TYPE: `t` then `3` type a team name, then `b` to go back
+Now open your project by typing its number, and put it in the team:
+TYPE: `project team your-team-name`
+WARNING: **Don't skip the second part.** Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.
+
+
+=== STEP: Invite a member
+WHERE: Inside the project
+TYPE: `invite`
+Claudito asks for their ORCID, shows you the name it found so you can confirm it is the right person, then asks for their e-mail address.
+Invite someone who is **not** already in one of your teams. That is the case worth testing.
+NOTE: **Tell them:** they will get an e-mail with a code, and it can land in spam. If they cannot find it, they should search for `trackonperformance`.
+
+
+=== STEP: Write an abstract
+WHERE: Inside the project
+TYPE: `abstract`
+A file opens. Write a few lines on what the project is about, then save and close the file.
+NOTE: **Why first:** the search in the next step reads this to know what to look for.
+
+
+=== STEP: Search for the bibliography
+WHERE: Inside the project
+TYPE: `harvest`
+Claudito shows a numbered list of documents it can search from, and asks which one to use.
+WARNING: **Type the number next to `abstract.txt`. Don't just press Enter.** Option 1 is the empty plan template, and the search would look for its placeholder questions instead of your topic.
+NOTE: **This takes a while.** It searches every database you can reach, removes duplicates, and reports how many papers it found and how many came with a PDF.
+
+
+=== STEP: Explore help
+WHERE: Inside the project
+TYPE: `help` or `cheatsheet`
+`help` lists every command, grouped by what it does. `cheatsheet` shows only the ones used most.
+Try one or two that look useful. This is how you learn the rest.
+
+
+=== STEP: Check the references, then write your project plan
+WHERE: Inside the project
+TYPE: `ref list` then `ref organise` then `plan`
+`ref list` shows the papers the search found. `ref organise` sorts them into folders under `references`. That folder structure is the shape your document will follow.
+Look at those folders, then type `plan` and write what you intend to do, following that structure.
+NOTE: **Optional:** `screen all` has the AI judge which papers are actually relevant. It is slow on a large search.
+
+
+=== STEP: Close the plan, check it saved, and leave properly
+WHERE: Inside the project
+TYPE: `plan` then, when finished `clt`
+Save and close the plan file. Type `plan` again and check your text is still there.
+To add a figure, table or equation without knowing LaTeX, close the file first and type `format` at the Claudito prompt. It won't work typed inside the file itself.
+WARNING: **Leave with `clt`, never by closing the window.** `clt` saves your work and uploads it. Closing the window keeps everything on your own computer, and your colleague sees nothing.
+
+
+=== STEP: Check your colleague has the project
+WHERE: On your colleague's computer
+THEY TYPE: `clt`
+Your project should be in their project list, with its contents: the abstract, the references and your plan.
+
+
+=== BOX: If something doesn't work
+Send Pedro three things: **the version line** from the first screen, **what you typed**, and **a photo of the screen**.
+Those three make a problem findable. A description on its own usually doesn't.
+
+
+=== FOOTER
+**help** lists every command, and **cheatsheet** lists the ones used most. If a project ever grows past a few gigabytes, **clean** shows what it is carrying that it no longer needs.

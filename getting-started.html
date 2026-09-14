@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Nine steps from an empty Claudito to a project your colleagues can open.">
+<meta name="description" content="Nine steps, in order, from an empty Claudito to a project your colleagues can open.">
 <title>Your First Project</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -272,11 +272,14 @@
     white-space: nowrap;
     color: var(--ink);
   }
+
+  /* spacing that used to be written inline */
+  .callout p.after-places { margin-top: .9rem; }
+  .step p + .seq { margin-top: .6rem; }
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header class="masthead">
     <p class="eyebrow">Getting started</p>
     <h1>Your First Project</h1>
@@ -309,11 +312,10 @@
         <p>The prompt shows your project's name. Everything else here (invite, abstract, harvest, plan) <b>only works in this one</b>.</p>
       </div>
     </div>
-    <p style="margin-top:.9rem">If Claudito answers <b>“Invalid choice”</b>, you are at the project list. Type your project's number, then try again.</p>
+    <p class="after-places">If Claudito answers <b>“Invalid choice”</b>, you are at the project list. Type your project's number, then try again.</p>
   </div>
 
   <div class="steps">
-
     <div class="step first">
       <h2>Create a project</h2>
       <span class="where">At the project list</span>
@@ -321,20 +323,14 @@
       <p>Give it a short codename with no spaces. It appears in your list with a number next to it.</p>
       <p class="watch"><b>If you have no team yet,</b> the project is private for now. That is expected, and the next step fixes it.</p>
     </div>
-
     <div class="step">
       <h2>Create a team, and put your project in it</h2>
       <span class="where">At the project list, then inside the project</span>
-      <div class="seq">
-        <span class="type"><b>type</b> t</span><span class="then">then</span>
-        <span class="type">3</span><span class="then">type a team name, then</span>
-        <span class="type">b</span><span class="then">to go back</span>
-      </div>
+      <div class="seq"><span class="type"><b>type</b> t</span><span class="then">then</span><span class="type">3</span><span class="then">type a team name, then</span><span class="type">b</span><span class="then">to go back</span></div>
       <p>Now open your project by typing its number, and put it in the team:</p>
-      <div class="seq" style="margin-top:.6rem"><span class="type"><b>type</b> project team your-team-name</span></div>
+      <div class="seq"><span class="type"><b>type</b> project team your-team-name</span></div>
       <p class="warn"><b>Don't skip the second part.</b> Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.</p>
     </div>
-
     <div class="step">
       <h2>Invite a member</h2>
       <span class="where">Inside the project</span>
@@ -343,7 +339,6 @@
       <p>Invite someone who is <b>not</b> already in one of your teams. That is the case worth testing.</p>
       <p class="watch"><b>Tell them:</b> they will get an e-mail with a code, and it can land in spam. If they cannot find it, they should search for <code>trackonperformance</code>.</p>
     </div>
-
     <div class="step">
       <h2>Write an abstract</h2>
       <span class="where">Inside the project</span>
@@ -351,7 +346,6 @@
       <p>A file opens. Write a few lines on what the project is about, then save and close the file.</p>
       <p class="watch"><b>Why first:</b> the search in the next step reads this to know what to look for.</p>
     </div>
-
     <div class="step">
       <h2>Search for the bibliography</h2>
       <span class="where">Inside the project</span>
@@ -360,52 +354,36 @@
       <p class="warn"><b>Type the number next to <code>abstract.txt</code>. Don't just press Enter.</b> Option 1 is the empty plan template, and the search would look for its placeholder questions instead of your topic.</p>
       <p class="watch"><b>This takes a while.</b> It searches every database you can reach, removes duplicates, and reports how many papers it found and how many came with a PDF.</p>
     </div>
-
     <div class="step">
       <h2>Explore help</h2>
       <span class="where">Inside the project</span>
-      <div class="seq">
-        <span class="type"><b>type</b> help</span><span class="then">or</span>
-        <span class="type">cheatsheet</span>
-      </div>
+      <div class="seq"><span class="type"><b>type</b> help</span><span class="then">or</span><span class="type">cheatsheet</span></div>
       <p><code>help</code> lists every command, grouped by what it does. <code>cheatsheet</code> shows only the ones used most.</p>
       <p>Try one or two that look useful. This is how you learn the rest.</p>
     </div>
-
     <div class="step">
       <h2>Check the references, then write your project plan</h2>
       <span class="where">Inside the project</span>
-      <div class="seq">
-        <span class="type"><b>type</b> ref list</span><span class="then">then</span>
-        <span class="type">ref organise</span><span class="then">then</span>
-        <span class="type">plan</span>
-      </div>
+      <div class="seq"><span class="type"><b>type</b> ref list</span><span class="then">then</span><span class="type">ref organise</span><span class="then">then</span><span class="type">plan</span></div>
       <p><code>ref list</code> shows the papers the search found. <code>ref organise</code> sorts them into folders under <code>references</code>. That folder structure is the shape your document will follow.</p>
       <p>Look at those folders, then type <code>plan</code> and write what you intend to do, following that structure.</p>
       <p class="watch"><b>Optional:</b> <code>screen all</code> has the AI judge which papers are actually relevant. It is slow on a large search.</p>
     </div>
-
     <div class="step">
       <h2>Close the plan, check it saved, and leave properly</h2>
       <span class="where">Inside the project</span>
-      <div class="seq">
-        <span class="type"><b>type</b> plan</span><span class="then">then, when finished</span>
-        <span class="type">clt</span>
-      </div>
+      <div class="seq"><span class="type"><b>type</b> plan</span><span class="then">then, when finished</span><span class="type">clt</span></div>
       <p>Save and close the plan file. Type <code>plan</code> again and check your text is still there.</p>
       <p>To add a figure, table or equation without knowing LaTeX, close the file first and type <code>format</code> at the Claudito prompt. It won't work typed inside the file itself.</p>
       <p class="warn"><b>Leave with <code>clt</code>, never by closing the window.</b> <code>clt</code> saves your work and uploads it. Closing the window keeps everything on your own computer, and your colleague sees nothing.</p>
     </div>
-
     <div class="step">
       <h2>Check your colleague has the project</h2>
       <span class="where">On your colleague's computer</span>
       <div class="seq"><span class="type"><b>they type</b> clt</span></div>
       <p>Your project should be in their project list, with its contents: the abstract, the references and your plan.</p>
     </div>
-
   </div>
-
   <div class="callout">
     <h2>If something doesn't work</h2>
     <p>Send Pedro three things: <b>the version line</b> from the first screen, <b>what you typed</b>, and <b>a photo of the screen</b>.</p>
