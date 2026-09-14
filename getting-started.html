@@ -20,6 +20,8 @@
     --accent:     #5F8A1B;
     --accent-dim: #EBF1DF;
     --code-bg:    #ECEFE7;
+    --warn:       #9A5B00;
+    --warn-dim:   #FBF0DC;
     --shadow:     0 1px 2px rgba(26,29,25,.05), 0 8px 24px -16px rgba(26,29,25,.28);
   }
   @media (prefers-color-scheme: dark) {
@@ -33,6 +35,8 @@
       --accent:     #A6CE39;
       --accent-dim: #232A19;
       --code-bg:    #202619;
+      --warn:       #F0B45A;
+      --warn-dim:   #2E2413;
       --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
     }
   }
@@ -46,6 +50,8 @@
     --accent:     #A6CE39;
     --accent-dim: #232A19;
     --code-bg:    #202619;
+    --warn:       #F0B45A;
+    --warn-dim:   #2E2413;
     --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
   }
 
@@ -67,7 +73,6 @@
     padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
   }
 
-  /* ── masthead ─────────────────────────────────────────── */
   .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; }
 
   .eyebrow {
@@ -108,85 +113,6 @@
   }
   .meta b { color: var(--ink-soft); font-weight: 500; }
 
-  /* ── premise ──────────────────────────────────────────── */
-  .premise {
-    margin: 2.6rem 0 0;
-    padding: 1.5rem 1.7rem;
-    background: var(--surface);
-    border-left: 3px solid var(--accent);
-    border-radius: 2px;
-    box-shadow: var(--shadow);
-  }
-  .premise p { margin: 0; max-width: 68ch; }
-  .premise p + p { margin-top: .8rem; }
-
-  /* ── sections ─────────────────────────────────────────── */
-  section { margin-top: 3.4rem; }
-
-  h2 {
-    font-family: Newsreader, Georgia, serif;
-    font-weight: 500;
-    font-size: clamp(1.5rem, 3.2vw, 2rem);
-    line-height: 1.15;
-    letter-spacing: -.01em;
-    margin: 0 0 .35rem;
-    text-wrap: balance;
-  }
-
-  .why {
-    color: var(--ink-soft);
-    max-width: 66ch;
-    margin: 0 0 1.4rem;
-  }
-  .why strong { color: var(--ink); font-weight: 600; }
-
-  /* ── command tables ───────────────────────────────────── */
-  .cmds {
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    overflow-x: auto;
-    box-shadow: var(--shadow);
-  }
-  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
-  td {
-    padding: .62rem 1rem;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: baseline;
-  }
-  tr:last-child td { border-bottom: none; }
-  td.cmd {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: .82rem;
-    color: var(--accent);
-    white-space: nowrap;
-    width: 1%;
-    font-weight: 500;
-  }
-  td.does { color: var(--ink-soft); font-size: .93rem; }
-
-  /* ── highlight cards ──────────────────────────────────── */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: 1rem;
-    margin-top: 1.4rem;
-  }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    padding: 1.15rem 1.25rem;
-    box-shadow: var(--shadow);
-  }
-  .card h3 {
-    font-size: .95rem;
-    font-weight: 600;
-    margin: 0 0 .4rem;
-    letter-spacing: -.005em;
-  }
-  .card p { margin: 0; font-size: .89rem; color: var(--ink-soft); }
-
   code {
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: .86em;
@@ -196,34 +122,6 @@
     color: var(--ink);
   }
 
-  /* ── the syntax sheet ─────────────────────────────────── */
-  .syntax {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: .1rem 1.4rem;
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    padding: 1.2rem 1.4rem;
-    overflow-x: auto;
-    box-shadow: var(--shadow);
-  }
-  .syntax dt {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: .82rem;
-    color: var(--accent);
-    white-space: nowrap;
-    padding: .3rem 0;
-    font-weight: 500;
-  }
-  .syntax dd {
-    margin: 0;
-    padding: .3rem 0;
-    font-size: .9rem;
-    color: var(--ink-soft);
-  }
-
-  /* ── closing ──────────────────────────────────────────── */
   .close {
     margin-top: 3.6rem;
     padding-top: 1.6rem;
@@ -236,8 +134,7 @@
 
   a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
   a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-</style>
-<style>
+
   /* ── the walkthrough ─────────────────────────────────── */
   .steps { counter-reset: step; margin-top: 2.2rem; display: grid; gap: 1.1rem; }
 
@@ -268,11 +165,28 @@
     font-size: 1.05rem;
     font-weight: 600;
     letter-spacing: -.005em;
-    margin: 0 0 .5rem;
+    margin: 0 0 .15rem;
   }
-  .step p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 60ch; }
+  .step p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 62ch; }
   .step p + p { margin-top: .55rem; }
 
+  .where {
+    display: block;
+    font-size: .7rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 .6rem;
+  }
+
+  .seq {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .45rem .5rem;
+    margin: .1rem 0 .75rem;
+  }
   .type {
     display: inline-flex;
     align-items: baseline;
@@ -283,17 +197,17 @@
     border: 1px solid var(--rule);
     border-radius: 3px;
     padding: .4rem .75rem;
-    margin: .1rem 0 .7rem;
     color: var(--ink);
   }
   .type b {
     font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
     font-weight: 500;
-    font-size: .72rem;
+    font-size: .7rem;
     letter-spacing: .08em;
     text-transform: uppercase;
     color: var(--ink-faint);
   }
+  .then { font-size: .8rem; color: var(--ink-faint); }
 
   .watch {
     margin-top: .7rem;
@@ -303,6 +217,18 @@
     color: var(--ink-faint);
   }
   .watch b { color: var(--ink-soft); font-weight: 500; }
+
+  .warn {
+    margin-top: .75rem;
+    padding: .6rem .85rem;
+    background: var(--warn-dim);
+    border-left: 3px solid var(--warn);
+    border-radius: 2px;
+    font-size: .91rem;
+    color: var(--ink);
+    max-width: 62ch;
+  }
+  .warn b { color: var(--warn); font-weight: 600; }
 
   .first { border-left: 3px solid var(--accent); }
 
@@ -320,16 +246,31 @@
   .callout p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 64ch; }
   .callout p + p { margin-top: .55rem; }
 
-  pre.cmd {
-    background: var(--code-bg);
+  .places {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: .9rem;
+    margin-top: .9rem;
+  }
+  .place {
     border: 1px solid var(--rule);
     border-radius: 3px;
     padding: .85rem 1rem;
-    overflow-x: auto;
+    background: var(--paper);
+  }
+  .place h3 { font-size: .9rem; font-weight: 600; margin: 0 0 .45rem; }
+  .place p { font-size: .88rem; }
+  .prompt {
+    display: block;
     font-family: "IBM Plex Mono", ui-monospace, monospace;
     font-size: .8rem;
-    line-height: 1.5;
-    margin: .8rem 0 0;
+    background: var(--code-bg);
+    border-radius: 2px;
+    padding: .45rem .6rem;
+    margin: 0 0 .55rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    color: var(--ink);
   }
 </style>
 </head>
@@ -342,90 +283,136 @@
     <p class="standfirst">Nine steps, in order, from an empty Claudito to a project your colleagues can open.</p>
     <div class="meta">
       <span><b>Takes</b> about an hour, most of it waiting for the search</span>
-      <span><b>You need</b> Claudito installed, and an ORCID</span>
+      <span><b>You need</b> Claudito installed, your ORCID, and a colleague to invite</span>
     </div>
   </header>
 
   <div class="callout">
     <h2>Before you begin</h2>
-    <p>Open a terminal and type <code>clt</code>. Claudito prints its version on the first line — if you are reporting a problem to Pedro, that line is the first thing he needs.</p>
-    <p>Everything below is typed at Claudito's own prompt, not in the terminal.</p>
+    <p>Open <b>Terminal</b> on a Mac, or <b>PowerShell</b> on Windows. Type <code>clt</code> and press Enter.</p>
+    <p>The first line shows your version, for example <code>✓ claudito v2.11.04</code>. If you ever report a problem, that line is the first thing Pedro needs.</p>
+    <p>If you skipped your name, ORCID or GitLab details while installing, type <code>setup</code> first.</p>
+  </div>
+
+  <div class="callout">
+    <h2>There are two places you type. Know which one you are in.</h2>
+    <p>Most confusion comes from typing a command in the wrong one.</p>
+    <div class="places">
+      <div class="place">
+        <h3>The project list</h3>
+        <span class="prompt">Which one? [number/n/o/q/help]:</span>
+        <p>Here you create a project (<code>n</code>), manage teams (<code>t</code>), and <b>open a project by typing its number</b>.</p>
+      </div>
+      <div class="place">
+        <h3>Inside a project</h3>
+        <span class="prompt">[personal | myproject | Ollama] &gt;</span>
+        <p>The prompt shows your project's name. Everything else here (invite, abstract, harvest, plan) <b>only works in this one</b>.</p>
+      </div>
+    </div>
+    <p style="margin-top:.9rem">If Claudito answers <b>“Invalid choice”</b>, you are at the project list. Type your project's number, then try again.</p>
   </div>
 
   <div class="steps">
 
     <div class="step first">
       <h2>Create a project</h2>
-      <div class="type"><b>type</b> n</div>
-      <p>At the list of projects, <code>n</code> starts a new one. Give it a short codename — no spaces.</p>
-      <p class="watch"><b>You should see:</b> a confirmation naming the project, and whether it joined a team.</p>
+      <span class="where">At the project list</span>
+      <div class="seq"><span class="type"><b>type</b> n</span></div>
+      <p>Give it a short codename with no spaces. It appears in your list with a number next to it.</p>
+      <p class="watch"><b>If you have no team yet,</b> the project is private for now. That is expected, and the next step fixes it.</p>
     </div>
 
     <div class="step">
-      <h2>Create a team</h2>
-      <div class="type"><b>type</b> t</div>
-      <p>A team is the people you share work with. Create one and give it a name.</p>
-      <p class="watch"><b>Why it matters:</b> projects are shared through a team, never person to person. No team, no sharing.</p>
+      <h2>Create a team, and put your project in it</h2>
+      <span class="where">At the project list, then inside the project</span>
+      <div class="seq">
+        <span class="type"><b>type</b> t</span><span class="then">then</span>
+        <span class="type">3</span><span class="then">type a team name, then</span>
+        <span class="type">b</span><span class="then">to go back</span>
+      </div>
+      <p>Now open your project by typing its number, and put it in the team:</p>
+      <div class="seq" style="margin-top:.6rem"><span class="type"><b>type</b> project team your-team-name</span></div>
+      <p class="warn"><b>Don't skip the second part.</b> Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.</p>
     </div>
 
     <div class="step">
-      <h2>Check the project is in the team</h2>
-      <div class="type"><b>type</b> project team</div>
-      <p>A project you create while working in a team joins it automatically, and Claudito says so when it is created. This confirms it.</p>
-      <p class="watch"><b>If it says the project is private,</b> put it in the team with <code>project team &lt;name&gt;</code>. A project outside a team is invisible to everyone else, and that looks exactly like broken sharing.</p>
+      <h2>Invite a member</h2>
+      <span class="where">Inside the project</span>
+      <div class="seq"><span class="type"><b>type</b> invite</span></div>
+      <p>Claudito asks for their ORCID, shows you the name it found so you can confirm it is the right person, then asks for their e-mail address.</p>
+      <p>Invite someone who is <b>not</b> already in one of your teams. That is the case worth testing.</p>
+      <p class="watch"><b>Tell them:</b> they will get an e-mail with a code, and it can land in spam. If they cannot find it, they should search for <code>trackonperformance</code>.</p>
     </div>
 
     <div class="step">
-      <h2>Invite someone</h2>
-      <div class="type"><b>type</b> invite</div>
-      <p>You are asked for their ORCID, then their e-mail address. Invite somebody who is not already in one of your teams — that is the case worth testing.</p>
-      <p class="watch"><b>Tell them:</b> a confirmation code is e-mailed to them, and it can land in spam. They should search for <code>trackonperformance</code> if they cannot find it.</p>
+      <h2>Write an abstract</h2>
+      <span class="where">Inside the project</span>
+      <div class="seq"><span class="type"><b>type</b> abstract</span></div>
+      <p>A file opens. Write a few lines on what the project is about, then save and close the file.</p>
+      <p class="watch"><b>Why first:</b> the search in the next step reads this to know what to look for.</p>
     </div>
 
     <div class="step">
-      <h2>Write the abstract</h2>
-      <div class="type"><b>type</b> abstract</div>
-      <p>A few lines on what the project is about. Save the file and close it.</p>
-      <p class="watch"><b>Worth doing before the search:</b> Claudito can search from what you have written, rather than from a query you type.</p>
+      <h2>Search for the bibliography</h2>
+      <span class="where">Inside the project</span>
+      <div class="seq"><span class="type"><b>type</b> harvest</span></div>
+      <p>Claudito shows a numbered list of documents it can search from, and asks which one to use.</p>
+      <p class="warn"><b>Type the number next to <code>abstract.txt</code>. Don't just press Enter.</b> Option 1 is the empty plan template, and the search would look for its placeholder questions instead of your topic.</p>
+      <p class="watch"><b>This takes a while.</b> It searches every database you can reach, removes duplicates, and reports how many papers it found and how many came with a PDF.</p>
     </div>
 
     <div class="step">
-      <h2>Find the papers</h2>
-      <div class="type"><b>type</b> harvest</div>
-      <p>Searches every database you have access to, in one pass, and removes papers that appear in more than one of them.</p>
-      <p class="watch"><b>This takes a while.</b> It reports how many papers it found and how many arrived with a PDF.</p>
+      <h2>Explore help</h2>
+      <span class="where">Inside the project</span>
+      <div class="seq">
+        <span class="type"><b>type</b> help</span><span class="then">or</span>
+        <span class="type">cheatsheet</span>
+      </div>
+      <p><code>help</code> lists every command, grouped by what it does. <code>cheatsheet</code> shows only the ones used most.</p>
+      <p>Try one or two that look useful. This is how you learn the rest.</p>
     </div>
 
     <div class="step">
-      <h2>Look at what came back</h2>
-      <div class="type"><b>type</b> ref list</div>
-      <p>Then <code>ref organise</code> to sort the papers into the shape of your document, and <code>screen all</code> to judge which are relevant.</p>
-      <p class="watch"><b>Look at the folders</b> it created under <code>references</code>. That structure is what your writing will follow.</p>
+      <h2>Check the references, then write your project plan</h2>
+      <span class="where">Inside the project</span>
+      <div class="seq">
+        <span class="type"><b>type</b> ref list</span><span class="then">then</span>
+        <span class="type">ref organise</span><span class="then">then</span>
+        <span class="type">plan</span>
+      </div>
+      <p><code>ref list</code> shows the papers the search found. <code>ref organise</code> sorts them into folders under <code>references</code>. That folder structure is the shape your document will follow.</p>
+      <p>Look at those folders, then type <code>plan</code> and write what you intend to do, following that structure.</p>
+      <p class="watch"><b>Optional:</b> <code>screen all</code> has the AI judge which papers are actually relevant. It is slow on a large search.</p>
     </div>
 
     <div class="step">
-      <h2>Write the project plan</h2>
-      <div class="type"><b>type</b> plan</div>
-      <p>Write what you intend to do. Save and close the file, then type <code>plan</code> again and check your text is there.</p>
-      <p class="watch"><b>While you are in the file:</b> <code>format</code> shows how to add a figure, a table or an equation without knowing LaTeX.</p>
+      <h2>Close the plan, check it saved, and leave properly</h2>
+      <span class="where">Inside the project</span>
+      <div class="seq">
+        <span class="type"><b>type</b> plan</span><span class="then">then, when finished</span>
+        <span class="type">clt</span>
+      </div>
+      <p>Save and close the plan file. Type <code>plan</code> again and check your text is still there.</p>
+      <p>To add a figure, table or equation without knowing LaTeX, close the file first and type <code>format</code> at the Claudito prompt. It won't work typed inside the file itself.</p>
+      <p class="warn"><b>Leave with <code>clt</code>, never by closing the window.</b> <code>clt</code> saves your work and uploads it. Closing the window keeps everything on your own computer, and your colleague sees nothing.</p>
     </div>
 
     <div class="step">
-      <h2>Leave properly</h2>
-      <div class="type"><b>type</b> clt</div>
-      <p>This saves your session, commits the work and uploads it. It is the step people skip.</p>
-      <p class="watch"><b>Closing the window instead</b> leaves everything on your own computer. Your colleagues see nothing, and it looks as though sharing is broken.</p>
+      <h2>Check your colleague has the project</h2>
+      <span class="where">On your colleague's computer</span>
+      <div class="seq"><span class="type"><b>they type</b> clt</span></div>
+      <p>Your project should be in their project list, with its contents: the abstract, the references and your plan.</p>
     </div>
 
   </div>
 
   <div class="callout">
-    <h2>Then ask your colleague to check</h2>
-    <p>They run <code>clt</code>. Your project should be in their list, with its contents.</p>
-    <p>If it is not, send Pedro three things: the version line from the first screen, what you typed, and a photograph of the screen. Those three make a problem findable; a description of it usually does not.</p>
+    <h2>If something doesn't work</h2>
+    <p>Send Pedro three things: <b>the version line</b> from the first screen, <b>what you typed</b>, and <b>a photo of the screen</b>.</p>
+    <p>Those three make a problem findable. A description on its own usually doesn't.</p>
   </div>
 
-  <p class="close">Every command here has a longer form behind <b>help</b>, and <b>cheatsheet</b> lists the ones used most. If a project ever grows past a few gigabytes, <b>clean</b> shows what it is carrying that it no longer needs.</p>
+  <p class="close"><b>help</b> lists every command, and <b>cheatsheet</b> lists the ones used most. If a project ever grows past a few gigabytes, <b>clean</b> shows what it is carrying that it no longer needs.</p>
 
 </div>
 </body>
