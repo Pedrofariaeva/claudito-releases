@@ -21,7 +21,7 @@ number, so they never go out of date.
 Open PowerShell and run:
 
 ```powershell
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/install.ps1 | iex; Read-Host "Press Enter to close"
+[Net.ServicePointManager]::SecurityProtocol='Tls12'; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; try { irm https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/install.ps1 | iex } catch { irm https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/install.ps1 | iex }
 ```
 
 ## macOS / Linux — one line
@@ -29,7 +29,7 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; irm https://g
 Open Terminal and run:
 
 ```bash
-curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
+(curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
 ```
 
 The installer opens Claudito when it finishes. Afterwards, start it with `clt`.

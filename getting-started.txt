@@ -54,13 +54,14 @@ NOTE: If it says **it cannot connect,** run the same line again. It tries GitHub
 
 
 === BOX: Prepare 2 — Setup questions
-After install, Claudito requires some information:
-**Your name,** (Whatever you want to be) your **ORCID** and your **e-mail** (pref.to use your ORCIDs E-mail) 
-Teams invitation work with ORCID number and email, so type it carefully.
-**Which folder is your research:** You can accept the folder Claudito suggests, unless you already have one, give it.
-**genAI engines:** Ollama, Kimi or/and Claude. We recommend at least **Ollama**, press Enter to skip if you don't want any. You can add it later with `setup`.
-**GitLab:** this is what shares your projects with a team. Type your GitLab username; Claudito then opens GitLab in your browser with the form already filled in. Click **Create personal access token**, copy the token, and paste it back into the window.
-NOTE: **No GitLab account yet?** Create one free at https://gitlab.com first, with the same e-mail you give Claudito. Invitations to your team's projects are sent to that address.
+Have a free **GitLab** account before you start, just like a GitHub account: https://gitlab.com. Use the same e-mail you will give Claudito. It is what shares your projects with a team.
+After install, Claudito asks for this information, in this order:
+**Your name** (whatever you want to be called), your **ORCID** and your **e-mail** (preferably your ORCID's e-mail). Team invitations work with the ORCID number and e-mail, so type them carefully.
+**Which folder is your research:** accept the folder Claudito suggests, or give the one you already have.
+**Ollama**, the AI engine Claudito uses: it installs automatically, is free and needs no key. We recommend it. If it can't be installed, setup carries on and you can add it later with `setup`.
+**Kimi key** (optional): press Enter to skip if you don't have one.
+**GitLab:** type your GitLab username. Claudito then opens GitLab in your browser with the form already filled in. Click **Create personal access token**, copy the token, and paste it back into the window.
+NOTE: **Something went wrong or you skipped a question?** Setup never stops halfway. Type `setup` at the project list later to answer it.
 
 
 === BOX: Prepare 3 — check it works
@@ -88,7 +89,7 @@ If Claudito answers **“Invalid choice”**, you are at the project list. Type 
 WHERE: At the project list
 TYPE: `n`
 Give it a short codename with no spaces. It appears in your list with a number next to it.
-NOTE: **If you have no team yet,** the project is private for now. That is expected, and the next step fixes it. If you already have teams, see **Projects and teams** below the steps.
+NOTE: **If you have no team yet,** the project is private for now. That is expected, and the next step fixes it. If you already have a team, Claudito asks which team the project is for (see **Projects and teams** below the steps).
 
 
 === STEP: Create a team, and put your project in it
@@ -152,21 +153,17 @@ Your project should be in their project list, with its contents: the abstract, t
 
 
 === BOX: Projects and teams
-Which team a new project joins depends on how many teams you have when you create it:
+Which team a new project joins:
 
 PLACE: No team yet
 The project is private. Only you can see it.
 
-PLACE: One team
-The project joins that team **automatically**. You are not asked.
-
-PLACE: Several teams
-Claudito asks **“Which team is this project for?”** Type its number, or choose the last option, **No team — keep it to myself**.
+PLACE: One or more teams
+Claudito asks **“Which team is this project for?”** Type the team's number, or choose **No team — keep it to myself** to work solo.
 
 END PLACES
-**To move a project to another team,** open it and type `project team other-team-name`.
+**To add a project to a team later,** open it and type `project team team-name`. The same command moves a project to another team.
 **To take a project out of its team,** open it and type `project team none`. It stops being shared from then on; colleagues who already downloaded it keep their copy.
-**To make a private project when you have one team,** create it, then open it and type `project team none`.
 NOTE: **To see your teams,** type `t` and then `1`. The project list shows each project's team after its name, like `@aonipepe`.
 
 

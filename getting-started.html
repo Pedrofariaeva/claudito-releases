@@ -341,13 +341,14 @@
 
   <div class="callout">
     <h2>Prepare 2 — Setup questions</h2>
-    <p>After install, Claudito requires some information:</p>
-    <p><b>Your name,</b> (Whatever you want to be) your <b>ORCID</b> and your <b>e-mail</b> (pref.to use your ORCIDs E-mail)</p>
-    <p>Teams invitation work with ORCID number and email, so type it carefully.</p>
-    <p><b>Which folder is your research:</b> You can accept the folder Claudito suggests, unless you already have one, give it.</p>
-    <p><b>genAI engines:</b> Ollama, Kimi or/and Claude. We recommend at least <b>Ollama</b>, press Enter to skip if you don't want any. You can add it later with <code>setup</code>.</p>
-    <p><b>GitLab:</b> this is what shares your projects with a team. Type your GitLab username; Claudito then opens GitLab in your browser with the form already filled in. Click <b>Create personal access token</b>, copy the token, and paste it back into the window.</p>
-    <p class="watch"><b>No GitLab account yet?</b> Create one free at <a href="https://gitlab.com">https://gitlab.com</a> first, with the same e-mail you give Claudito. Invitations to your team's projects are sent to that address.</p>
+    <p>Have a free <b>GitLab</b> account before you start, just like a GitHub account: <a href="https://gitlab.com">https://gitlab.com</a>. Use the same e-mail you will give Claudito. It is what shares your projects with a team.</p>
+    <p>After install, Claudito asks for this information, in this order:</p>
+    <p><b>Your name</b> (whatever you want to be called), your <b>ORCID</b> and your <b>e-mail</b> (preferably your ORCID's e-mail). Team invitations work with the ORCID number and e-mail, so type them carefully.</p>
+    <p><b>Which folder is your research:</b> accept the folder Claudito suggests, or give the one you already have.</p>
+    <p><b>Ollama</b>, the AI engine Claudito uses: it installs automatically, is free and needs no key. We recommend it. If it can't be installed, setup carries on and you can add it later with <code>setup</code>.</p>
+    <p><b>Kimi key</b> (optional): press Enter to skip if you don't have one.</p>
+    <p><b>GitLab:</b> type your GitLab username. Claudito then opens GitLab in your browser with the form already filled in. Click <b>Create personal access token</b>, copy the token, and paste it back into the window.</p>
+    <p class="watch"><b>Something went wrong or you skipped a question?</b> Setup never stops halfway. Type <code>setup</code> at the project list later to answer it.</p>
   </div>
 
   <div class="callout">
@@ -381,7 +382,7 @@
       <span class="where">At the project list</span>
       <div class="seq"><span class="type"><b>type</b> n</span></div>
       <p>Give it a short codename with no spaces. It appears in your list with a number next to it.</p>
-      <p class="watch"><b>If you have no team yet,</b> the project is private for now. That is expected, and the next step fixes it. If you already have teams, see <b>Projects and teams</b> below the steps.</p>
+      <p class="watch"><b>If you have no team yet,</b> the project is private for now. That is expected, and the next step fixes it. If you already have a team, Claudito asks which team the project is for (see <b>Projects and teams</b> below the steps).</p>
     </div>
     <div class="step">
       <h2>Create a team, and put your project in it</h2>
@@ -446,24 +447,19 @@
   </div>
   <div class="callout">
     <h2>Projects and teams</h2>
-    <p>Which team a new project joins depends on how many teams you have when you create it:</p>
+    <p>Which team a new project joins:</p>
     <div class="places">
       <div class="place">
         <h3>No team yet</h3>
         <p>The project is private. Only you can see it.</p>
       </div>
       <div class="place">
-        <h3>One team</h3>
-        <p>The project joins that team <b>automatically</b>. You are not asked.</p>
-      </div>
-      <div class="place">
-        <h3>Several teams</h3>
-        <p>Claudito asks <b>“Which team is this project for?”</b> Type its number, or choose the last option, <b>No team — keep it to myself</b>.</p>
+        <h3>One or more teams</h3>
+        <p>Claudito asks <b>“Which team is this project for?”</b> Type the team's number, or choose <b>No team — keep it to myself</b> to work solo.</p>
       </div>
     </div>
-    <p class="after-places"><b>To move a project to another team,</b> open it and type <code>project team other-team-name</code>.</p>
+    <p class="after-places"><b>To add a project to a team later,</b> open it and type <code>project team team-name</code>. The same command moves a project to another team.</p>
     <p><b>To take a project out of its team,</b> open it and type <code>project team none</code>. It stops being shared from then on; colleagues who already downloaded it keep their copy.</p>
-    <p><b>To make a private project when you have one team,</b> create it, then open it and type <code>project team none</code>.</p>
     <p class="watch"><b>To see your teams,</b> type <code>t</code> and then <code>1</code>. The project list shows each project's team after its name, like <code>@aonipepe</code>.</p>
   </div>
 
