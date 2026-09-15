@@ -32,12 +32,12 @@ TITLE: Your First Claudito Project
 EYEBROW: Getting started
 SUBTITLE: Nine steps, from a simple project to teams sync
 TAKES: about 30min well dedicated, including the search, screen, edit and publish latex files
-YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email
+YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email, create accounts on GitHub and GitLab
 
 
 === BOX: Prepare 1 — install Claudito
-Do this once, before step 1. It takes about 10 minutes the first time.
-Find your computer below, open the program it names, copy the one-line code, paste it in, and press Enter.
+Create a free **GitLab** and **GitHub** account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be use to share your projects with the teams.
+
 
 PLACE: On a Mac
 Open **Terminal**: press **Cmd + Space**, type `Terminal` and press Enter. Paste this line and press Enter:
@@ -54,15 +54,16 @@ NOTE: If it says **it cannot connect,** run the same line again. It tries GitHub
 
 
 === BOX: Prepare 2 — Setup questions
-Have a free **GitLab** account before you start, just like a GitHub account: https://gitlab.com. Use the same e-mail you will give Claudito. It is what shares your projects with a team.
+
 After install, Claudito asks for this information, in this order:
 **Your name** (whatever you want to be called), your **ORCID** and your **e-mail** (preferably your ORCID's e-mail). Team invitations work with the ORCID number and e-mail, so type them carefully.
 **Which folder is your research:** accept the folder Claudito suggests, or give the one you already have.
-**Ollama**, the AI engine Claudito uses: it installs automatically, is free and needs no key. We recommend it. If it can't be installed, setup carries on and you can add it later with `setup`.
-**Kimi key** (optional): press Enter to skip if you don't have one.
+**Ollama**, the default AI engine Claudito uses in the backEnd: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with `setup`).
+**Kimi key** (optional): For a stronger engine you can add kimi code. press Enter to skip if you don't have one.
+**Claude key** (optional): For a stronger engine you can add Claude code. press Enter to skip if you don't have one.
 **GitLab:** type your GitLab username. Claudito then opens GitLab in your browser with the form already filled in. Click **Create personal access token**, copy the token, and paste it back into the window.
 NOTE: **Something went wrong or you skipped a question?** Setup never stops halfway. Type `setup` at the project list later to answer it.
-
+NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md**
 
 === BOX: Prepare 3 — check it works
 Close the window, open a new **Terminal** or **PowerShell**, type `clt` and press Enter.
