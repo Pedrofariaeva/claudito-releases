@@ -1,0 +1,173 @@
+<!doctype html>
+<!-- Generated from index.html so the mockup opens straight from disk. index.html is the published page
+     (claude.ai adds doctype/head/body around it). After editing index.html, regenerate this file:
+     { printf "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head><body>\n"; cat index.html; printf "\n</body></html>\n"; } > open-in-browser.html -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<title>Claudito Writer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="writer.css">
+
+<header class="head">
+  <div class="title-row">
+    <h1 class="name">Claudito <i>Writer</i></h1>
+    <span class="chip">Mockup · round 2</span>
+    <button class="ghost tour-btn" type="button" id="tourBtn">Show me how</button>
+    <button class="pm" type="button" data-card="11" aria-label="Review note 11: the guided demo">11</button>
+  </div>
+  <p class="lede">Write your research without typing any commands. This round answers Pedro's first review: <b>try each numbered part</b>, then mark it on the review sheet. Nothing here touches a real Claudito project.</p>
+</header>
+
+<main class="work">
+  <section class="app" id="app" aria-label="Editor mockup">
+    <div class="docbar">
+      <label class="fld" for="typeSel"><span>Research type</span><select id="typeSel"></select></label>
+      <label class="fld" for="tplSel"><span>Template</span><select id="tplSel"></select></label>
+      <button class="pm" type="button" data-card="1" aria-label="Review note 1: research type and template">1</button>
+      <span class="type-note" id="typeNote"></span>
+    </div>
+    <div class="outline-ask" id="outlineAsk" hidden>
+      <p id="outlineAskText"></p>
+      <div class="ask-btns">
+        <button class="primary" type="button" id="outlineYes">Use this outline</button>
+        <button class="ghost" type="button" id="outlineNo">Keep my sections</button>
+      </div>
+    </div>
+
+    <div class="appbar">
+      <div class="crumb"><span>testElder2</span><span aria-hidden="true">/</span><b id="crumbDoc">Project plan</b></div>
+      <span class="save" id="saveState"><span class="dot"></span><span id="saveText">All changes saved</span></span>
+      <span class="rebuild" id="rebuild" title="Claudito's live auto-rebuild">main.pdf and main.docx up to date</span>
+      <button class="linkish" type="button" id="resetDoc">Start again</button>
+    </div>
+
+    <div class="toolbar" id="toolbar" role="toolbar" aria-label="Formatting">
+      <div class="grp">
+        <button class="tool" type="button" data-cmd="h2"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M3 2.5v11M11 2.5v11M3 8h8"/></svg>Heading</button>
+        <button class="tool" type="button" data-cmd="bold"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 2.5h4.2a2.8 2.8 0 0 1 0 5.6H4.5zM4.5 8.1h5a2.7 2.7 0 0 1 0 5.4h-5z"/></svg>Bold</button>
+        <button class="tool" type="button" data-cmd="ul"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 4h8M6 8h8M6 12h8"/><circle cx="2.6" cy="4" r=".9" fill="currentColor"/><circle cx="2.6" cy="8" r=".9" fill="currentColor"/><circle cx="2.6" cy="12" r=".9" fill="currentColor"/></svg>List</button>
+        <button class="tool" type="button" data-cmd="ol"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6.5 4h7.5M6.5 8h7.5M6.5 12h7.5M2.2 2.8h.9v2.6M2 9.4c.3-.7 1.8-.7 1.8.2 0 .6-1.8 1-1.8 1.7h1.9"/></svg>Numbered</button>
+      </div>
+      <div class="grp">
+        <button class="tool" type="button" data-cmd="table"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1.8" y="2.5" width="12.4" height="11" rx="1"/><path d="M1.8 6.2h12.4M1.8 9.8h12.4M6 2.5v11M10 2.5v11"/></svg>Table</button>
+        <button class="pm" type="button" data-card="2" aria-label="Review note 2: table controls">2</button>
+        <button class="tool" type="button" data-cmd="fig1"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="1.8" y="2.5" width="12.4" height="11" rx="1"/><circle cx="5.4" cy="6" r="1.2"/><path d="M2.2 12.2l3.8-3.6 2.6 2.3 2-1.8 3.3 3"/></svg>Figure</button>
+        <button class="pm" type="button" data-card="3" aria-label="Review note 3: figures with 1 to 3 images">3</button>
+        <button class="tool" type="button" data-cmd="equation"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.5 2.8H4l4.4 5.2L4 13.2h8.5"/></svg>Equation</button>
+        <button class="pm" type="button" data-card="4" aria-label="Review note 4: equation helper">4</button>
+        <button class="tool" type="button" data-cmd="cite"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3 3.5h7.5a1.5 1.5 0 0 1 1.5 1.5v8.5H4.5A1.5 1.5 0 0 1 3 12z"/><path d="M5.5 6.5h4M5.5 9h4"/></svg>Cite</button>
+        <button class="pm" type="button" data-card="5" aria-label="Review note 5: smart citations">5</button>
+      </div>
+      <div class="grp">
+        <button class="tool tool-ai" type="button" data-cmd="assistant"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.8l1.3 3.4 3.4 1.3-3.4 1.3L8 11.2 6.7 7.8 3.3 6.5l3.4-1.3zM12.6 10.6l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z"/></svg>Assistant</button>
+        <button class="pm" type="button" data-card="6" aria-label="Review note 6: the assistant">6</button>
+        <span class="slash-hint">Type <kbd>/</kbd> on an empty line for quick commands</span>
+        <button class="pm" type="button" data-card="7" aria-label="Review note 7: quick commands">7</button>
+      </div>
+    </div>
+
+    <div class="beside" role="group" aria-label="Show beside the page">
+      <span class="beside-l">Beside the page</span>
+      <button class="seg-btn" type="button" data-side="" aria-pressed="true">Nothing</button>
+      <button class="seg-btn" type="button" data-side="assistant" aria-pressed="false">Assistant</button>
+      <button class="seg-btn" type="button" data-side="txt" aria-pressed="false">Text file</button>
+      <button class="pm" type="button" data-card="8" aria-label="Review note 8: the text file, both ways">8</button>
+      <button class="seg-btn" type="button" data-side="tex" aria-pressed="false">LaTeX</button>
+      <button class="pm" type="button" data-card="9" aria-label="Review note 9: LaTeX">9</button>
+    </div>
+
+    <div class="panes" id="panes">
+      <div class="sheet-wrap">
+        <article class="sheet" id="sheet" contenteditable="true" spellcheck="true" aria-label="Your document"></article>
+      </div>
+      <aside class="side" id="side" hidden aria-label="Beside the page">
+        <section class="side-sec" id="sideAssistant" hidden></section>
+        <section class="side-sec" id="sideTxt" hidden>
+          <div class="side-head">
+            <h2>Project.txt</h2>
+            <p>The file Claudito builds your PDF, Word and LaTeX from. Type here or on the page: each one updates the other.</p>
+          </div>
+          <div class="tabs" id="txtTabs" role="tablist" aria-label="Files"></div>
+          <label class="sr" for="txtEdit">File contents</label>
+          <textarea id="txtEdit" spellcheck="false"></textarea>
+          <p class="side-foot" id="txtFoot"></p>
+        </section>
+        <section class="side-sec" id="sideTex" hidden>
+          <div class="side-head">
+            <h2>main.tex</h2>
+            <p>What Claudito sends to LaTeX for the template you picked. It is rebuilt from Project.txt, so nobody edits it by hand.</p>
+          </div>
+          <pre id="texOut" tabindex="0"></pre>
+        </section>
+      </aside>
+    </div>
+
+    <div class="pop" id="eqPop" hidden role="dialog" aria-label="Equation">
+      <label for="eqInput">Type the equation</label>
+      <input id="eqInput" class="mono" autocomplete="off" spellcheck="false" placeholder="x^2 + y^2 = z^2">
+      <div class="eq-preview" id="eqPreview" aria-live="polite"></div>
+      <p class="pop-hint">^ raises and _ lowers. Words like sum, sqrt, alpha and &lt;= turn into Σ, √, α and ≤.</p>
+      <div class="helper">
+        <label for="eqAsk">Or describe it and the assistant suggests one</label>
+        <input id="eqAsk" autocomplete="off" placeholder="e.g. Cronbach alpha, U-value, sample size">
+        <ul class="sugg" id="eqSugg"></ul>
+        <p class="pop-hint">In Claudito this asks your local AI (Ollama). Here it picks from a few prepared examples.</p>
+      </div>
+      <div class="pop-btns"><button class="ghost danger" type="button" id="eqRemove">Remove</button><button class="ghost" type="button" id="eqCancel">Cancel</button><button class="primary" type="button" id="eqOk">Insert</button></div>
+    </div>
+
+    <div class="pop pop-wide" id="citePop" hidden role="dialog" aria-label="Cite a reference">
+      <label for="citeSearch">Search your references</label>
+      <input id="citeSearch" autocomplete="off" placeholder="Title, subject or year. Typos are fine">
+      <div class="refs" id="refList"></div>
+      <p class="pop-hint" id="citeFoot"></p>
+    </div>
+
+    <div class="slash" id="slashMenu" hidden role="listbox" aria-label="Quick commands"></div>
+  </section>
+
+  <aside class="review" id="review" aria-label="Review sheet"></aside>
+</main>
+
+<div class="finbar" role="region" aria-label="Review progress">
+  <div class="counts" id="counts"></div>
+  <button class="primary" type="button" id="finish">Finish review</button>
+</div>
+
+<dialog id="reportDlg" aria-labelledby="reportTitle">
+  <h2 id="reportTitle">Your review</h2>
+  <p id="reportWhere">Copy it and send it to Pedro, with any screenshots you attached.</p>
+  <label class="sr" for="reportText">Review report</label>
+  <textarea id="reportText" readonly></textarea>
+  <div class="dlg-btns">
+    <button class="ghost" type="button" id="closeReport">Close</button>
+    <button class="primary" type="button" id="copyReport">Copy report</button>
+    <button class="primary" type="button" id="saveFile" hidden>Save review file</button>
+  </div>
+</dialog>
+
+<div class="tour" id="tour" hidden role="dialog" aria-labelledby="tourTitle">
+  <p class="tour-step" id="tourStep"></p>
+  <h2 id="tourTitle"></h2>
+  <p id="tourText"></p>
+  <div class="tour-btns">
+    <button class="ghost" type="button" id="tourBack">Back</button>
+    <button class="ghost" type="button" id="tourClose">Close</button>
+    <button class="primary" type="button" id="tourNext">Next</button>
+  </div>
+</div>
+
+<input type="file" id="attachPick" accept="image/*" multiple hidden>
+<input type="file" id="figPick" accept="image/*" hidden>
+<input type="file" id="csvPick" accept=".csv,text/csv" hidden>
+
+<script src="data.js"></script>
+<script src="convert.js"></script>
+<script src="editor.js"></script>
+<script src="views.js"></script>
+<script src="assistant.js"></script>
+<script src="review.js"></script>
+<script>window.CW && typeof CW.boot === "function" && CW.boot();</script>
+
+</body></html>
