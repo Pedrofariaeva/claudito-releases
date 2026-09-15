@@ -63,7 +63,7 @@ After install, Claudito asks for this information, in this order:
 **Claude key** (optional): For a stronger engine you can add Claude code. press Enter to skip if you don't have one.
 **GitLab:** type your GitLab username. Claudito opens GitLab already filled in. Click **Create personal access token**, copy the token, and paste it back into the CLI.
 NOTE: **Something went wrong or you skipped a question?** Setup never stops halfway. Type `setup` at the project list later to answer it.
-NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md
+NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md**
 
 === BOX: Prepare 3 — check it works
 Close the window, open a new **Terminal** or **PowerShell**, 
