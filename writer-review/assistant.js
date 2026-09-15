@@ -88,7 +88,7 @@
     CW.renderAssistant();
   }
 
-  /* ── ask box: fuzzy commands and prepared equations (the local AI answers via bridge.js) ── */
+  /* ── ask box: fuzzy commands first, then prepared equations, then the local AI ── */
   function answer(q) {
     var tokens = U.norm(q).split(" ").filter(function (t) { return t.length > 2 && STOP.indexOf(t) < 0; });
     if (!tokens.length) return "";
@@ -103,7 +103,7 @@
       if (v >= need && (!best || v > best.v)) best = { c: c, v: v };
     });
     if (best) return 'Did you mean <b>' + U.esc(best.c.label) + '</b>? <button class="mini" type="button" data-as-cmd="' + best.c.id + '">Do it</button>';
-    return "No AI answered this one. Is Ollama running? Type 'ai status' in clt to check. The built-in helpers still work: try a command ('tabel' finds Table) or an equation ('cronbach alpha').";
+    return "In Claudito this question goes to your local AI with this project as context. It can explain, organise and suggest; it won't write claims for you. (Mockup: no AI is called here.)";
   }
 
   /* ── rendering ── */
@@ -114,11 +114,11 @@
   function abstractHTML() {
     var text = abstractText(), words = text ? text.split(/\s+/).length : 0;
     if (words < 20) {
-      return '<h3>Prepare the research from your abstract</h3>' +
+      return '<h3>Prepare the research from your abstract <button class="pm" type="button" data-card="10" aria-label="Review note 10: abstract prepares the research">10</button></h3>' +
         "<p>Write at least 20 words in the Abstract (" + words + " so far). The assistant then offers to find and sort the papers you need.</p>";
     }
     var kw = CW.keywords(text);
-    return '<h3>Prepare the research from your abstract</h3>' +
+    return '<h3>Prepare the research from your abstract <button class="pm" type="button" data-card="10" aria-label="Review note 10: abstract prepares the research">10</button></h3>' +
       '<p>Your abstract is ready (' + words + ' words). Terms found:</p><div class="as-row">' + kw.map(function (k) { return '<span class="kw">' + U.esc(k) + "</span>"; }).join("") + "</div>" +
       "<ul><li>Harvest papers on these terms into <code>references/&lt;subject&gt;/</code></li><li>Screen them: Include, Maybe or Exclude</li><li>Map subjects to your sections in <code>section_rules.txt</code></li><li>Suggest citations while you write</li></ul>" +
       '<div class="as-row"><button class="primary" type="button" data-as="prepare">Prepare my research</button></div><p id="asPrepared" hidden></p>';
@@ -133,7 +133,7 @@
     var sec = CW.currentSection() || S.asSection || "";
     S.asSection = sec;
     $("#sideAssistant").innerHTML =
-      '<div class="as-head"><h2>Assistant</h2><p>Runs on your local AI (Ollama first, offline). It organises and suggests; it never writes your claims.</p>' +
+      '<div class="as-head"><h2>Assistant</h2><p>In Claudito it runs on your local AI (Ollama). It organises and suggests; it never writes your claims.</p>' +
       '<p class="as-where">You are in: <b id="asSection">' + U.esc(sec || "click somewhere in your text") + "</b></p></div>" +
       '<div class="as-body">' +
       '<div class="as-card"><h3>Citations for this section</h3><div class="refs" id="asRefs">' + refsHTML(sec) + '</div><p>From harvest subjects, screening and section_rules.txt. Click one to cite it where your cursor was.</p></div>' +
@@ -175,7 +175,7 @@
     ['.tool[data-cmd="assistant"]', "Ask the assistant", "It suggests citations and equations, checks the template and proposes a tidier order. It never writes your claims."],
     ['.seg-btn[data-side="txt"]', "The text file is still there", "Project.txt is what Claudito builds the PDF from. Edit the file or the page: each one updates the other."],
     ['.seg-btn[data-side="tex"]', "LaTeX when you need it", "See the main.tex Claudito sends to LaTeX for your template, like Overleaf's source view."],
-    ["#saveState", "It saves by itself", "Every pause writes Project plan/Project.txt, and Claudito rebuilds the PDF and Word file from it. Nothing else to press."]
+    ["#finish", "Tell Pedro what you think", "Mark each numbered part on the review sheet, then press Finish review."]
   ];
   var tourAt = -1, pinged = null;
   function tourShow(i) {
@@ -210,34 +210,20 @@
       var act = b.getAttribute("data-as");
       if (act === "ask") {
         S.asQuestion = $("#asAsk").value;
-        var replyBox = $("#asReply");
-        if (typeof CW.askAI === "function") {
-          /* bridge mode: the local AI answers first, heuristics if it can't */
-          replyBox.textContent = "Asking your local AI…";
-          replyBox.hidden = false;
-          var asked = S.asQuestion;
-          CW.askAI(asked, "", function (err, text) {
-            if (S.asQuestion !== asked) return;
-            if (err || !text) replyBox.innerHTML = answer(asked);
-            else replyBox.textContent = text;
-            replyBox.hidden = false;
-          });
-        } else {
-          var reply = answer(S.asQuestion);
-          replyBox.innerHTML = reply;
-          replyBox.hidden = !reply;
-        }
+        var reply = answer(S.asQuestion);
+        $("#asReply").innerHTML = reply;
+        $("#asReply").hidden = !reply;
       } else if (act === "tidy") {
         var sec = S.asSection, list = sec ? tidyProposal(sec) : null, box = $("#asTidy");
         box.hidden = false;
         box.innerHTML = !list ? "Nothing written in this section yet."
           : "<ol>" + list.map(function (x) { return "<li>" + U.esc(x.s) + (x.notes.length ? ' <span class="badge Maybe">' + U.esc(x.notes.join(", ")) + "</span>" : "") + "</li>"; }).join("") + "</ol>" +
-            "<p>Your text on the page is unchanged. Run <code>plan organise</code> in clt to save a tidy proposal to <code>Documents/organise-" + U.esc(U.slug(sec)) + ".txt</code>.</p>";
+            "<p>Proposal saved to <code>Documents/organise-" + U.esc(U.slug(sec)) + ".txt</code>. Your text on the page is unchanged.</p>";
       } else if (act === "missing") addMissing();
       else if (act === "prepare") {
         var p = $("#asPrepared");
         p.hidden = false;
-        p.textContent = "Run harvest in clt with these terms, then screen the results. This page does not search by itself.";
+        p.textContent = "In Claudito this starts harvest with these terms, then screening. Nothing is searched in this mockup.";
       }
     });
     $("#sideAssistant").addEventListener("keydown", function (e) {

@@ -13,6 +13,10 @@ list of features, in plain language.
 **[Your first project →](https://pedrofariaeva.github.io/claudito-releases/getting-started.html)** —
 nine steps from installing to sharing your work.
 
+**[Try the Claudito Writer →](https://pedrofariaeva.github.io/claudito-releases/writer/)** —
+the writing page that comes with Claudito (type `write` inside a project). This online
+copy is a sample; the real one runs offline on your computer.
+
 **These commands always install the newest version.** They carry no version
 number, so they never go out of date.
 

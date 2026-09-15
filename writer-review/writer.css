@@ -69,8 +69,8 @@ kbd { font: 500 .78em "IBM Plex Mono", ui-monospace, monospace; border: 1px soli
 .pm.done { background: var(--pencil); color: var(--sheet); }
 .ping { box-shadow: 0 0 0 4px var(--pencil-wash), 0 0 0 5px var(--pencil) !important; transition: box-shadow .2s; }
 
-/* ── workspace ── (bundled build: no review sheet, single column) */
-.work { max-width: 1000px; margin: 0 auto; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+/* ── workspace ── */
+.work { max-width: 1360px; margin: 0 auto; display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr) 350px; align-items: start; }
 @media (max-width: 1080px) { .work { grid-template-columns: minmax(0, 1fr); } }
 .app { position: relative; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); min-width: 0; }
 
