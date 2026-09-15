@@ -36,7 +36,7 @@ YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email
 
 
 === BOX: Prepare 1 — install Claudito
-Create a free **GitLab** and **GitHub** account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be use to share your projects with the teams.
+Create both a free **GitLab** (recommended) and ** GitHub** (optional) account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be use to share your projects with the teams.
 
 
 PLACE: On a Mac
@@ -61,22 +61,24 @@ After install, Claudito asks for this information, in this order:
 **Ollama**, the default AI engine Claudito uses in the backEnd: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with `setup`).
 **Kimi key** (optional): For a stronger engine you can add kimi code. press Enter to skip if you don't have one.
 **Claude key** (optional): For a stronger engine you can add Claude code. press Enter to skip if you don't have one.
-**GitLab:** type your GitLab username. Claudito then opens GitLab in your browser with the form already filled in. Click **Create personal access token**, copy the token, and paste it back into the window.
+**GitLab:** type your GitLab username. Claudito opens GitLab already filled in. Click **Create personal access token**, copy the token, and paste it back into the CLI.
 NOTE: **Something went wrong or you skipped a question?** Setup never stops halfway. Type `setup` at the project list later to answer it.
-NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md**
+NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md
 
 === BOX: Prepare 3 — check it works
-Close the window, open a new **Terminal** or **PowerShell**, type `clt` and press Enter.
-The first line shows your version, for example `✓ claudito v2.11.07`. If you ever report a problem, that line is the first thing Pedro needs.
-NOTE: **If `clt` is not recognised,** close the window and open a new one. **If you skipped a question** during setup, type `setup` at the project list to answer it now.
+Close the window, open a new **Terminal** or **PowerShell**, 
+type `clt` and press `Enter`
+Check which version e.g. `✓ claudito v2.11.07`. If you ever report a problem, that line is the first thing to send to Pedro.
+NOTE: **If `clt` is not recognised,** close the window and open a new one. 
+NOTE: **If you skipped any question** during setup, type `setup` at the beginning.
 
 
-=== BOX: There are two places you type. Know which one you are in.
-Most confusion comes from typing a command in the wrong one.
+=== BOX: How to start
 
 PLACE: The project list
 PROMPT: Which one? [number/n/o/q/help]:
-Here you create a project (`n`), manage teams (`t`), and **open a project by typing its number**.
+Here you create a project (`n`), manage teams (`t`)
+**Open a project by typing its number**.
 
 PLACE: Inside a project
 PROMPT: [personal | myproject | Ollama] >
@@ -88,16 +90,16 @@ If Claudito answers **“Invalid choice”**, you are at the project list. Type 
 
 === STEP: Create a project
 WHERE: At the project list
-TYPE: `n`
-Give it a short codename with no spaces. It appears in your list with a number next to it.
-NOTE: **If you have no team yet,** the project is private for now. That is expected, and the next step fixes it. If you already have a team, Claudito asks which team the project is for (see **Projects and teams** below the steps).
+TYPE: `n` for first project (new project) (if you already have a project, you type the number e.g. `TYPE: 01`)
+Give project codename with no spaces e.g. . It appears in your list with a number next to it.
+NOTE: **If you have no team yet,** the project is private for now. That is expected. If you already have a team, Claudito will ask which team.
 
 
 === STEP: Create a team, and put your project in it
 WHERE: At the project list, then inside the project
-TYPE: `t` then `3` type a team name, then `b` to go back
+TYPE: `t` , check the list and choose `3` (create a team) type a team name, then `b` to go back
 Now open your project by typing its number, and put it in the team:
-TYPE: `project team your-team-name`
+TYPE: `project team [[your-team-name]]`
 WARNING: **Don't skip the second part.** Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.
 
 
