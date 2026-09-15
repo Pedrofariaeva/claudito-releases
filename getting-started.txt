@@ -32,11 +32,11 @@ TITLE: Your First Claudito Project
 EYEBROW: Getting started
 SUBTITLE: Nine steps, from a simple project to teams sync
 TAKES: about 30min well dedicated, including the search, screen, edit and publish latex files
-YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email, create accounts on GitHub and GitLab
+YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email, create an account on GitLab (a GitHub account is optional)
 
 
 === BOX: Prepare 1 — install Claudito
-Create a free **GitLab** and **GitHub** account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be use to share your projects with the teams.
+Create a free **GitLab** account before you start, https://gitlab.com and use the same e-mail you will give in Claudito. It will be used to share your projects with the teams. A **GitHub** account is optional: Claudito lives at https://github.com/Pedrofariaeva/claudito-releases and with an account you can give it a star if you like it.
 
 
 PLACE: On a Mac
