@@ -66,7 +66,7 @@ NOTE: **Something went wrong or you skipped a question?** Setup never stops half
 
 === BOX: Prepare 3 — check it works
 Close the window, open a new **Terminal** or **PowerShell**, type `clt` and press Enter.
-The first line shows your version, for example `✓ claudito v2.11.04`. If you ever report a problem, that line is the first thing Pedro needs.
+The first line shows your version, for example `✓ claudito v2.11.07`. If you ever report a problem, that line is the first thing Pedro needs.
 NOTE: **If `clt` is not recognised,** close the window and open a new one. **If you skipped a question** during setup, type `setup` at the project list to answer it now.
 
 
