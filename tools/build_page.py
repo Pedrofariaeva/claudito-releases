@@ -30,7 +30,17 @@ def inline(text):
     Code spans are set aside first, so bold may wrap around a command
     (**Type the number next to `abstract.txt`.**) and a `**` inside a command
     is left alone.
+
+    An odd number of `**` means the editor split a long bold line in two:
+    auto-close an orphaned opening marker, drop an orphaned trailing one,
+    so the page never shows a literal `**` again (ETHICS note, 2026-09-15).
     """
+    if text.count("**") % 2 == 1:
+        stripped = text.rstrip()
+        if stripped.endswith("**") and "**" not in stripped[:-2]:
+            text = stripped[:-2]  # dangling closer from a split line
+        else:
+            text = stripped + "**"  # opener with no closer: bold to end of line
     codes = []
 
     def stash(m):
