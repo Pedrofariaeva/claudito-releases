@@ -231,6 +231,8 @@
   CW.openCite = function (anchor) {
     CW.closePops();
     S.citeSection = CW.currentSection();
+    clearTimeout(S.qhTimer);
+    $("#qhPanel").hidden = true;
     place($("#citePop"), anchor);
     $("#citeSearch").value = "";
     renderRefs("");
@@ -257,6 +259,118 @@
     }
     CW.normalizeGuides(); changed();
   };
+
+  /* ── quick harvest (Pedro, 2026-09-15): the paragraph + the project's scope -> up to 10 good
+        papers, searched only in databases whose API is ready. Served by `clt write`, the bridge
+        (CW.searchPapers, bridge.js) searches for real; opened as a plain file, the example
+        results from data.js stand in so the pop-up can still be tried. ── */
+  function paragraphAtCursor() {
+    var node = S.lastRange && S.sheet.contains(S.lastRange.startContainer) ? S.lastRange.startContainer : null;
+    var b = topOf(node);
+    return b && /^(P|UL|OL|DIV)$/.test(b.tagName) ? b.textContent.replace(/\s+/g, " ").trim() : "";
+  }
+  function scopeText() {
+    var title = "", abs = "", on = false;
+    S.doc.blocks.forEach(function (b) {
+      if (b.t === "h") { if (b.level === 1 && !title) title = b.text; on = /abstract/i.test(b.text); return; }
+      if (on && b.t === "p") abs += " " + b.text;
+    });
+    return (title + " " + abs).replace(/\[CITE:[^\]]*\]|\[EQ:[^\]]*\]|\*\*/g, "");
+  }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function saveHarvested() {
+    U.set("cw2.qhrefs", CW.REFS.filter(function (r) { return r.harvested; }));
+    U.set("cw2.qhrules", S.qhRules || {});
+  }
+  CW.quickHarvest = function () {
+    CW.syncFromSheet();
+    var panel = $("#qhPanel"), section = S.citeSection || "this section";
+    var para = paragraphAtCursor(), terms = CW.keywords(para).slice(0, 3);
+    if (!terms.length) terms = CW.keywords(section.replace(/^[\d.\s]+/, "")).slice(0, 2);
+    var scope = CW.keywords(scopeText()).filter(function (k) {
+      return !terms.some(function (t) { return t.indexOf(k) >= 0 || k.indexOf(t) >= 0; });
+    }).slice(0, 2);
+    panel.hidden = false;
+    panel.innerHTML = "<h4>Quick harvest for “" + U.esc(section) + "”</h4>" +
+      "<p>" + (para ? "Terms from the paragraph you are in" : "No paragraph under the cursor, so terms from the section title") + ", plus the project's scope:</p>" +
+      '<div class="as-row">' + terms.map(function (k) { return '<span class="kw">' + U.esc(k) + "</span>"; }).join("") +
+      scope.map(function (k) { return '<span class="kw">' + U.esc(k) + "</span>"; }).join("") + "</div>" +
+      '<p class="busy" id="qhBusy">Searching</p>';
+    if (typeof CW.searchPapers === "function") {
+      /* bridge mode: the server searches the databases active on this machine */
+      CW.searchPapers(terms.concat(scope), function (err, data) {
+        if (panel.hidden) return;
+        if (err || !data || data.error) {
+          var busyErr = $("#qhBusy");
+          if (busyErr) busyErr.outerHTML = '<p class="none">The search did not answer' +
+            (data && data.error ? ": " + U.esc(data.error) : " (is the bridge still running?)") + ". Your references below still work.</p>";
+          return;
+        }
+        showHarvest(section, terms, scope, data);
+      });
+    } else {
+      clearTimeout(S.qhTimer);
+      S.qhTimer = setTimeout(function () { showHarvest(section, terms, scope, null); }, 900);
+    }
+  };
+  function dbLists(dbs) {
+    return '<p class="dbs"><b>Searched ' + dbs.ready.length + " database" + (dbs.ready.length === 1 ? "" : "s") + " with a ready API:</b> " +
+      dbs.ready.map(function (d) { return U.esc(d[0]) + " (" + d[1] + ")"; }).join(" · ") + "</p>" +
+      '<p class="dbs"><b>Not searched:</b> ' + dbs.needKey.map(function (d) { return '<span class="skip">' + U.esc(d[0]) + "</span>"; }).join(" · ") +
+      " need a key that isn't set; " + dbs.noApi.map(function (d) { return '<span class="skip">' + U.esc(d) + "</span>"; }).join(" · ") + " have no API.</p>";
+  }
+  function showHarvest(section, terms, scope, data) {
+    var panel = $("#qhPanel"), busy = $("#qhBusy");
+    if (panel.hidden || !busy) return;
+    var a = terms[0] || "home technology", dbs, foot;
+    if (data) {
+      /* Real results from the bridge (/api/harvest): DOI-carrying papers only,
+         already deduplicated and sorted best first by the server. */
+      S.qhResults = data.results.map(function (r) {
+        var fam = String(r.authors || "").split(",")[0].trim().split(" ")[0];
+        return { key: (fam || "Harvested") + (r.year ? " " + r.year : ""), year: r.year || "", doi: r.doi,
+          title: r.title, subject: a, db: r.db || "", grade: r.grade || "", cites: r.cites || 0,
+          match: terms.concat(scope).filter(function (k) { return String(r.title).toLowerCase().indexOf(k.split(" ")[0]) >= 0; }).length };
+      });
+      dbs = { ready: data.searched || [], needKey: data.needKey || [], noApi: data.noApi || [] };
+      foot = "<p>Papers you add join this session's reference list, marked Maybe until you screen them in Claudito.</p>";
+    } else {
+      /* No bridge: the mockup's example results, so the pop-up can still be tried. */
+      var b = terms[1] || scope[0] || a, ready = CW.QH_DATABASES.ready;
+      var seed = (U.norm(section).length * 7 + a.length) % 97;
+      S.qhResults = CW.QH_PATTERNS.slice(0, 10).map(function (p, i) {
+        var db = ready[(i + seed) % ready.length];
+        return { key: "Harvest " + String.fromCharCode(65 + i), year: 2025 - (i % 6), doi: "10.0000/qh." + seed + "." + (i + 1),
+          title: "Example: " + cap(p.replace("{a}", a).replace("{b}", b)), subject: a, db: db[0], grade: db[1],
+          cites: 212 - i * 17, match: Math.max(1, 3 - Math.floor(i / 4)) };
+      }).sort(function (x, y) { return (x.grade < y.grade ? -1 : x.grade > y.grade ? 1 : 0) || y.cites - x.cites; });
+      dbs = CW.QH_DATABASES;
+      foot = "<p>Example results: open this page through <code>clt write</code> to search for real. Papers would go to <code>references/" + U.esc(U.slug(a)) + "/</code>, marked Maybe until you screen them.</p>";
+    }
+    busy.outerHTML = (S.qhResults.length ? "<h4>" + S.qhResults.length + " good papers, best first</h4><ol>" + S.qhResults.map(function (r, i) {
+      var have = !!CW.refByDoi(r.doi);
+      return '<li><span class="qt">' + U.esc(r.title) + '</span><span class="qm"><span>' + r.year + "</span><span>" + U.esc(r.db) + "</span>" +
+        (r.grade ? '<span class="badge grade">grade ' + r.grade + "</span>" : "") + "<span>" + r.cites + " citations</span><span>matches " + r.match + " term" + (r.match === 1 ? "" : "s") + "</span></span>" +
+        '<span class="qa"><button class="mini" type="button" data-qh-cite="' + i + '">Cite</button><button class="mini" type="button" data-qh-add="' + i + '"' +
+        (have ? " disabled>In your references" : ">Add to references") + "</button></span></li>";
+    }).join("") + "</ol>" : '<p class="none">Nothing found for these terms. Try a different paragraph.</p>') +
+      dbLists(dbs) + foot;
+  }
+  function adoptHarvest(i) {
+    var r = S.qhResults && S.qhResults[i];
+    if (!r) return null;
+    if (!CW.refByDoi(r.doi)) {
+      CW.REFS.push({ key: r.key, year: r.year, doi: r.doi, subject: r.subject, screen: "Maybe", title: r.title, harvested: true });
+      var key = U.norm(String(S.citeSection || "").replace(/^[\d.\s]+/, ""));
+      S.qhRules = S.qhRules || {};
+      if (key) {
+        CW.SECTION_RULES[r.subject] = (CW.SECTION_RULES[r.subject] || []).concat([key]);
+        S.qhRules[r.subject] = CW.SECTION_RULES[r.subject];
+      }
+      saveHarvested();
+    }
+    return r;
+  }
 
   /* ── quick commands: "/" with fuzzy matching ── */
   var slash = { open: false, node: null, start: 0, end: 0, items: [], sel: 0 };
@@ -303,6 +417,10 @@
   CW.initEditor = function () {
     S.sheet = $("#sheet");
     var sheet = S.sheet, toolbar = $("#toolbar");
+    /* papers kept from earlier quick harvests, and the section rules they added */
+    (U.get("cw2.qhrefs", []) || []).forEach(function (r) { if (r && r.doi && !CW.refByDoi(r.doi)) CW.REFS.push(r); });
+    S.qhRules = U.get("cw2.qhrules", {}) || {};
+    Object.keys(S.qhRules).forEach(function (k) { CW.SECTION_RULES[k] = S.qhRules[k]; });
     try { document.execCommand("defaultParagraphSeparator", false, "p"); } catch (e) {}
 
     document.addEventListener("selectionchange", function () {
@@ -464,6 +582,20 @@
 
     /* cite pop-up */
     $("#citeSearch").addEventListener("input", function () { renderRefs(this.value); });
+    $("#qhBtn").addEventListener("click", CW.quickHarvest);
+    $("#qhPanel").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-qh-cite], [data-qh-add]");
+      if (!b) return;
+      if (b.hasAttribute("data-qh-cite")) {
+        var r = adoptHarvest(+b.getAttribute("data-qh-cite"));
+        if (r) { CW.closePops(); CW.insertCite(r.doi); }
+      } else {
+        var added = adoptHarvest(+b.getAttribute("data-qh-add"));
+        b.disabled = true;
+        b.textContent = added ? "Added to references/" + U.slug(added.subject) + "/" : "In your references";
+        renderRefs($("#citeSearch").value);
+      }
+    });
     $("#citePop").addEventListener("click", function (e) {
       if (e.target.closest("#toggleExcluded")) { S.showExcluded = !S.showExcluded; renderRefs($("#citeSearch").value); return; }
       var b = e.target.closest(".ref[data-doi]");

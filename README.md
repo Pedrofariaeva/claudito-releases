@@ -15,7 +15,9 @@ nine steps from installing to sharing your work.
 
 **[Try the Claudito Writer →](https://pedrofariaeva.github.io/claudito-releases/writer/)** —
 the writing page that comes with Claudito (type `write` inside a project). This online
-copy is a sample; the real one runs offline on your computer.
+copy is a sample; the real one runs offline on your computer. Or
+**[try out our interface →](https://pedrofariaeva.github.io/claudito-releases/writer/try.html)** —
+the same page without the review sheet, made for showing off.
 
 **These commands always install the newest version.** They carry no version
 number, so they never go out of date.

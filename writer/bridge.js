@@ -66,6 +66,20 @@
       }, function (e) { cb(e); });
     };
 
+    /* Quick harvest (the Cite pop-up) searches the databases whose API is
+       ready on this machine, through the bridge. Without the bridge the
+       editor falls back to its example results. */
+    CW.searchPapers = function (terms, cb) {
+      api("/api/harvest", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ terms: terms })
+      }).then(function (j) {
+        if (j && j.error) cb(new Error(j.error));
+        else cb(null, j);
+      }, function (e) { cb(e); });
+    };
+
     /* "Start again" would replace the real file with the example, so in
        bridge mode the button reloads from disk instead (wired in boot). */
     function reloadFromDisk() {

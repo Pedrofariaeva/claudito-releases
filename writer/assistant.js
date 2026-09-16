@@ -5,7 +5,8 @@
   var S = CW.state = CW.state || {};
   var STOP = ("a an and are as at be been by can could do does for from had has have how in into is it its may more most much of on or our over than that the their them "
     + "these this those to under use used uses using was we were what when which who why will with within without own often also add adds new one two three "
-    + "project study paper research measures measure").split(" ");
+    + "project study paper research measures measure tends tend asks ask replaces replace tested test designed support supports adding "
+    + "becomes become make makes made get gets give gives show shows shown find found need needs stop stops").split(" ");
 
   function titleKey(t) { return U.norm(String(t).replace(/^(chapter\s+\d+|[\d.]+|（[一二三四五六七八九十]+）)\s*/i, "")); }
   function sectionBlocks(title) {
@@ -181,7 +182,11 @@
   function tourShow(i) {
     tourAt = i;
     if (pinged) pinged.classList.remove("ping");
-    var step = STEPS[i], target = $(step[0]) || $("#sheet"), card = $("#tour");
+    /* the online "Try it" page (CW_MODE = "try") ends the tour on Get Claudito */
+    var step = i === STEPS.length - 1 && window.CW_MODE === "try"
+      ? ["#getBtn", "Get Claudito", "Install it and write your own research this way. The getting-started guide takes about 30 minutes."]
+      : STEPS[i];
+    var target = $(step[0]) || $("#sheet"), card = $("#tour");
     $("#tourStep").textContent = "STEP " + (i + 1) + " OF " + STEPS.length;
     $("#tourTitle").textContent = step[1];
     $("#tourText").textContent = step[2];

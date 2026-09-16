@@ -56,6 +56,7 @@ kbd { font: 500 .78em "IBM Plex Mono", ui-monospace, monospace; border: 1px soli
 .ghost:hover { border-color: var(--ink-faint); }
 .ghost.danger { color: var(--no); }
 .primary { background: var(--accent-strong); color: var(--accent-ink); border: 1px solid var(--accent-strong); border-radius: 4px; padding: 6px 14px; cursor: pointer; font-weight: 600; font-size: .86rem; }
+.get-btn { text-decoration: none; display: inline-block; }
 .linkish { background: transparent; border: 0; padding: 5px 4px; cursor: pointer; font-size: .8rem; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--rule); }
 .linkish:hover { color: var(--ink); }
 .mini { font: 500 .74rem "IBM Plex Sans", ui-sans-serif, sans-serif; background: var(--sheet); border: 1px solid var(--rule); border-radius: 3px; padding: 2px 8px; cursor: pointer; color: var(--ink-soft); }
@@ -226,6 +227,7 @@ figcaption .cap:empty::before { content: "Type a caption"; color: var(--ink-fain
 .badge.Include { background: var(--ok-wash); color: var(--ok); }
 .badge.Maybe { background: var(--inc-wash); color: var(--inc); }
 .badge.Exclude { background: var(--no-wash); color: var(--no); }
+.badge.grade { background: var(--pencil-wash); color: var(--pencil); }
 
 /* ── pop-ups ── */
 .pop { position: absolute; z-index: 20; width: min(380px, calc(100% - 24px)); background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
@@ -249,6 +251,22 @@ figcaption .cap:empty::before { content: "Type a caption"; color: var(--ink-fain
 .ref .t { font-size: .84rem; line-height: 1.35; }
 .ref .m { font-size: .72rem; color: var(--ink-faint); display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
 .refs .none { font-size: .8rem; color: var(--ink-soft); margin: 4px 0; }
+
+/* quick harvest (inside the cite pop-up) */
+.qh-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.qh-btn { border-color: var(--accent); font-weight: 500; }
+.qh { border: 1px solid var(--rule); border-radius: 6px; padding: 10px; background: var(--surface); display: flex; flex-direction: column; gap: 7px; max-height: 380px; overflow: auto; }
+.qh h4 { margin: 0; font-size: .82rem; font-weight: 600; }
+.qh p { margin: 0; font-size: .76rem; color: var(--ink-soft); }
+.qh .dbs { font-size: .74rem; color: var(--ink-soft); line-height: 1.5; }
+.qh .dbs b { color: var(--ink); font-weight: 600; }
+.qh .skip { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--rule); }
+.qh ol { margin: 0; padding-left: 1.3rem; display: flex; flex-direction: column; gap: 6px; }
+.qh li { font-size: .8rem; }
+.qh .qt { display: block; line-height: 1.35; }
+.qh .qm { display: flex; flex-wrap: wrap; gap: 3px 8px; align-items: center; font-size: .7rem; color: var(--ink-faint); }
+.qh .qa { display: flex; gap: 6px; margin-top: 3px; }
+.qh .busy::after { content: " …"; animation: none; }
 
 .slash { position: absolute; z-index: 25; width: 250px; max-height: 300px; overflow: auto; background: var(--sheet); border: 1px solid var(--rule); border-radius: 6px; box-shadow: var(--shadow); padding: 4px; }
 .slash button { display: flex; justify-content: space-between; gap: 8px; width: 100%; text-align: left; background: transparent; border: 0; border-radius: 4px; padding: 6px 8px; cursor: pointer; font-size: .84rem; }

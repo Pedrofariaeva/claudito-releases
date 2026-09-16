@@ -135,6 +135,19 @@
     "recruitment": ["case study", "data collection", "study area", "methods"]
   };
 
+  /* Quick harvest offline stand-in: the mockup's example pool, used only when
+     the page is NOT served by `clt write` (no bridge, no real search). Names
+     and grades copied from databases.py. In bridge mode the server reports the
+     databases that are really active on this machine. */
+  CW.QH_DATABASES = {
+    ready: [["CORE", "A"], ["Europe PMC", "A"], ["BASE", "A"], ["OpenAlex", "B"], ["Crossref", "B"], ["PubMed Central", "B"], ["DOAJ", "B"]],
+    needKey: [["Elsevier / Scopus", "A"], ["IEEE Xplore", "A"], ["Web of Science", "A"]],
+    noApi: ["Google Scholar", "ResearchGate"]
+  };
+  CW.QH_PATTERNS = ["A review of {a}", "{a} and {b}: a field study", "Measuring {b} at home", "Design guidelines for {a}",
+    "{a}: a survey of households", "Barriers to {a} in later life", "A qualitative study of {b}", "{a} in practice: lessons from pilots",
+    "Comparing tools for {b}", "{a} over two years: a follow-up study", "{b} and daily routines"];
+
   CW.EQ_SUGGESTIONS = [
     { name: "System Usability Scale score", words: "sus system usability scale score questionnaire", src: "SUS = 2.5 * (sum(x_odd - 1) + sum(5 - x_even))" },
     { name: "Cronbach's alpha (reliability)", words: "cronbach alpha reliability internal consistency questionnaire", src: "alpha = (k / (k - 1)) * (1 - sum(s_i^2) / s_t^2)" },

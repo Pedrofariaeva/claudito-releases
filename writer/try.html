@@ -1,3 +1,9 @@
+<!doctype html>
+<!-- "Try it" page: the same editor as /writer/ (the bundled product page), set up
+     for showing off ("try out our interface"): no review sheet, example content,
+     runs entirely in the browser. Opened online there is no bridge token, so
+     bridge.js keeps its localStorage fallback and nothing is sent anywhere. -->
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script>window.CW_MODE = "try";</script></head><body>
 <title>Claudito Writer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -7,10 +13,11 @@
 <header class="head">
   <div class="title-row">
     <h1 class="name">Claudito <i>Writer</i></h1>
-    <span class="chip">Local · saves to Project.txt</span>
+    <span class="chip">Try it</span>
     <button class="ghost tour-btn" type="button" id="tourBtn">Show me how</button>
+    <a class="primary get-btn" id="getBtn" href="https://pedrofariaeva.github.io/claudito-releases/getting-started.html">Get Claudito</a>
   </div>
-  <p class="lede">Write your research without typing any commands. This page edits your project's real <b>Project plan/Project.txt</b>: every pause saves, and Claudito builds the PDF, Word and LaTeX from that same file.</p>
+  <p class="lede">Write your research without typing any commands: tables, figures, equations and citations are buttons. This demo uses example content and runs in your browser. Nothing you type is sent anywhere.</p>
 </header>
 
 <main class="work">
@@ -32,7 +39,7 @@
       <div class="crumb"><span id="crumbProject">Example</span><span aria-hidden="true">/</span><b id="crumbDoc">Project plan</b></div>
       <span class="save" id="saveState"><span class="dot"></span><span id="saveText">All changes saved</span></span>
       <span class="rebuild" id="rebuild" title="Claudito's live auto-rebuild">main.pdf and main.docx up to date</span>
-      <button class="linkish" type="button" id="resetDoc">Reload from Project.txt</button>
+      <button class="linkish" type="button" id="resetDoc">Start again</button>
     </div>
 
     <div class="toolbar" id="toolbar" role="toolbar" aria-label="Formatting">
@@ -49,7 +56,7 @@
         <button class="tool" type="button" data-cmd="cite"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M3 3.5h7.5a1.5 1.5 0 0 1 1.5 1.5v8.5H4.5A1.5 1.5 0 0 1 3 12z"/><path d="M5.5 6.5h4M5.5 9h4"/></svg>Cite</button>
       </div>
       <div class="grp">
-        <button class="tool tool-ai" type="button" data-cmd="assistant"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.8l1.3 3.4 3.4 1.3-3.4 1.3L8 11.2 6.7 7.8 3.3 6.5l3.4-1.3zM12.6 10.6l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z"/></svg>Assistant</button>
+        <button class="tool tool-ai" type="button" data-cmd="assistant"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.8l1.3 3.4 3.4 1.3-3.4 1.3L8 11.2 6.7 7.8 3.3 6.5l3.4-1.3zM12.6 10.6l.6 1.5 1.5.6-1.5.6-.6 1.5-1.5-1.5-.6 1.5-.6z"/></svg>Assistant</button>
         <span class="slash-hint">Type <kbd>/</kbd> on an empty line for quick commands</span>
       </div>
     </div>
@@ -97,7 +104,7 @@
         <label for="eqAsk">Or describe it and the assistant suggests one</label>
         <input id="eqAsk" autocomplete="off" placeholder="e.g. Cronbach alpha, U-value, sample size">
         <ul class="sugg" id="eqSugg"></ul>
-        <p class="pop-hint">Prepared examples answer first; the Assistant can also ask your local AI (Ollama) for more.</p>
+        <p class="pop-hint">In Claudito this asks your local AI (Ollama). Here it picks from a few prepared examples.</p>
       </div>
       <div class="pop-btns"><button class="ghost danger" type="button" id="eqRemove">Remove</button><button class="ghost" type="button" id="eqCancel">Cancel</button><button class="primary" type="button" id="eqOk">Insert</button></div>
     </div>
@@ -139,3 +146,5 @@
 <script src="assistant.js"></script>
 <script src="bridge.js"></script>
 <script>window.CW && typeof CW.boot === "function" && CW.boot();</script>
+
+</body></html>
