@@ -14,7 +14,9 @@ list of features, in plain language.
 nine steps from installing to sharing your work.
 
 **[Try the Claudito Writer →](https://pedrofariaeva.github.io/claudito-releases/writer/)** —
-the writing page that comes with Claudito (type `write` inside a project). This online
+the writing page that comes with Claudito (type `write` inside a project), with quick
+harvest in the Cite pop-up: it reads the paragraph at your cursor and searches the
+literature for you. This online
 copy is a sample; the real one runs offline on your computer. Or
 **[try out our interface →](https://pedrofariaeva.github.io/claudito-releases/writer/try.html)** —
 the same page without the review sheet, made for showing off.
