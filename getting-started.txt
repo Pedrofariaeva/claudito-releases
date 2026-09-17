@@ -95,12 +95,16 @@ Give project codename with no spaces e.g. . It appears in your list with a numbe
 NOTE: **If you have no team yet,** the project is private for now. That is expected. If you already have a team, Claudito will ask which team.
 
 
-=== STEP: Create a team, and put your project in it
-WHERE: At the project list, then inside the project
-TYPE: `t` , check the list and choose `3` (create a team) type a team name, then `b` to go back
-Now open your project by typing its number, and put it in the team:
-TYPE: `project team [[your-team-name]]`
-WARNING: **Don't skip the second part.** Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.
+=== STEP: Create a team, and put your research in it
+WHERE: At the project list
+TYPE: `t` , then `3` (create a team), and type a name for it
+Claudito then asks what to do with the new team. You answer with one number:
+**1** puts one of your projects in it — pick it from the list, and its files go to the team at once.
+**2** creates a new project that belongs to the team from its first day.
+**3** invites someone to it.
+**4** makes it the team you are working in, so new projects are offered to it first.
+NOTE: **Later on** it is the same menu: `t`, then **Put one of your projects in a team**. You can also open a project and type `project team` — Claudito lists your teams and you pick one, no name to type.
+WARNING: **A team with nothing in it is the usual mistake.** Your colleague joins, sees no projects, and it looks exactly like sharing is broken. Answer 1 or 2 above and the team has something in it from the start.
 
 
 === STEP: Invite a member
