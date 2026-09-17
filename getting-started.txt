@@ -99,13 +99,17 @@ NOTE: **If you have no team yet,** the project is private for now. That is expec
 WHERE: At the project list, then inside the project
 TYPE: `t` , check the list and choose `3` (create a team) type a team name, then `b` to go back
 Now open your project by typing its number, and put it in the team:
-TYPE: `project team [[your-team-name]]`
+TYPE: `[[your-team-name]]`
 WARNING: **Don't skip the second part.** Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.
-
+YOU CAN ALSO TYPE: `project team [[your-team-name]]` directly on the CLI
 
 === STEP: Invite a member
-WHERE: Inside the project
-TYPE: `invite`
+WHERE: Inside the team menu
+TYPE: `4` 
+or outside the team menu, 
+TYPE: `b` before going back and...
+WHERE: Chose a project number and inside the project:
+TYPE: `invite` 
 Claudito asks for their ORCID, shows you the name it found so you can confirm it is the right person, then asks for their e-mail address.
 Invite someone who is **not** already in one of your teams. That is the case worth testing.
 NOTE: **Tell them:** they will get an e-mail with a code, and it can land in spam. If they cannot find it, they should search for `trackonperformance`.

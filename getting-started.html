@@ -391,12 +391,17 @@
       <span class="where">At the project list, then inside the project</span>
       <div class="seq"><span class="type"><b>type</b> t</span><span class="then">, check the list and choose</span><span class="type">3</span><span class="then">(create a team) type a team name, then</span><span class="type">b</span><span class="then">to go back</span></div>
       <p>Now open your project by typing its number, and put it in the team:</p>
-      <div class="seq"><span class="type"><b>type</b> project team [[your-team-name]]</span></div>
+      <div class="seq"><span class="type"><b>type</b> [[your-team-name]]</span></div>
       <p class="warn"><b>Don't skip the second part.</b> Creating a team does not move a project you already made into it. Without this, your colleague joins an empty team, and it looks exactly like sharing is broken.</p>
+      <p>YOU CAN ALSO TYPE: <code>project team [[your-team-name]]</code> directly on the CLI</p>
     </div>
     <div class="step">
       <h2>Invite a member</h2>
-      <span class="where">Inside the project</span>
+      <span class="where">Inside the team menu</span>
+      <div class="seq"><span class="type"><b>type</b> 4</span></div>
+      <p>or outside the team menu,</p>
+      <div class="seq"><span class="type"><b>type</b> b</span><span class="then">before going back and...</span></div>
+      <span class="where">Chose a project number and inside the project:</span>
       <div class="seq"><span class="type"><b>type</b> invite</span></div>
       <p>Claudito asks for their ORCID, shows you the name it found so you can confirm it is the right person, then asks for their e-mail address.</p>
       <p>Invite someone who is <b>not</b> already in one of your teams. That is the case worth testing.</p>
