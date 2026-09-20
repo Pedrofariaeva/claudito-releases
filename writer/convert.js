@@ -117,9 +117,12 @@
     return s;
   };
 
-  /* ── inline markup: **bold**, [CITE: doi, doi], [EQ: src] ── */
-  var INLINE = /(\*\*[^*]+?\*\*|\[CITE:[^\]]*\]|\[EQ:[^\]]*\])/g;
+  /* ── inline markup: **bold**, [CITE: doi, doi], [PENDING-CITE: query], [EQ: src] ── */
+  var INLINE = /(\*\*[^*]+?\*\*|\[CITE:[^\]]*\]|\[PENDING-CITE:[^\]]*\]|\[EQ:[^\]]*\])/g;
   function dois(part) { return part.slice(6, -1).split(",").map(U.trim).filter(Boolean); }
+  /* The pending-cite chip is deliberately loud: it reads exactly "missing cite
+     confirmation" — never silent, never a placeholder that looks done. */
+  CW.PENDING_LABEL = "missing cite confirmation";
   CW.inlineToHTML = function (text) {
     return String(text || "").split(INLINE).map(function (part, i) {
       if (i % 2 === 0) return U.esc(part);
@@ -127,6 +130,10 @@
       if (part.indexOf("[CITE:") === 0) {
         var d = dois(part);
         return '<span class="cite" contenteditable="false" data-doi="' + U.esc(d.join(", ")) + '">' + U.esc(CW.citeLabel(d)) + "</span>";
+      }
+      if (part.indexOf("[PENDING-CITE:") === 0) {
+        var q = part.slice(14, -1).trim();
+        return '<span class="cite pending" contenteditable="false" data-query="' + U.esc(q) + '">' + CW.PENDING_LABEL + "</span>";
       }
       var src = part.slice(4, -1).trim();
       return '<span class="ieq" contenteditable="false" data-src="' + U.esc(src) + '">' + CW.renderEq(src) + "</span>";
@@ -137,6 +144,7 @@
     Array.prototype.forEach.call(node.childNodes, function (c) {
       if (c.nodeType === 3) out += c.nodeValue;
       else if (c.nodeType !== 1) return;
+      else if (c.classList.contains("cite") && c.classList.contains("pending")) out += "[PENDING-CITE: " + (c.getAttribute("data-query") || "") + "]";
       else if (c.classList.contains("cite")) out += "[CITE: " + (c.getAttribute("data-doi") || "") + "]";
       else if (c.classList.contains("ieq")) out += "[EQ: " + (c.getAttribute("data-src") || "") + "]";
       else if (c.tagName === "B" || c.tagName === "STRONG") {
@@ -157,6 +165,7 @@
       if (i % 2 === 0) return texEsc(part);
       if (part.indexOf("**") === 0) return "\\textbf{" + texEsc(part.slice(2, -2)) + "}";
       if (part.indexOf("[CITE:") === 0) return "\\cite{" + dois(part).map(CW.citeKey).join(",") + "}";
+      if (part.indexOf("[PENDING-CITE:") === 0) return "\\textbf{missing cite confirmation: " + texEsc(part.slice(14, -1).trim()) + "}";
       return "$" + CW.eqToLatex(part.slice(4, -1).trim()) + "$";
     }).join("");
   };

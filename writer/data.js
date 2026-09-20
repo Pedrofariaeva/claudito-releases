@@ -11,7 +11,11 @@
     { id: "proposal", label: "Research proposal (NSFC)", note: "Claudito's NSFC proposal template" }
   ];
 
-  /* Class lines copied from claudito/templates/latex/papers/*.tex and proposals/nsfc. */
+  /* OFFLINE-SAMPLE FALLBACK ONLY: this hardcoded list is used when the page is
+     opened as a plain file (the online sample, no bridge). Served by `clt write`,
+     the real list comes from GET /api/templates (built from
+     claudito/templates/latex/papers/*.tex) and bridge.js merges it over this one.
+     Class lines below mirror that folder and proposals/nsfc. */
   CW.TEMPLATES = {
     "claudito": { label: "Claudito default (article)", cls: "\\documentclass{article}", types: ["plan", "paper"], needs: ["Abstract"] },
     "elsarticle": { label: "Elsevier (elsarticle)", cls: "\\documentclass[preprint,authoryear,12pt]{elsarticle}", types: ["plan", "paper"], needs: ["Abstract", "Keywords", "Highlights"] },
@@ -19,11 +23,21 @@
     "svjour3": { label: "Springer (svjour3)", cls: "\\documentclass[twoside,journal,ms,english,12pt]{svjour3}", types: ["plan", "paper"], needs: ["Abstract", "Keywords", "Declarations"] },
     "mdpi": { label: "MDPI", cls: "\\documentclass[referee]{mdpi}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
     "plos": { label: "PLOS", cls: "\\documentclass[12pt]{article}", types: ["plan", "paper"], needs: ["Abstract"] },
-    "taylor-francis": { label: "Taylor & Francis", cls: "\\documentclass[man,12pt,a4paper,doublespace]{agu template}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
-    "wiley": { label: "Wiley", cls: "\\documentclass[article,12pt,a4paper,twoside,onecolumn]{wlscirep}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "taylor-francis": { label: "Taylor & Francis", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "wiley": { label: "Wiley", cls: "\\documentclass[12pt,a4paper,onecolumn]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
     "acmart": { label: "ACM (acmart)", cls: "\\documentclass[sigconf,anonymous,review,balance]{acmart}", types: ["paper", "conference"], needs: ["Abstract", "Keywords"] },
     "arxiv": { label: "arXiv preprint", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract"] },
     "revtex": { label: "APS / AIP (REVTeX)", cls: "\\documentclass[reprint,superscriptaddress,showkeys,nofootinbib,tightened,12pt]{revtex4-2}", types: ["paper"], needs: ["Abstract"] },
+    "nature": { label: "Nature", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract"] },
+    "science": { label: "Science (AAAS)", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract"] },
+    "sage": { label: "SAGE", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "oxford": { label: "Oxford UP", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "cambridge": { label: "Cambridge UP", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "frontiers": { label: "Frontiers", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "emerald": { label: "Emerald", cls: "\\documentclass[12pt,a4paper]{article}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "iopscience": { label: "IOPscience (iopart)", cls: "\\documentclass[12pt]{iopart}", types: ["plan", "paper"], needs: ["Abstract", "Keywords"] },
+    "acs": { label: "ACS (achemso)", cls: "\\documentclass[journal=jacsat]{achemso}", types: ["paper"], needs: ["Abstract", "Keywords"] },
+    "rsc": { label: "RSC", cls: "\\documentclass[12pt]{rsc}", types: ["paper"], needs: ["Abstract", "Keywords"] },
     "thesis-generic": { label: "Generic thesis (book class)", cls: "\\documentclass[12pt,oneside]{book}", types: ["thesis"], needs: ["Abstract", "Acknowledgements"], proposal: true },
     "nsfc": { label: "NSFC proposal", cls: "\\documentclass[12pt,a4paper]{article}", types: ["proposal"], needs: ["English Abstract"] }
   };
@@ -170,6 +184,7 @@
     { id: "fig3", label: "Figure with 3 images", words: "figure images three subfigure" },
     { id: "equation", label: "Equation", words: "equation formula math maths" },
     { id: "cite", label: "Cite a reference", words: "cite citation reference paper source" },
+    { id: "pending", label: "Pending citation harvests", words: "pending citation harvest missing cite urgent" },
     { id: "assistant", label: "Open the assistant", words: "assistant ai help ollama ask" },
     { id: "txt", label: "Show the text file", words: "text file txt project plain" },
     { id: "latex", label: "Show LaTeX", words: "latex tex overleaf pdf" }

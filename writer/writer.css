@@ -127,6 +127,8 @@ kbd { font: 500 .78em "IBM Plex Mono", ui-monospace, monospace; border: 1px soli
 .sheet b, .sheet strong { font-weight: 600; }
 .sheet p.is-empty[data-guide]::before { content: attr(data-guide); color: var(--ink-faint); font-style: italic; pointer-events: none; }
 .cite { font-family: "IBM Plex Sans", ui-sans-serif, sans-serif; font-size: .8em; background: var(--accent-wash); color: var(--accent-strong); border-radius: 3px; padding: 1px 6px; white-space: nowrap; }
+/* The pending-cite marker must be unmistakably NOT done: loud, dashed, red. */
+.cite.pending { background: var(--no-wash); color: var(--no); outline: 1px dashed var(--no); font-weight: 600; }
 .ieq { font-style: italic; }
 .eq-empty { font-style: normal; color: var(--ink-faint); }
 

@@ -80,6 +80,61 @@
       }, function (e) { cb(e); });
     };
 
+    /* Templates: the real list is built from the project's
+       templates/latex/papers/*.tex (data.js keeps only the offline-sample
+       fallback). Existing entries keep their labels; the class line always
+       follows the template file. */
+    CW.fetchTemplates = function () { return api("/api/templates"); };
+    function mergeTemplates(list) {
+      (list || []).forEach(function (t) {
+        if (!t || !t.id) return;
+        if (CW.TEMPLATES[t.id]) {
+          if (t.cls) CW.TEMPLATES[t.id].cls = t.cls;
+        } else {
+          CW.TEMPLATES[t.id] = { label: t.label || t.id, cls: t.cls || "\\documentclass{article}",
+            types: ["plan", "paper"], needs: ["Abstract", "Keywords"] };
+        }
+      });
+    }
+
+    /* The Cite pop-up reads the project's own references/<subject>/ folders,
+       with screening decisions (Exclude hidden) and section suggestions. */
+    CW.fetchReferences = function (section, q, cb) {
+      api("/api/references?section=" + encodeURIComponent(section || "") +
+          "&q=" + encodeURIComponent(q || "")).then(function (j) {
+        if (j && j.error) cb(new Error(j.error));
+        else cb(null, j);
+      }, function (e) { cb(e); });
+    };
+
+    /* Adopting a citation records it in the project (applied note +
+       regenerated citations.bib), so it is real work, not session decoration. */
+    CW.recordCite = function (doi, section) {
+      api("/api/cite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ doi: doi, section: section || "" })
+      }).then(function () {}, function (err) {
+        saveLine("Citation kept in the text, but recording it in the project failed: " +
+          (err && err.message ? err.message : "the bridge is not answering"), true);
+      });
+    };
+
+    /* Urgent pending harvests — the 'missing cite confirmation' markers. */
+    CW.fetchPending = function (cb) {
+      api("/api/pending").then(function (j) { cb(null, j); }, function (e) { cb(e); });
+    };
+    CW.savePending = function (item, cb) {
+      api("/api/pending", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item)
+      }).then(function (j) {
+        if (j && j.error) cb(new Error(j.error));
+        else cb(null, j);
+      }, function (e) { cb(e); });
+    };
+
     /* "Start again" would replace the real file with the example, so in
        bridge mode the button reloads from disk instead (wired in boot). */
     function reloadFromDisk() {
@@ -119,15 +174,21 @@
       initApp();
       return;
     }
-    api("/api/files").then(function (files) {
-      S.files = files;
-      S.doc = CW.filesToDoc(files, null);
-      initApp();
-      saveLine("Loaded from Project.txt", false);
-    }, function () {
-      S.doc = CW.sampleDoc();
-      initApp();
-      saveLine("Bridge unreachable: showing an example, changes are NOT saved", true);
+    /* Bridge mode: the real template list (templates/latex/papers/*.tex) is
+       merged over the offline-sample fallback before the docbar is drawn. */
+    api("/api/templates").then(function (j) {
+      mergeTemplates(j && j.templates);
+    }, function () {}).then(function () {
+      api("/api/files").then(function (files) {
+        S.files = files;
+        S.doc = CW.filesToDoc(files, null);
+        initApp();
+        saveLine("Loaded from Project.txt", false);
+      }, function () {
+        S.doc = CW.sampleDoc();
+        initApp();
+        saveLine("Bridge unreachable: showing an example, changes are NOT saved", true);
+      });
     });
   };
 })();

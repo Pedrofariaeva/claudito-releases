@@ -105,13 +105,24 @@
     <div class="pop pop-wide" id="citePop" hidden role="dialog" aria-label="Cite a reference">
       <label for="citeSearch">Search your references</label>
       <input id="citeSearch" autocomplete="off" placeholder="Title, subject or year. Typos are fine">
-      <div class="qh-row">
-        <button class="ghost qh-btn" type="button" id="qhBtn">Quick harvest</button>
-        <span class="pop-hint">Find up to 10 good papers for this paragraph</span>
-      </div>
-      <div class="qh" id="qhPanel" hidden aria-live="polite"></div>
       <div class="refs" id="refList"></div>
       <p class="pop-hint" id="citeFoot"></p>
+      <div class="qh-row">
+        <button class="ghost qh-btn" type="button" id="qhBtn">Search online</button>
+        <span class="pop-hint">Not in your references yet? Find up to 10 good papers online for this paragraph</span>
+      </div>
+      <div class="qh" id="qhPanel" hidden aria-live="polite"></div>
+      <div class="qh-row">
+        <button class="ghost" type="button" id="pendBtn">Mark for urgent harvest</button>
+        <span class="pop-hint">No cite option? Leaves a visible “missing cite confirmation” marker here; Claudito offers the harvest when you close the Writer</span>
+      </div>
+    </div>
+
+    <div class="pop" id="pendPop" hidden role="dialog" aria-label="Pending citation harvests">
+      <label>Urgent pending citation harvests</label>
+      <div class="refs" id="pendList"></div>
+      <p class="pop-hint">These spots are marked “missing cite confirmation” in Project.txt. When you close the Writer, Claudito asks whether to run these harvests and lets you pick the real citation for each.</p>
+      <div class="pop-btns"><button class="ghost" type="button" id="pendClose">Close</button></div>
     </div>
 
     <div class="slash" id="slashMenu" hidden role="listbox" aria-label="Quick commands"></div>

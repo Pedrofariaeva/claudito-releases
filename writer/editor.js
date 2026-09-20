@@ -111,6 +111,8 @@
       S.editingEq = null; CW.openEq(anchor || $('.tool[data-cmd="equation"]'), "");
     } else if (id === "cite") {
       CW.openCite(anchor || $('.tool[data-cmd="cite"]'));
+    } else if (id === "pending") {
+      CW.showPending(anchor || $('.tool[data-cmd="cite"]'));
     } else if (id === "assistant" || id === "txt" || id === "latex") {
       if (typeof CW.showSide === "function") CW.showSide(id === "latex" ? "tex" : id);
     }
@@ -180,7 +182,7 @@
     pop.style.top = (ar.bottom - pr.top + 8) + "px";
     pop.style.left = Math.max(12, Math.min(ar.left - pr.left, app.clientWidth - pop.offsetWidth - 12)) + "px";
   }
-  CW.closePops = function () { $("#eqPop").hidden = true; $("#citePop").hidden = true; closeSlash(); };
+  CW.closePops = function () { $("#eqPop").hidden = true; $("#citePop").hidden = true; $("#pendPop").hidden = true; closeSlash(); };
 
   CW.openEq = function (anchor, src) {
     CW.closePops(); place($("#eqPop"), anchor);
@@ -211,6 +213,7 @@
       '<span class="m"><span>' + U.esc(r.key) + ", " + r.year + '</span><span class="badge ' + r.screen + '">' + r.screen + "</span><span>references/" + U.esc(r.subject) + "/</span></span></button>";
   };
   function renderRefs(q) {
+    if (typeof CW.fetchReferences === "function") return renderRefsBridge(q);
     var html = "", showEx = !!S.showExcluded;
     if (q.trim()) {
       var hits = CW.REFS.map(function (r) { return { r: r, s: U.fuzzy(q, r.title + " " + r.key + " " + r.year + " " + r.subject) }; })
@@ -228,6 +231,40 @@
     $("#citeFoot").innerHTML = "Example references. Suggestions follow harvest subjects, screening and section_rules.txt. " +
       '<button type="button" class="linkish" id="toggleExcluded">' + (showEx ? "Hide" : "Show") + " the " + ex + " excluded by screening</button>";
   }
+  /* Bridge mode (`clt write`): the project's own references/<subject>/ folders,
+     screening decisions included (Exclude hidden by the server), suggestions
+     for the section the cursor is in, fuzzy search. No example DOIs here. */
+  function renderRefsBridge(q) {
+    clearTimeout(S.refTimer);
+    S.refTimer = setTimeout(function () {
+      CW.fetchReferences(S.citeSection || "", q.trim(), function (err, data) {
+        if (err || !data) {
+          $("#refList").innerHTML = '<p class="none">Could not load your references (is the bridge still running?)</p>';
+          return;
+        }
+        var flat = [];
+        (data.groups || []).forEach(function (g) { flat = flat.concat(g.refs); });
+        CW.REFS = flat;
+        var html = "";
+        if (q.trim()) {
+          html = flat.length ? "<h4>Matches</h4>" + flat.map(CW.refButton).join("")
+            : '<p class="none">Nothing in your references matches “' + U.esc(q) + '”. Try Search online, or Mark for urgent harvest below.</p>';
+        } else {
+          var sug = data.suggested || [];
+          html = "<h4>Suggested for " + U.esc(S.citeSection || "this part") + "</h4>" +
+            (sug.length ? sug.map(CW.refButton).join("") : '<p class="none">No subject is mapped to this section yet.</p>');
+          (data.groups || []).forEach(function (g) {
+            html += "<h4>references/" + U.esc(g.subject) + "/</h4>" + g.refs.map(CW.refButton).join("");
+          });
+          if (!flat.length) html += '<p class="none">No references in this project yet. Run a harvest in Claudito, use Search online, or Mark for urgent harvest.</p>';
+        }
+        $("#refList").innerHTML = html;
+        $("#citeFoot").textContent = "Your project's references, with their screening decisions" +
+          (data.excluded ? " (" + data.excluded + " excluded by screening are hidden)" : "") +
+          ". Suggestions follow section_rules.txt.";
+      });
+    }, q.trim() ? 250 : 0);
+  }
   CW.openCite = function (anchor) {
     CW.closePops();
     S.citeSection = CW.currentSection();
@@ -238,12 +275,7 @@
     renderRefs("");
     $("#citeSearch").focus({ preventScroll: true });
   };
-  CW.insertCite = function (doi) {
-    var r = CW.refByDoi(doi);
-    if (!r) return;
-    var chip = document.createElement("span");
-    chip.className = "cite"; chip.setAttribute("contenteditable", "false"); chip.setAttribute("data-doi", doi);
-    chip.textContent = CW.citeLabel([doi]);
+  function insertChip(chip) {
     var at = S.lastRange && S.sheet.contains(S.lastRange.startContainer) ? S.lastRange.cloneRange() : null;
     var el = at ? U.elOf(at.startContainer) : null;
     if (!at || !el || el === S.sheet || el.closest(".blk, h1")) {
@@ -258,6 +290,59 @@
       var s = window.getSelection(); s.removeAllRanges(); s.addRange(caret);
     }
     CW.normalizeGuides(); changed();
+  }
+  CW.insertCite = function (doi) {
+    var r = CW.refByDoi(doi);
+    if (!r) return;
+    var chip = document.createElement("span");
+    chip.className = "cite"; chip.setAttribute("contenteditable", "false"); chip.setAttribute("data-doi", doi);
+    chip.textContent = CW.citeLabel([doi]);
+    insertChip(chip);
+    /* adopting a citation is recorded in the project (applied note + bib) */
+    if (typeof CW.recordCite === "function") CW.recordCite(doi, S.citeSection || "");
+  };
+  /* 'Mark for urgent harvest': a [PENDING-CITE:] marker goes into Project.txt,
+     rendered as a highlighted chip reading exactly "missing cite confirmation"
+     — never silent, never a done-looking placeholder. */
+  CW.insertPendingCite = function (query) {
+    var chip = document.createElement("span");
+    chip.className = "cite pending"; chip.setAttribute("contenteditable", "false");
+    chip.setAttribute("data-query", query);
+    chip.textContent = CW.PENDING_LABEL;
+    insertChip(chip);
+  };
+  CW.markPending = function () {
+    CW.syncFromSheet();
+    var para = paragraphAtCursor(), section = S.citeSection || "";
+    var terms = CW.keywords(para).slice(0, 4);
+    if (!terms.length) terms = CW.keywords(section.replace(/^[\d.\s]+/, "")).slice(0, 3);
+    var query = terms.join(" ");
+    if (!query) return;
+    CW.closePops();
+    CW.insertPendingCite(query);
+    var item = { query: query, section: section, paragraph_text: para, created: new Date().toISOString() };
+    if (typeof CW.savePending === "function") {
+      CW.savePending(item, function () {});
+    } else {
+      /* offline sample: kept in this browser only */
+      var list = U.get("cw2.pending", []) || [];
+      list.push(item); U.set("cw2.pending", list);
+    }
+  };
+  /* /pending — the special cmd that lists the urgent pending harvests. */
+  CW.showPending = function (anchor) {
+    CW.closePops();
+    place($("#pendPop"), anchor);
+    function draw(items) {
+      $("#pendList").innerHTML = items && items.length
+        ? "<ol>" + items.map(function (it) {
+            return "<li><b>" + U.esc(it.query) + '</b><span class="m">' + U.esc(it.section || "no section") +
+              (it.created ? " · " + U.esc(String(it.created).slice(0, 16).replace("T", " ")) : "") + "</span></li>";
+          }).join("") + "</ol>"
+        : '<p class="none">No pending citation harvests.</p>';
+    }
+    if (typeof CW.fetchPending === "function") CW.fetchPending(function (err, data) { draw(data && data.items); });
+    else draw(U.get("cw2.pending", []) || []);
   };
 
   /* ── quick harvest (Pedro, 2026-09-15): the paragraph + the project's scope -> up to 10 good
@@ -275,7 +360,7 @@
       if (b.t === "h") { if (b.level === 1 && !title) title = b.text; on = /abstract/i.test(b.text); return; }
       if (on && b.t === "p") abs += " " + b.text;
     });
-    return (title + " " + abs).replace(/\[CITE:[^\]]*\]|\[EQ:[^\]]*\]|\*\*/g, "");
+    return (title + " " + abs).replace(/\[CITE:[^\]]*\]|\[PENDING-CITE:[^\]]*\]|\[EQ:[^\]]*\]|\*\*/g, "");
   }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function saveHarvested() {
@@ -291,7 +376,7 @@
       return !terms.some(function (t) { return t.indexOf(k) >= 0 || k.indexOf(t) >= 0; });
     }).slice(0, 2);
     panel.hidden = false;
-    panel.innerHTML = "<h4>Quick harvest for “" + U.esc(section) + "”</h4>" +
+    panel.innerHTML = "<h4>Search online for “" + U.esc(section) + "”</h4>" +
       "<p>" + (para ? "Terms from the paragraph you are in" : "No paragraph under the cursor, so terms from the section title") + ", plus the project's scope:</p>" +
       '<div class="as-row">' + terms.map(function (k) { return '<span class="kw">' + U.esc(k) + "</span>"; }).join("") +
       scope.map(function (k) { return '<span class="kw">' + U.esc(k) + "</span>"; }).join("") + "</div>" +
@@ -583,6 +668,8 @@
     /* cite pop-up */
     $("#citeSearch").addEventListener("input", function () { renderRefs(this.value); });
     $("#qhBtn").addEventListener("click", CW.quickHarvest);
+    $("#pendBtn").addEventListener("click", CW.markPending);
+    $("#pendClose").addEventListener("click", CW.closePops);
     $("#qhPanel").addEventListener("click", function (e) {
       var b = e.target.closest("[data-qh-cite], [data-qh-add]");
       if (!b) return;
@@ -604,8 +691,8 @@
 
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") CW.closePops(); });
     document.addEventListener("mousedown", function (e) {
-      if ($("#eqPop").hidden && $("#citePop").hidden && !slash.open) return;
-      if (e.target.closest("#eqPop, #citePop, #slashMenu, .tool, .eq, .as-card")) return;
+      if ($("#eqPop").hidden && $("#citePop").hidden && $("#pendPop").hidden && !slash.open) return;
+      if (e.target.closest("#eqPop, #citePop, #pendPop, #slashMenu, .tool, .eq, .as-card")) return;
       CW.closePops();
     });
   };
