@@ -135,6 +135,16 @@
       }, function (e) { cb(e); });
     };
 
+    /* Closing the tab IS closing the writer for the user — tell the bridge to
+       shut down, so the terminal is asked about any urgent pending citation
+       harvests at the next prompt instead of 30 idle minutes later (or never).
+       Every edit is already saved through PUT /api/files, so nothing is lost. */
+    window.addEventListener("pagehide", function () {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon("/api/quit?token=" + encodeURIComponent(TOKEN));
+      }
+    });
+
     /* "Start again" would replace the real file with the example, so in
        bridge mode the button reloads from disk instead (wired in boot). */
     function reloadFromDisk() {
