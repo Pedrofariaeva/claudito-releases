@@ -34,7 +34,7 @@ Open PowerShell and run:
 Open Terminal and run:
 
 ```bash
-(curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
+cd "$(mktemp -d)" && (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
 ```
 
 The installer opens Claudito when it finishes. Afterwards, start it with `clt`.

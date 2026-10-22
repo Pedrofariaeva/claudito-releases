@@ -32,16 +32,16 @@ TITLE: Your First Claudito Project
 EYEBROW: Getting started
 SUBTITLE: Nine steps, from a simple project to teams sync
 TAKES: about 30min well dedicated, including the search, screen, edit and publish latex files
-YOU NEED: Install Claudito (GitHub), your ORCID, your colleagues ORCID and email, create accounts on GitHub and GitLab
+YOU NEED: Install Claudito (GitHub), your ORCID, your colleague's ORCID and e-mail, a GitLab account (a GitHub account is optional)
 
 
 === BOX: Prepare 1 — install Claudito
-Create both a free **GitLab** (recommended) and ** GitHub** (optional) account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be use to share your projects with the teams.
+Create both a free **GitLab** (recommended) and ** GitHub** (optional) account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be used to share your projects with the teams.
 
 
 PLACE: On a Mac
 Open **Terminal**: press **Cmd + Space**, type `Terminal` and press Enter. Paste this line and press Enter:
-CODE: (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
+CODE: cd "$(mktemp -d)" && (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) && tar -xzf claudito.tar.gz && cd claudito-external-v* && ./install.sh
 
 PLACE: On Windows
 Open **PowerShell**: press the **Windows key**, type `PowerShell` and press Enter. Paste this line and press Enter:
@@ -57,18 +57,22 @@ NOTE: If it says **it cannot connect,** run the same line again. It tries GitHub
 
 After install, Claudito asks for this information, in this order:
 **Your name** (whatever you want to be called), your **ORCID** and your **e-mail** (preferably your ORCID's e-mail). Team invitations work with the ORCID number and e-mail, so type them carefully.
+**If you were invited to a team,** Claudito finds the invitation here and joins you to that team. A confirmation code is e-mailed to you, so check your spam folder too.
 **Which folder is your research:** accept the folder Claudito suggests, or give the one you already have.
-**Ollama**, the default AI engine Claudito uses in the backEnd: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with `setup`).
+**Ollama**, the default AI engine Claudito uses in the back end: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with `setup`).
 **Kimi key** (optional): For a stronger engine you can add kimi code. press Enter to skip if you don't have one.
 **Claude key** (optional): For a stronger engine you can add Claude code. press Enter to skip if you don't have one.
+**GitHub username** (optional): a GitHub account lets you register on GitLab with **Sign in with GitHub**, which works where signing up on gitlab.com directly does not. Press Enter to skip if you don't have one.
 **GitLab:** type your GitLab username. Claudito opens GitLab already filled in. Click **Create personal access token**, copy the token, and paste it back into the CLI.
+**Database keys** (optional): the search already works with no key, through the free databases. A key unlocks more (IEEE Xplore, Scopus, Springer, Web of Science, CNKI…). Press Enter to skip; add keys later with `dbs setup`.
+NOTE: **Enter keeps what is already there.** Type `back` to return to the previous question, or `quit` to cancel without saving. At the end Claudito shows a summary to review, then asks **Save?**
 NOTE: **Something went wrong or you skipped a question?** Setup never stops halfway. Type `setup` at the project list later to answer it.
-NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md**
+NOTE: **Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md**
 
 === BOX: Prepare 3 — check it works
 Close the window, open a new **Terminal** or **PowerShell**, 
 type `clt` and press `Enter`
-Check which version e.g. `✓ claudito v2.11.07`. If you ever report a problem, that line is the first thing to send to Pedro.
+Check which version e.g. `✓ claudito v2.11.48`. If you ever report a problem, that line is the first thing to send to Pedro.
 NOTE: **If `clt` is not recognised,** close the window and open a new one. 
 NOTE: **If you skipped any question** during setup, type `setup` at the beginning.
 
@@ -91,7 +95,7 @@ If Claudito answers **“Invalid choice”**, you are at the project list. Type 
 === STEP: Create a project
 WHERE: At the project list
 TYPE: `n` for first project (new project) (if you already have a project, you type the number e.g. `TYPE: 01`)
-Give project codename with no spaces e.g. . It appears in your list with a number next to it.
+Give a project codename with no spaces, e.g. `myproject`. It appears in your list with a number next to it.
 NOTE: **If you have no team yet,** the project is private for now. That is expected. If you already have a team, Claudito will ask which team.
 
 
@@ -108,7 +112,7 @@ WHERE: Inside the team menu
 TYPE: `4` 
 or outside the team menu, 
 TYPE: `b` before going back and...
-WHERE: Chose a project number and inside the project:
+WHERE: Choose a project number and inside the project:
 TYPE: `invite` 
 Claudito asks for their ORCID, shows you the name it found so you can confirm it is the right person, then asks for their e-mail address.
 Invite someone who is **not** already in one of your teams. That is the case worth testing.

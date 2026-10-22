@@ -314,18 +314,18 @@
     <p class="standfirst">Nine steps, from a simple project to teams sync</p>
     <div class="meta">
       <span><b>Takes</b> about 30min well dedicated, including the search, screen, edit and publish latex files</span>
-      <span><b>You need</b> Install Claudito (GitHub), your ORCID, your colleagues ORCID and email, create accounts on GitHub and GitLab</span>
+      <span><b>You need</b> Install Claudito (GitHub), your ORCID, your colleague's ORCID and e-mail, a GitLab account (a GitHub account is optional)</span>
     </div>
   </header>
 
   <div class="callout">
     <h2>Prepare 1 — install Claudito</h2>
-    <p>Create both a free <b>GitLab</b> (recommended) and <b> GitHub</b> (optional) account before you start, <a href="https://gitlab.com">https://gitlab.com</a> and <a href="https://github.com">https://github.com</a> and use the same e-mail you will give in Claudito. It will be use to share your projects with the teams.</p>
+    <p>Create both a free <b>GitLab</b> (recommended) and <b> GitHub</b> (optional) account before you start, <a href="https://gitlab.com">https://gitlab.com</a> and <a href="https://github.com">https://github.com</a> and use the same e-mail you will give in Claudito. It will be used to share your projects with the teams.</p>
     <div class="places">
       <div class="place">
         <h3>On a Mac</h3>
         <p>Open <b>Terminal</b>: press <b>Cmd + Space</b>, type <code>Terminal</code> and press Enter. Paste this line and press Enter:</p>
-        <div class="code"><pre>(curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) &amp;&amp; tar -xzf claudito.tar.gz &amp;&amp; cd claudito-external-v* &amp;&amp; ./install.sh</pre><button class="copy" type="button">Copy</button></div>
+        <div class="code"><pre>cd "$(mktemp -d)" &amp;&amp; (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) &amp;&amp; tar -xzf claudito.tar.gz &amp;&amp; cd claudito-external-v* &amp;&amp; ./install.sh</pre><button class="copy" type="button">Copy</button></div>
       </div>
       <div class="place">
         <h3>On Windows</h3>
@@ -342,20 +342,24 @@
     <h2>Prepare 2 — Setup questions</h2>
     <p>After install, Claudito asks for this information, in this order:</p>
     <p><b>Your name</b> (whatever you want to be called), your <b>ORCID</b> and your <b>e-mail</b> (preferably your ORCID's e-mail). Team invitations work with the ORCID number and e-mail, so type them carefully.</p>
+    <p><b>If you were invited to a team,</b> Claudito finds the invitation here and joins you to that team. A confirmation code is e-mailed to you, so check your spam folder too.</p>
     <p><b>Which folder is your research:</b> accept the folder Claudito suggests, or give the one you already have.</p>
-    <p><b>Ollama</b>, the default AI engine Claudito uses in the backEnd: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with <code>setup</code>).</p>
+    <p><b>Ollama</b>, the default AI engine Claudito uses in the back end: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with <code>setup</code>).</p>
     <p><b>Kimi key</b> (optional): For a stronger engine you can add kimi code. press Enter to skip if you don't have one.</p>
     <p><b>Claude key</b> (optional): For a stronger engine you can add Claude code. press Enter to skip if you don't have one.</p>
+    <p><b>GitHub username</b> (optional): a GitHub account lets you register on GitLab with <b>Sign in with GitHub</b>, which works where signing up on gitlab.com directly does not. Press Enter to skip if you don't have one.</p>
     <p><b>GitLab:</b> type your GitLab username. Claudito opens GitLab already filled in. Click <b>Create personal access token</b>, copy the token, and paste it back into the CLI.</p>
+    <p><b>Database keys</b> (optional): the search already works with no key, through the free databases. A key unlocks more (IEEE Xplore, Scopus, Springer, Web of Science, CNKI…). Press Enter to skip; add keys later with <code>dbs setup</code>.</p>
+    <p class="watch"><b>Enter keeps what is already there.</b> Type <code>back</code> to return to the previous question, or <code>quit</code> to cancel without saving. At the end Claudito shows a summary to review, then asks <b>Save?</b></p>
     <p class="watch"><b>Something went wrong or you skipped a question?</b> Setup never stops halfway. Type <code>setup</code> at the project list later to answer it.</p>
-    <p class="watch"><b>Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at <a href="https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md">https://github.com/Pedrofariaeva/claudito/blob/master/templates/ETHICS.md</a></b></p>
+    <p class="watch"><b>Any AI in Claudito won't write papers or thesis for you, it is bounded to an ethical manifesto, in which is limit only to provide all sort of assistance and automations. For more content read at <a href="https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md">https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md</a></b></p>
   </div>
 
   <div class="callout">
     <h2>Prepare 3 — check it works</h2>
     <p>Close the window, open a new <b>Terminal</b> or <b>PowerShell</b>,</p>
     <p>type <code>clt</code> and press <code>Enter</code></p>
-    <p>Check which version e.g. <code>✓ claudito v2.11.07</code>. If you ever report a problem, that line is the first thing to send to Pedro.</p>
+    <p>Check which version e.g. <code>✓ claudito v2.11.48</code>. If you ever report a problem, that line is the first thing to send to Pedro.</p>
     <p class="watch"><b>If <code>clt</code> is not recognised,</b> close the window and open a new one.</p>
     <p class="watch"><b>If you skipped any question</b> during setup, type <code>setup</code> at the beginning.</p>
   </div>
@@ -383,7 +387,7 @@
       <h2>Create a project</h2>
       <span class="where">At the project list</span>
       <div class="seq"><span class="type"><b>type</b> n</span><span class="then">for first project (new project) (if you already have a project, you type the number e.g.</span><span class="type">TYPE: 01</span><span class="then">)</span></div>
-      <p>Give project codename with no spaces e.g. . It appears in your list with a number next to it.</p>
+      <p>Give a project codename with no spaces, e.g. <code>myproject</code>. It appears in your list with a number next to it.</p>
       <p class="watch"><b>If you have no team yet,</b> the project is private for now. That is expected. If you already have a team, Claudito will ask which team.</p>
     </div>
     <div class="step">
@@ -401,7 +405,7 @@
       <div class="seq"><span class="type"><b>type</b> 4</span></div>
       <p>or outside the team menu,</p>
       <div class="seq"><span class="type"><b>type</b> b</span><span class="then">before going back and...</span></div>
-      <span class="where">Chose a project number and inside the project:</span>
+      <span class="where">Choose a project number and inside the project:</span>
       <div class="seq"><span class="type"><b>type</b> invite</span></div>
       <p>Claudito asks for their ORCID, shows you the name it found so you can confirm it is the right person, then asks for their e-mail address.</p>
       <p>Invite someone who is <b>not</b> already in one of your teams. That is the case worth testing.</p>
@@ -443,7 +447,6 @@
       <div class="seq"><span class="type"><b>type</b> plan</span><span class="then">then, when finished</span><span class="type">clt</span></div>
       <p>Save and close the plan file. Type <code>plan</code> again and check your text is still there.</p>
       <p>To add a figure, table or equation without knowing LaTeX, close the file first and type <code>format</code> at the Claudito prompt. It won't work typed inside the file itself.</p>
-      <p class="watch"><b>Prefer buttons to plain text?</b> Type <code>write</code> at the Claudito prompt. It opens your paper in the browser, with buttons for headings, citations and tables — no markup to learn.</p>
       <p class="warn"><b>Leave with <code>clt</code>, never by closing the window.</b> <code>clt</code> saves your work and uploads it. Closing the window keeps everything on your own computer, and your colleague sees nothing.</p>
     </div>
     <div class="step">
