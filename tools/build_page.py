@@ -178,6 +178,11 @@ def render(meta, blocks):
         out.append("      <span><b>Takes</b> %s</span>" % inline(meta["TAKES"]))
     if meta.get("YOU NEED"):
         out.append("      <span><b>You need</b> %s</span>" % inline(meta["YOU NEED"]))
+    out.append('      <span><b>Language</b> <button class="langbtn" type="button" '
+               'onclick="var f=location.pathname.split(\'/\').pop()||\'index.html\','
+               'b=f.replace(/-(zh|pt)(?=\\.html$)/,\'\');'
+               'location.href=f===b?b.replace(\'.html\',\'-zh.html\'):'
+               'f.indexOf(\'-zh\')>0?b.replace(\'.html\',\'-pt.html\'):b">EN</button></span>')
     out += ["    </div>", "  </header>", ""]
 
     in_steps, step_no = False, 0

@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="O que o Claudito faz e porque é importante — da descoberta da literatura à produção do artigo, sempre em sincronia com a sua equipa.">
+<title>Por Dentro do Claudito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:      #F3F5F1;
+    --surface:    #FBFCFA;
+    --ink:        #1A1D19;
+    --ink-soft:   #4E554B;
+    --ink-faint:  #7C8478;
+    --rule:       #DCE0D6;
+    --accent:     #5F8A1B;
+    --accent-dim: #EBF1DF;
+    --code-bg:    #ECEFE7;
+    --shadow:     0 1px 2px rgba(26,29,25,.05), 0 8px 24px -16px rgba(26,29,25,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #131612;
+      --surface:    #1B1F19;
+      --ink:        #E9EDE4;
+      --ink-soft:   #AFB8A8;
+      --ink-faint:  #7E8777;
+      --rule:       #2C3228;
+      --accent:     #A6CE39;
+      --accent-dim: #232A19;
+      --code-bg:    #202619;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #131612;
+    --surface:    #1B1F19;
+    --ink:        #E9EDE4;
+    --ink-soft:   #AFB8A8;
+    --ink-faint:  #7E8777;
+    --rule:       #2C3228;
+    --accent:     #A6CE39;
+    --accent-dim: #232A19;
+    --code-bg:    #202619;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+  }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; }
+
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: Newsreader, Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 1.1rem 0 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    margin-top: 1.6rem;
+    font-size: .82rem;
+    color: var(--ink-faint);
+  }
+  .meta b { color: var(--ink-soft); font-weight: 500; }
+  .langbtn { background: none; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-faint); font: inherit; font-size: .78rem; padding: .1rem .55rem; cursor: pointer; }
+  .langbtn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── intro pitch ──────────────────────────────────────── */
+  .intro {
+    margin: 1.9rem 0 0;
+    font-size: 1.01rem;
+    color: var(--ink-soft);
+    max-width: 72ch;
+  }
+  .intro b { color: var(--ink); font-weight: 600; }
+
+  /* ── premise ──────────────────────────────────────────── */
+  .premise {
+    margin: 2.6rem 0 0;
+    padding: 1.5rem 1.7rem;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+  }
+  .premise p { margin: 0; max-width: 68ch; }
+  .premise p + p { margin-top: .8rem; }
+
+  /* ── sections ─────────────────────────────────────────── */
+  section { margin-top: 3.4rem; }
+
+  h2 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    margin: 0 0 .35rem;
+    text-wrap: balance;
+  }
+
+  .why {
+    color: var(--ink-soft);
+    max-width: 66ch;
+    margin: 0 0 1.4rem;
+  }
+  .why strong { color: var(--ink); font-weight: 600; }
+
+  /* ── command tables ───────────────────────────────────── */
+  .cmds {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  td {
+    padding: .62rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.cmd {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82rem;
+    color: var(--accent);
+    white-space: nowrap;
+    width: 1%;
+    font-weight: 500;
+  }
+  td.does { color: var(--ink-soft); font-size: .93rem; }
+
+  /* ── highlight cards ──────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1.4rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.15rem 1.25rem;
+    box-shadow: var(--shadow);
+  }
+  .card h3 {
+    font-size: .95rem;
+    font-weight: 600;
+    margin: 0 0 .4rem;
+    letter-spacing: -.005em;
+  }
+  .card p { margin: 0; font-size: .89rem; color: var(--ink-soft); }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .86em;
+    background: var(--code-bg);
+    padding: .12em .38em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  /* ── the syntax sheet ─────────────────────────────────── */
+  .syntax {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .1rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  .syntax dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82rem;
+    color: var(--accent);
+    white-space: nowrap;
+    padding: .3rem 0;
+    font-weight: 500;
+  }
+  .syntax dd {
+    margin: 0;
+    padding: .3rem 0;
+    font-size: .9rem;
+    color: var(--ink-soft);
+  }
+
+  /* ── closing ──────────────────────────────────────────── */
+  .close {
+    margin-top: 3.6rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--ink);
+    font-size: .88rem;
+    color: var(--ink-faint);
+    max-width: 66ch;
+  }
+  .close b { color: var(--ink-soft); font-weight: 500; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Referência de capacidades</p>
+    <h1>Por Dentro do Claudito</h1>
+    <p class="standfirst">Um assistente de investigação que vive no terminal — da descoberta da literatura à produção do artigo, sempre em sincronia com a sua equipa.</p>
+    <div class="meta">
+      <span><b>Atualiza-se a si próprio</b> cada vez que o inicia</span>
+      <span><b>Funciona em</b> macOS · Windows · Linux</span>
+      <span><b>Licença</b> proprietária, código-fonte privado</span>
+      <span><b>Idioma</b> <button class="langbtn" type="button" onclick="var f=location.pathname.split('/').pop()||'index.html',b=f.replace(/-(zh|pt)(?=\.html$)/,'');location.href=f===b?b.replace('.html','-zh.html'):f.indexOf('-zh')>0?b.replace('.html','-pt.html'):b">PT</button></span>
+    </div>
+  </header>
+
+  <p class="intro">O Claudito é uma ferramenta gratuita de linha de comandos (CLI) para investigação académica, disponível para Windows, macOS e Linux — local-first, e não é um agente de IA. Apoia os investigadores e as suas equipas ao longo de todo o fluxo de trabalho da investigação: pesquisa, tria e obtém artigos de <b>500 bases de dados de editoras</b> — Springer, Elsevier, IEEE e mais — organiza tudo no seu computador com referências BibTeX limpas numa árvore de assuntos, e sincroniza tudo através de Git com os seus colegas. E o melhor de tudo: <b>com o Claudito já não precisa de LaTeX</b> — escreva apenas, escolha a editora, e os documentos em LaTeX, Word e PDF ficam prontos em segundos. (Há um editor de LaTeX integrado para quem quiser um.)</p>
+
+  <div class="premise">
+    <p>A maioria das ferramentas de investigação resolve uma fatia — um gestor de referências aqui, um editor ali, uma drive partilhada noutro lugar — e deixa o investigador a transportar o trabalho entre elas à mão. O Claudito cobre todo o percurso num só lugar: pesquisar nas bases de dados, guardar as referências, escrever o documento, produzir o PDF e partilhá-lo com as pessoas do projeto.</p>
+    <p>É construído para pessoas que são investigadores antes de tudo o resto. Nada do que se segue exige saber LaTeX, git ou uma consola de nuvem.</p>
+    <p>Porque existe: reformatar artigos para as revistas custa às equipas de investigação uns estimados US$1.1 mil milhões por ano do seu próprio tempo, a revisão por pares absorveu 63.4 milhões de horas na biomedicina num único ano, e os artigos em revistas Q1 cresceram +121% entre 2010 e 2024, enquanto a produção global cresceu 84%. Dos 85 processos do ciclo de investigação, 58 são mecânicos — o Claudito trata desses e deixa os outros 27 ao investigador. (<em>AI-Assisted Tools for Academic Researchers: A Full Automation Process</em>, preprint preliminar, 2026.)</p>
+  </div>
+
+  <section>
+    <h2>Descobrir a literatura</h2>
+    <p class="why">Pesquisa todas as bases de dados a que tem acesso de uma só vez, numa única passagem, e contabiliza o que realmente chegou. <strong>A vantagem é a cobertura sem andar a saltar entre separadores</strong> — sem repetir a mesma pesquisa numa dúzia de interfaces e reconciliar os resultados à mão.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">harvest</td><td class="does">Pesquisa todas as bases de dados ativas; as metas contam PDFs reais, não resultados</td></tr>
+        <tr><td class="cmd">harvest --precision</td><td class="does">Equilibra abrangência e relevância: <code>high</code>, <code>normal</code> ou <code>low</code></td></tr>
+        <tr><td class="cmd">harvest --resync</td><td class="does">Volta a triar o que já tem antes de procurar mais</td></tr>
+        <tr><td class="cmd">search &lt;query&gt;</td><td class="does">Pesquisa em mais de 100 bases de dados</td></tr>
+        <tr><td class="cmd">search related</td><td class="does">Pesquisa a partir do que já escreveu, não de uma consulta digitada</td></tr>
+        <tr><td class="cmd">legal harvest</td><td class="does">Pesquisa fontes legais e regulamentares</td></tr>
+        <tr><td class="cmd">dbs</td><td class="does">Que bases de dados estão ativas, em espera, ou sem chave de API</td></tr>
+        <tr><td class="cmd">track all</td><td class="does">Guarda todos os resultados encontrados nesta passagem</td></tr>
+      </table>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Duplicatas removidas à chegada</h3><p>O mesmo artigo vindo de quatro bases de dados é uma única referência, correspondida por DOI e semelhança de título.</p></div>
+      <div class="card"><h3>Fontes chinesas e ocidentais</h3><p>CNKI, Wanfang, VIP e Socolar ao lado de IEEE, Elsevier, Springer, Web of Science e JSTOR.</p></div>
+      <div class="card"><h3>Retomável</h3><p>O estado da recolha fica guardado, por isso uma execução longa que pare pode continuar em vez de recomeçar.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Manter as referências em ordem</h2>
+    <p class="why">Os artigos são etiquetados, ordenados na estrutura do seu documento real e triados por relevância. <strong>A vantagem é que a lista de referências espelha o artigo</strong>, por isso sabe sempre a que capítulo pertence cada fonte e o que ainda falta.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">ref list</td><td class="does">Tudo o que está guardado para este projeto</td></tr>
+        <tr><td class="cmd">ref organize</td><td class="does">Etiqueta e distribui referências interativamente</td></tr>
+        <tr><td class="cmd">ref organize plan</td><td class="does">Cria pastas de capítulos a partir do seu plano e arquiva as referências nelas</td></tr>
+        <tr><td class="cmd">ref organize pdf</td><td class="does">Separa as que têm PDF das que não têm</td></tr>
+        <tr><td class="cmd">screen all</td><td class="does">Tria as referências guardadas por relevância</td></tr>
+        <tr><td class="cmd">allocate &lt;doi&gt;</td><td class="does">Atribui um artigo a um capítulo do seu documento</td></tr>
+        <tr><td class="cmd">ref suggest</td><td class="does">Deixa a IA propor onde cada referência pertence</td></tr>
+        <tr><td class="cmd">map references</td><td class="does">Mostra que citação pertence a que capítulo</td></tr>
+        <tr><td class="cmd">ref bib</td><td class="does">Gera o <code>citations.bib</code></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Escrever sem LaTeX</h2>
+    <p class="why">Escreve um ficheiro de texto simples. O Claudito produz a partir dele o PDF composto e a versão Word. <strong>A vantagem é que a formatação nunca interrompe o pensamento</strong> — e a mesma fonte gera ambos os formatos, por isso não podem divergir.</p>
+    <dl class="syntax">
+      <dt># Title</dt><dd>O título do documento</dd>
+      <dt>## Section</dt><dd>Um título de secção — <code>###</code> para subsecções</dd>
+      <dt>[FIGURE: chart.png]</dt><dd>Coloca a imagem, centrada, com a linha <code>Caption:</code> por baixo</dd>
+      <dt>[TABLE: results.csv]</dt><dd>Transforma a folha de cálculo numa tabela composta a sério</dd>
+      <dt>[EQ: E = mc^2]</dt><dd>Uma equação dentro de uma frase</dd>
+      <dt>[EQUATION: …]</dt><dd>Uma equação numerada em destaque</dd>
+      <dt>[CITE: doi]</dt><dd>Uma citação, resolvida contra a sua lista de referências</dd>
+      <dt>- item</dt><dd>Uma lista com marcadores — <code>1.</code> para numerada</dd>
+      <dt>// note</dt><dd>Um comentário para si; nunca aparece no resultado</dd>
+    </dl>
+    <div class="grid">
+      <div class="card"><h3>PDF e Word de uma só fonte</h3><p>Ambos são produzidos a partir do mesmo ficheiro de texto, por isso os dois nunca podem discordar.</p></div>
+      <div class="card"><h3>Modelos de revistas</h3><p>Layouts Elsevier e Springer, espaços de trabalho para propostas NSFC e apresentações de conferência.</p></div>
+      <div class="card"><h3>Cada rascunho arquivado</h3><p>Cada compilação guarda uma cópia com data e hora, por isso uma versão anterior é sempre recuperável.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Produzir o resultado</h2>
+    <p class="why">Para além do próprio artigo: apresentações, propostas de financiamento, gráficos e mapas conceptuais, tudo a partir de material já existente no projeto. <strong>A vantagem é não reconstruir o mesmo conteúdo</strong> para cada público.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">p</td><td class="does">Compila o documento do projeto para PDF</td></tr>
+        <tr><td class="cmd">new slide</td><td class="does">Inicia uma apresentação a partir do modelo da instituição</td></tr>
+        <tr><td class="cmd">build slides</td><td class="does">Compila a apresentação para PDF</td></tr>
+        <tr><td class="cmd">new proposal nsfc</td><td class="does">Cria um espaço de trabalho para proposta NSFC</td></tr>
+        <tr><td class="cmd">nsfc update</td><td class="does">Preenche a proposta a partir das suas referências e lista as lacunas</td></tr>
+        <tr><td class="cmd">proposal feasibility</td><td class="does">Verifica na proposta o que ainda falta</td></tr>
+        <tr><td class="cmd">diagram research</td><td class="does">Gera um mapa de raciocínio da investigação</td></tr>
+        <tr><td class="cmd">export graph</td><td class="does">Constrói um gráfico a partir de JSON ou CSV</td></tr>
+        <tr><td class="cmd">export html</td><td class="does">Produz uma versão web do projeto</td></tr>
+        <tr><td class="cmd">export publications</td><td class="does">Publica os artigos triados no website</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Trabalhar em equipa</h2>
+    <p class="why">Convida um colaborador pelo seu ORCID. Essa pessoa instala o Claudito, responde a uma pergunta, e os projetos partilhados aparecem. <strong>A vantagem é que um colaborador não precisa de conta em lado nenhum</strong> — nem GitLab, nem acesso a servidor, nada para registar. A credencial de download viaja dentro do convite, selada com um código enviado para o seu e-mail.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">invite &lt;orcid&gt;</td><td class="does">Convida alguém para a equipa pelo ORCID</td></tr>
+        <tr><td class="cmd">t</td><td class="does">Equipas: criar, aderir, trocar, ou definir a equipa de um projeto</td></tr>
+        <tr><td class="cmd">t list</td><td class="does">As equipas a que pertence</td></tr>
+        <tr><td class="cmd">team invites</td><td class="does">Quem foi convidado e quem já aderiu</td></tr>
+        <tr><td class="cmd">team members</td><td class="does">Quem consegue realmente abrir os projetos, lido do anfitrião git</td></tr>
+        <tr><td class="cmd">invite mail-log</td><td class="does">O que aconteceu a cada código que este computador enviou</td></tr>
+      </table>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>A identidade é o ORCID</h3><p>O mesmo identificador que os investigadores já usam para a autoria, verificado contra o e-mail para onde foi enviado.</p></div>
+      <div class="card"><h3>O responsável controla o acesso</h3><p>Ninguém entra por saber o nome de uma equipa. Os convites vêm do responsável, e o acesso pode ser revogado de verdade no anfitrião.</p></div>
+      <div class="card"><h3>Os projetos chegam sozinhos</h3><p>Quando alguém adere, os projetos da equipa são descarregados no arranque seguinte. Nada para clonar ou configurar.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Crédito pelo trabalho</h2>
+    <p class="why">A ordem dos autores e as percentagens de contribuição ficam registadas no projeto, juntamente com um registo do que cada pessoa realmente fez. <strong>A vantagem é que a autoria fica resolvida a partir de um registo</strong>, não da memória na altura da submissão.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">authors</td><td class="does">As contribuições como estão atualmente</td></tr>
+        <tr><td class="cmd">authors set P:50 T:50</td><td class="does">Define as percentagens</td></tr>
+        <tr><td class="cmd">authors first &lt;name&gt;</td><td class="does">Define o primeiro autor</td></tr>
+        <tr><td class="cmd">authors score</td><td class="does">A pontuação automática por trás dos números</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Nada se perde</h2>
+    <p class="why">Cada projeto é um repositório git, quer saiba ou não o que isso significa. O trabalho fica registado em commits enviados por si. <strong>A vantagem é que nenhuma versão é alguma vez sobrescrita</strong> — e um dia offline não custa nada, porque os commits ficam guardados localmente e são enviados quando a ligação volta.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">git sync</td><td class="does">Commit e push de tudo</td></tr>
+        <tr><td class="cmd">git pull</td><td class="does">Traz o mais recente da equipa</td></tr>
+        <tr><td class="cmd">organize</td><td class="does">Arquiva e ordena ficheiros soltos na estrutura do projeto</td></tr>
+        <tr><td class="cmd">pending</td><td class="does">Atualizações de ficheiros em fila à espera de aprovação</td></tr>
+        <tr><td class="cmd">versions</td><td class="does">Versões anteriores dos documentos do projeto</td></tr>
+        <tr><td class="cmd">trash &lt;path&gt;</td><td class="does">Afasta um ficheiro — nunca é eliminado de vez</td></tr>
+        <tr><td class="cmd">restore</td><td class="does">Recupera um item afastado</td></tr>
+        <tr><td class="cmd">status ongoing</td><td class="does">Marca o projeto como em curso, concluído ou arquivado</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>A IA é sua para escolher</h2>
+    <p class="why">O Ollama corre no seu próprio computador sem custos e funciona offline. O Kimi e o Claude estão disponíveis com a sua própria chave. <strong>A vantagem é que nada obriga o seu material a ir para a nuvem de outra pessoa</strong>, e não é precisa nenhuma subscrição para trabalhar. Um modelo dentro do Claudito apenas responde a perguntas — triagem, classificação, sugestões de edição. Não pode executar comandos, chamar APIs nem ler os seus PDFs: cada ação é executada pelo código do próprio Claudito, e ele nunca escreve o artigo por si.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">ai status</td><td class="does">Que modelo está a responder neste momento</td></tr>
+        <tr><td class="cmd">ai switch</td><td class="does">Muda entre Kimi, Claude, Ollama ou automático</td></tr>
+        <tr><td class="cmd">ai key</td><td class="does">Define a sua própria chave de API</td></tr>
+        <tr><td class="cmd">screen &lt;doi&gt;</td><td class="does">Avalia a relevância de um artigo para a sua questão</td></tr>
+        <tr><td class="cmd">kimi / claude / ollama</td><td class="does">Coloca uma pergunta a um modelo específico</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Unidirecional por conceção</h2>
+    <p class="why">O Claudito é uma ferramenta de linha de comandos local-first, não um agente de IA nem um serviço na nuvem. <strong>A vantagem é que o seu trabalho vive apenas em infraestruturas que lhe pertencem</strong> — não há nada que possa fugir, porque não há para onde ir.</p>
+    <div class="grid">
+      <div class="card"><h3>Não é um agente de IA</h3><p>Uma ferramenta de linha de comandos local-first. Faz apenas o que lhe pede, quando lhe pede — e nunca escreve o artigo por si.</p></div>
+      <div class="card"><h3>Atualizações só de descarregamento</h3><p>As atualizações fluem num só sentido, desta página de releases para si. Nada sobre si ou sobre o seu trabalho é alguma vez enviado de volta.</p></div>
+      <div class="card"><h3>O seu conteúdo fica consigo</h3><p>Os projetos sincronizam apenas para a sua própria conta privada de GitLab/Gitee. O Claudito não tem servidor, nem sistema de contas, nem telemetria.</p></div>
+      <div class="card"><h3>As chaves são pessoais</h3><p>As chaves de API das editoras e dos modelos vivem na máquina de cada utilizador e nunca são partilhadas, reencaminhadas ou carregadas — nem sequer entre membros da equipa.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Levar um artigo pela revisão por pares</h2>
+    <p class="why">Submissões, comentários dos revisores e cartas de apresentação são guardados como rondas dentro do projeto, ao lado do manuscrito a que pertencem. <strong>A vantagem é que uma ressubmissão seis meses depois ainda tem o seu histórico anexado</strong> — o que foi pedido, o que mudou e porquê.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">review new &lt;name&gt;</td><td class="does">Inicia uma ronda de revisão para uma submissão</td></tr>
+        <tr><td class="cmd">review status</td><td class="does">Todas as revisões e a fase em que cada uma está</td></tr>
+        <tr><td class="cmd">review note</td><td class="does">Regista uma nota na ronda atual</td></tr>
+        <tr><td class="cmd">review screen</td><td class="does">Tria um artigo à procura de fragilidades metodológicas</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Declarar como a IA foi usada</h2>
+    <p class="why">Cada ação assistida por IA fica registada no momento em que acontece, e a declaração de divulgação que as revistas exigem cada vez mais é gerada a partir desse registo. <strong>A vantagem é uma declaração honesta e completa</strong>, escrita a partir de um registo em vez de reconstruída de memória na submissão.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">show provenance</td><td class="does">Todas as ações assistidas por IA neste projeto</td></tr>
+        <tr><td class="cmd">generate disclosure</td><td class="does">Produz o documento de divulgação do uso de IA</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Vários projetos, vários papéis</h2>
+    <p class="why">Um espaço de trabalho tem a sua própria pasta de investigação, a sua própria equipa e as suas próprias definições, e muda entre eles com um comando. <strong>A vantagem é que o projeto de um orientador e a sua própria tese ficam separados</strong> sem instalações separadas.</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">profile</td><td class="does">O espaço de trabalho em que está e o seu papel nele</td></tr>
+        <tr><td class="cmd">profile switch</td><td class="does">Muda para outro espaço de trabalho</td></tr>
+        <tr><td class="cmd">project team &lt;team&gt;</td><td class="does">Move um projeto para uma equipa — os contribuidores vão com ele</td></tr>
+        <tr><td class="cmd">project team none</td><td class="does">Tira um projeto da sua equipa</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cuida de si próprio</h2>
+    <div class="grid">
+      <div class="card"><h3>Atualizações sem ser preciso pedir</h3><p>Cada arranque verifica se há uma nova release e instala-a. Ninguém fica numa versão antiga.</p></div>
+      <div class="card"><h3>Instala o que precisa</h3><p>Um Git em falta é instalado por si em vez de ser reportado como erro.</p></div>
+      <div class="card"><h3>Funciona offline</h3><p>Escrever, compilar e a IA local não precisam de ligação. Os commits ficam guardados e são enviados quando voltar.</p></div>
+      <div class="card"><h3>A identidade está protegida</h3><p>O ORCID, o e-mail e a pertença às equipas são guardados em instantâneos e restaurados se uma configuração se danificar.</p></div>
+      <div class="card"><h3>Diagnóstico integrado</h3><p>O <code>clt --doctor</code> reporta o que está mal numa instalação e o que fazer a seguir.</p></div>
+      <div class="card"><h3>Um comando para instalar</h3><p>Uma única linha no macOS ou no Windows, que termina dentro de um Claudito já a correr.</p></div>
+    </div>
+  </section>
+
+  <p class="close">Os comandos mostrados são os disponíveis na shell do projeto; escreva <b>help</b> para a lista completa, <b>cheatsheet</b> para os mais comuns, ou <b>features</b> para uma visão geral dentro do próprio Claudito. A disponibilidade depende do seu papel — os membros da equipa veem os comandos de colaboração, e os comandos de cluster só aparecem para quem tem acesso ao servidor.</p>
+
+</div>
+</body>
+</html>

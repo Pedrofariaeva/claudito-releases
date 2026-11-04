@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Nove passos, de um projeto simples à sincronização em equipa">
+<title>O Seu Primeiro Projeto Claudito</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:      #F3F5F1;
+    --surface:    #FBFCFA;
+    --ink:        #1A1D19;
+    --ink-soft:   #4E554B;
+    --ink-faint:  #7C8478;
+    --rule:       #DCE0D6;
+    --accent:     #5F8A1B;
+    --accent-dim: #EBF1DF;
+    --code-bg:    #ECEFE7;
+    --warn:       #9A5B00;
+    --warn-dim:   #FBF0DC;
+    --shadow:     0 1px 2px rgba(26,29,25,.05), 0 8px 24px -16px rgba(26,29,25,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #131612;
+      --surface:    #1B1F19;
+      --ink:        #E9EDE4;
+      --ink-soft:   #AFB8A8;
+      --ink-faint:  #7E8777;
+      --rule:       #2C3228;
+      --accent:     #A6CE39;
+      --accent-dim: #232A19;
+      --code-bg:    #202619;
+      --warn:       #F0B45A;
+      --warn-dim:   #2E2413;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #131612;
+    --surface:    #1B1F19;
+    --ink:        #E9EDE4;
+    --ink-soft:   #AFB8A8;
+    --ink-faint:  #7E8777;
+    --rule:       #2C3228;
+    --accent:     #A6CE39;
+    --accent-dim: #232A19;
+    --code-bg:    #202619;
+    --warn:       #F0B45A;
+    --warn-dim:   #2E2413;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+  }
+
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; }
+
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: Newsreader, Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 1.1rem 0 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    margin-top: 1.6rem;
+    font-size: .82rem;
+    color: var(--ink-faint);
+  }
+  .meta b { color: var(--ink-soft); font-weight: 500; }
+  .langbtn { background: none; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-faint); font: inherit; font-size: .78rem; padding: .1rem .55rem; cursor: pointer; }
+  .langbtn:hover { color: var(--accent); border-color: var(--accent); }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .86em;
+    background: var(--code-bg);
+    padding: .12em .38em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  .close {
+    margin-top: 3.6rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--ink);
+    font-size: .88rem;
+    color: var(--ink-faint);
+    max-width: 66ch;
+  }
+  .close b { color: var(--ink-soft); font-weight: 500; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── the walkthrough ─────────────────────────────────── */
+  .steps { counter-reset: step; margin-top: 2.2rem; display: grid; gap: 1.1rem; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.3rem 1.5rem 1.4rem 3.6rem;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 1.25rem; top: 1.3rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-dim);
+    width: 1.6rem; height: 1.6rem;
+    display: grid; place-items: center;
+    border-radius: 50%;
+  }
+  .step h2 {
+    font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    margin: 0 0 .15rem;
+  }
+  .step p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 62ch; }
+  .step p + p { margin-top: .55rem; }
+
+  .where {
+    display: block;
+    font-size: .7rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 .6rem;
+  }
+
+  .seq {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .45rem .5rem;
+    margin: .1rem 0 .75rem;
+  }
+  .type {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .55rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .88rem;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .4rem .75rem;
+    color: var(--ink);
+  }
+  .type b {
+    font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    font-weight: 500;
+    font-size: .7rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .then { font-size: .8rem; color: var(--ink-faint); }
+
+  .watch {
+    margin-top: .7rem;
+    padding-left: .85rem;
+    border-left: 2px solid var(--rule);
+    font-size: .89rem;
+    color: var(--ink-faint);
+  }
+  .watch b { color: var(--ink-soft); font-weight: 500; }
+
+  .warn {
+    margin-top: .75rem;
+    padding: .6rem .85rem;
+    background: var(--warn-dim);
+    border-left: 3px solid var(--warn);
+    border-radius: 2px;
+    font-size: .91rem;
+    color: var(--ink);
+    max-width: 62ch;
+  }
+  .warn b { color: var(--warn); font-weight: 600; }
+
+  .first { border-left: 3px solid var(--accent); }
+
+  .callout {
+    margin: 2.4rem 0 0;
+    padding: 1.3rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+  }
+  .callout h2 { font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+                font-size: 1rem; font-weight: 600; margin: 0 0 .5rem; }
+  .callout p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 64ch; }
+  .callout p + p { margin-top: .55rem; }
+
+  .places {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: .9rem;
+    margin-top: .9rem;
+  }
+  .place {
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .85rem 1rem;
+    background: var(--paper);
+  }
+  .place h3 { font-size: .9rem; font-weight: 600; margin: 0 0 .45rem; }
+  .place p { font-size: .88rem; }
+  .prompt {
+    display: block;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .8rem;
+    background: var(--code-bg);
+    border-radius: 2px;
+    padding: .45rem .6rem;
+    margin: 0 0 .55rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+
+  /* spacing that used to be written inline */
+  .callout p.after-places { margin-top: .9rem; }
+  .step p + .seq { margin-top: .6rem; }
+
+  /* copyable commands */
+  .code { position: relative; margin: .55rem 0 .15rem; }
+  .code pre {
+    margin: 0;
+    padding: .7rem 4.8rem .7rem .85rem;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .74rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: var(--ink);
+  }
+  .copy {
+    position: absolute; top: .4rem; right: .4rem;
+    font: 500 .72rem "IBM Plex Sans", ui-sans-serif, sans-serif;
+    padding: .3rem .65rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .copy:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .callout .watch, .callout .warn { margin-top: .75rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Primeiros passos</p>
+    <h1>O Seu Primeiro Projeto Claudito</h1>
+    <p class="standfirst">Nove passos, de um projeto simples à sincronização em equipa</p>
+    <div class="meta">
+      <span><b>Duração</b> cerca de 30 minutos bem dedicados, incluindo pesquisar, triar, editar e publicar os ficheiros latex</span>
+      <span><b>Precisa de</b> instalar o Claudito (GitHub), o seu ORCID, o ORCID e o e-mail do seu colega, uma conta GitLab (uma conta GitHub é opcional)</span>
+      <span><b>Idioma</b> <button class="langbtn" type="button" onclick="var f=location.pathname.split('/').pop()||'index.html',b=f.replace(/-(zh|pt)(?=\.html$)/,'');location.href=f===b?b.replace('.html','-zh.html'):f.indexOf('-zh')>0?b.replace('.html','-pt.html'):b">PT</button></span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <h2>O que o Claudito é — e o que não é</h2>
+    <p>Uma <b>ferramenta local de linha de comandos</b>: tudo acontece na sua pasta de investigação, no seu computador.</p>
+    <p><b>Não é um agente de IA</b>: nunca age por iniciativa própria e nunca escreve o seu artigo. (A promessa completa: <a href="https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md">https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md</a>)</p>
+    <p><b>Modelos locais</b> (Ollama) tratam da triagem e da classificação offline. Os modelos na nuvem com chave própria (Kimi, Claude), opcionais, apenas respondem a perguntas de triagem — títulos e resumos, nunca o texto integral.</p>
+    <p><b>Segurança unidirecional</b>: o seu trabalho vai apenas para a sua própria máquina e para o seu próprio GitLab/Gitee. O Claudito não recolhe nada e não liga para lado nenhum.</p>
+  </div>
+
+  <div class="callout">
+    <h2>Preparação 1 — instalar o Claudito</h2>
+    <p>Crie antes de começar uma conta gratuita no <b>GitLab</b> (recomendado) e no <b>GitHub</b> (opcional), em <a href="https://gitlab.com">https://gitlab.com</a> e <a href="https://github.com">https://github.com</a>, e use o mesmo e-mail que vai dar no Claudito. Será usado para partilhar os seus projetos com as equipas.</p>
+    <div class="places">
+      <div class="place">
+        <h3>Num Mac</h3>
+        <p>Abra o <b>Terminal</b>: prima <b>Cmd + Space</b>, escreva <code>Terminal</code> e prima Enter. Cole esta linha e prima Enter:</p>
+        <div class="code"><pre>cd "$(mktemp -d)" &amp;&amp; (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) &amp;&amp; tar -xzf claudito.tar.gz &amp;&amp; cd claudito-external-v* &amp;&amp; ./install.sh</pre><button class="copy" type="button">Copiar</button></div>
+      </div>
+      <div class="place">
+        <h3>No Windows</h3>
+        <p>Abra o <b>PowerShell</b>: prima a <b>tecla Windows</b>, escreva <code>PowerShell</code> e prima Enter. Cole esta linha e prima Enter:</p>
+        <div class="code"><pre>[Net.ServicePointManager]::SecurityProtocol='Tls12'; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; try { irm https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/install.ps1 | iex } catch { irm https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/install.ps1 | iex }</pre><button class="copy" type="button">Copiar</button></div>
+      </div>
+    </div>
+    <p class="after-places">Os mesmos códigos de uma linha estão sempre no GitHub: <a href="https://github.com/Pedrofariaeva/claudito-releases">https://github.com/Pedrofariaeva/claudito-releases</a></p>
+    <p class="warn"><b>Apenas no Terminal ou no PowerShell.</b> Não use outros editores</p>
+    <p class="watch">Se disser que <b>não consegue ligar-se,</b> corra a mesma linha outra vez. Tenta primeiro o GitHub e um espelho em segundo, e uma ligação lenta precisa muitas vezes de uma segunda tentativa.</p>
+  </div>
+
+  <div class="callout">
+    <h2>Preparação 2 — perguntas de configuração</h2>
+    <p>Depois da instalação, o Claudito pede estas informações, por esta ordem:</p>
+    <p><b>O seu nome</b> (como quer ser chamado), o seu <b>ORCID</b> e o seu <b>e-mail</b> (de preferência o e-mail do seu ORCID). Os convites de equipa funcionam com o número ORCID e o e-mail, por isso escreva-os com cuidado.</p>
+    <p><b>Se foi convidado para uma equipa,</b> o Claudito encontra aqui o convite e junta-o a essa equipa. Um código de confirmação é enviado para o seu e-mail, por isso verifique também a pasta de spam.</p>
+    <p><b>Qual é a pasta da sua investigação:</b> aceite a pasta que o Claudito sugere, ou indique a que já tem.</p>
+    <p><b>Ollama</b>, o motor de IA predefinido que o Claudito usa nos bastidores: instala-se automaticamente, é gratuito e não precisa de chave. Recomendamo-lo. Este modelo corre localmente na sua máquina — a triagem fica offline. (Se não puder ser instalado, a configuração continua e pode adicioná-lo mais tarde com <code>setup</code>).</p>
+    <p><b>Chave Kimi</b> (opcional): um motor mais forte para perguntas de triagem. A sua chave fica no seu computador e nunca é partilhada — nem sequer com a sua equipa. Prima Enter para saltar se não tiver uma.</p>
+    <p><b>Chave Claude</b> (opcional): um motor mais forte para perguntas de triagem. A sua chave fica no seu computador e nunca é partilhada — nem sequer com a sua equipa. Prima Enter para saltar se não tiver uma.</p>
+    <p><b>Nome de utilizador GitHub</b> (opcional): uma conta GitHub permite-lhe registar-se no GitLab com <b>Sign in with GitHub</b>, que funciona onde o registo direto em gitlab.com não funciona. Prima Enter para saltar se não tiver uma.</p>
+    <p><b>GitLab:</b> escreva o seu nome de utilizador GitLab. O Claudito abre o GitLab já preenchido. Clique em <b>Create personal access token</b>, copie o token e cole-o de volta na CLI.</p>
+    <p><b>Chaves de bases de dados</b> (opcional): a pesquisa já funciona sem chave, através das bases de dados gratuitas. Uma chave desbloqueia mais (IEEE Xplore, Scopus, Springer, Web of Science, CNKI…). Prima Enter para saltar; adicione chaves mais tarde com <code>dbs setup</code>.</p>
+    <p class="watch"><b>Enter mantém o que já lá está.</b> Escreva <code>back</code> para voltar à pergunta anterior, ou <code>quit</code> para cancelar sem guardar. No fim, o Claudito mostra um resumo para rever e depois pergunta <b>Save?</b></p>
+    <p class="watch"><b>Algo correu mal ou saltou uma pergunta?</b> A configuração nunca para a meio. Escreva <code>setup</code> mais tarde na lista de projetos para lhe responder.</p>
+    <p class="watch"><b>Nenhuma IA no Claudito escreverá artigos ou teses por si; está vinculada a um manifesto de ética que a limita a fornecer todo o tipo de assistência e automatismos. Para mais informação, leia em <a href="https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md">https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md</a></b></p>
+  </div>
+
+  <div class="callout">
+    <h2>Preparação 3 — confirmar que funciona</h2>
+    <p>Feche a janela, abra um novo <b>Terminal</b> ou <b>PowerShell</b>,</p>
+    <p>escreva <code>clt</code> e prima <code>Enter</code></p>
+    <p>Verifique a versão, p. ex. <code>✓ claudito v2.11.48</code>. Se algum dia reportar um problema, essa linha é a primeira coisa a enviar ao Pedro.</p>
+    <p class="watch"><b>Se o <code>clt</code> não for reconhecido,</b> feche a janela e abra uma nova.</p>
+    <p class="watch"><b>Se saltou alguma pergunta</b> durante a configuração, escreva <code>setup</code> no início.</p>
+  </div>
+
+  <div class="callout">
+    <h2>Como começar</h2>
+    <div class="places">
+      <div class="place">
+        <h3>A lista de projetos</h3>
+        <span class="prompt">Which one? [number/n/o/q/help]:</span>
+        <p>Aqui cria um projeto (<code>n</code>), gere equipas (<code>t</code>)</p>
+        <p><b>Abra um projeto escrevendo o seu número</b>.</p>
+      </div>
+      <div class="place">
+        <h3>Dentro de um projeto</h3>
+        <span class="prompt">[personal | myproject | Ollama] &gt;</span>
+        <p>O prompt mostra o nome do seu projeto. Tudo o resto aqui (invite, abstract, harvest, plan) <b>só funciona dentro deste</b>.</p>
+      </div>
+    </div>
+    <p class="after-places">Se o Claudito responder <b>“Invalid choice”</b>, está na lista de projetos. Escreva o número do seu projeto e tente outra vez.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step first">
+      <h2>Criar um projeto</h2>
+      <span class="where">Na lista de projetos</span>
+      <div class="seq"><span class="type"><b>escreva</b> n</span><span class="then">para o primeiro projeto (new project) (se já tiver um projeto, escreva o número, p. ex.</span><span class="type">TYPE: 01</span><span class="then">)</span></div>
+      <p>Dê um nome de código ao projeto, sem espaços, p. ex. <code>myproject</code>. Aparece na sua lista com um número ao lado.</p>
+      <p class="watch"><b>Se ainda não tem equipa,</b> o projeto fica privado por agora. É o esperado. Se já tem uma equipa, o Claudito pergunta qual.</p>
+    </div>
+    <div class="step">
+      <h2>Criar uma equipa e pôr lá o seu projeto</h2>
+      <span class="where">Na lista de projetos, depois dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> t</span><span class="then">, veja a lista e escolha</span><span class="type">3</span><span class="then">(criar uma equipa), escreva um nome de equipa e depois</span><span class="type">b</span><span class="then">para voltar atrás</span></div>
+      <p>Agora abra o seu projeto escrevendo o número dele e ponha-o na equipa:</p>
+      <div class="seq"><span class="type"><b>escreva</b> [[nome-da-sua-equipa]]</span></div>
+      <p class="warn"><b>Não salte a segunda parte.</b> Criar uma equipa não move para lá um projeto que já criou. Sem isto, o seu colega entra numa equipa vazia, e parece exatamente que a partilha está avariada.</p>
+      <p>TAMBÉM PODE ESCREVER: <code>project team [[nome-da-sua-equipa]]</code> diretamente na CLI</p>
+    </div>
+    <div class="step">
+      <h2>Convidar um membro</h2>
+      <span class="where">Dentro do menu da equipa</span>
+      <div class="seq"><span class="type"><b>escreva</b> 4</span></div>
+      <p>ou fora do menu da equipa,</p>
+      <div class="seq"><span class="type"><b>escreva</b> b</span><span class="then">antes de voltar atrás e...</span></div>
+      <span class="where">Escolha o número de um projeto e, dentro do projeto:</span>
+      <div class="seq"><span class="type"><b>escreva</b> invite</span></div>
+      <p>O Claudito pede o ORCID da pessoa, mostra-lhe o nome que encontrou para confirmar que é a pessoa certa, e depois pede o endereço de e-mail.</p>
+      <p>Convide alguém que <b>não</b> esteja já numa das suas equipas. É esse o caso que vale a pena testar.</p>
+      <p class="watch"><b>Diga-lhes:</b> vão receber um e-mail com um código, que pode cair no spam. Se não o encontrarem, devem procurar por <code>trackonperformance</code>.</p>
+    </div>
+    <div class="step">
+      <h2>Escrever um resumo</h2>
+      <span class="where">Dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> abstract</span></div>
+      <p>Um ficheiro abre-se. Escreva algumas linhas sobre o tema do projeto, depois guarde e feche o ficheiro.</p>
+      <p class="watch"><b>Porquê primeiro:</b> a pesquisa do passo seguinte lê este ficheiro para saber o que procurar.</p>
+    </div>
+    <div class="step">
+      <h2>Pesquisar a bibliografia</h2>
+      <span class="where">Dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> harvest</span></div>
+      <p>O Claudito mostra uma lista numerada dos documentos a partir dos quais pode pesquisar e pergunta qual usar.</p>
+      <p class="warn"><b>Escreva o número ao lado de <code>abstract.txt</code>. Não prima simplesmente Enter.</b> A opção 1 é o modelo de plano vazio, e a pesquisa iria procurar as perguntas de preenchimento em vez do seu tema.</p>
+      <p class="watch"><b>Isto demora um pouco.</b> Pesquisa todas as bases de dados a que consegue chegar, remove duplicados e reporta quantos artigos encontrou e quantos vieram com PDF.</p>
+    </div>
+    <div class="step">
+      <h2>Explorar a ajuda</h2>
+      <span class="where">Dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> help</span><span class="then">ou</span><span class="type">cheatsheet</span></div>
+      <p>O <code>help</code> lista todos os comandos, agrupados pelo que fazem. O <code>cheatsheet</code> mostra só os mais usados.</p>
+      <p>Experimente um ou dois que pareçam úteis. É assim que aprende o resto.</p>
+    </div>
+    <div class="step">
+      <h2>Verificar as referências e depois escrever o plano do projeto</h2>
+      <span class="where">Dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> ref list</span><span class="then">depois</span><span class="type">ref organise</span><span class="then">depois</span><span class="type">plan</span></div>
+      <p>O <code>ref list</code> mostra os artigos que a pesquisa encontrou. O <code>ref organise</code> ordena-os em pastas dentro de <code>references</code>. Essa estrutura de pastas é a forma que o seu documento vai seguir.</p>
+      <p>Veja essas pastas, depois escreva <code>plan</code> e escreva o que tenciona fazer, seguindo essa estrutura.</p>
+      <p class="watch"><b>Opcional:</b> o <code>screen all</code> põe a IA a avaliar quais os artigos realmente relevantes. É lento numa pesquisa grande.</p>
+    </div>
+    <div class="step">
+      <h2>Compilar o PDF — e os slides</h2>
+      <span class="where">Dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> p</span></div>
+      <p>O Claudito compila o seu projeto num PDF composto e num ficheiro Word, a partir do modelo da editora que escolheu — o mesmo texto, ambos os formatos, sempre sincronizados.</p>
+      <p class="watch"><b>Slides também:</b> o <code>new slide</code> inicia uma apresentação a partir do modelo da instituição, e o <code>build slides</code> compila a apresentação para PDF — o mesmo material, outro formato, sem PowerPoint.</p>
+    </div>
+    <div class="step">
+      <h2>Fechar o plano, confirmar que ficou guardado e sair corretamente</h2>
+      <span class="where">Dentro do projeto</span>
+      <div class="seq"><span class="type"><b>escreva</b> plan</span><span class="then">depois, quando terminar</span><span class="type">clt</span></div>
+      <p>Guarde e feche o ficheiro do plano. Escreva <code>plan</code> outra vez e confirme que o seu texto ainda lá está.</p>
+      <p>Para adicionar uma figura, tabela ou equação sem saber LaTeX, feche primeiro o ficheiro e escreva <code>format</code> no prompt do Claudito. Não funciona se for escrito dentro do próprio ficheiro.</p>
+      <p class="warn"><b>Saia com <code>clt</code>, nunca fechando a janela.</b> O <code>clt</code> guarda o seu trabalho e carrega-o. Fechar a janela mantém tudo no seu próprio computador, e o seu colega não vê nada.</p>
+    </div>
+    <div class="step">
+      <h2>Confirmar que o seu colega tem o projeto</h2>
+      <span class="where">No computador do seu colega</span>
+      <div class="seq"><span class="type"><b>ele escreve</b> clt</span></div>
+      <p>O seu projeto deve estar na lista de projetos dele, com o seu conteúdo: o resumo, as referências e o seu plano.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <h2>Projetos e equipas</h2>
+    <p>A que equipa se junta um novo projeto:</p>
+    <div class="places">
+      <div class="place">
+        <h3>Ainda sem equipa</h3>
+        <p>O projeto é privado. Só está visível para si.</p>
+      </div>
+      <div class="place">
+        <h3>Uma ou mais equipas</h3>
+        <p>O Claudito pergunta <b>“Which team is this project for?”</b> Escreva o número da equipa, ou escolha <b>No team — keep it to myself</b> para trabalhar sozinho.</p>
+      </div>
+    </div>
+    <p class="after-places"><b>Para adicionar um projeto a uma equipa mais tarde,</b> abra-o e escreva <code>project team nome-da-equipa</code>. O mesmo comando move um projeto para outra equipa.</p>
+    <p><b>Para tirar um projeto da sua equipa,</b> abra-o e escreva <code>project team none</code>. Deixa de ser partilhado a partir desse momento; os colegas que já o descarregaram ficam com a sua cópia.</p>
+    <p class="watch"><b>Para ver as suas equipas,</b> escreva <code>t</code> e depois <code>1</code>. A lista de projetos mostra a equipa de cada projeto a seguir ao nome, como <code>@aonipepe</code>.</p>
+  </div>
+
+  <div class="callout">
+    <h2>Se algo não funcionar</h2>
+    <p>Envie ao Pedro três coisas: <b>a linha da versão</b> do primeiro ecrã, <b>o que escreveu</b> e <b>uma fotografia do ecrã</b>.</p>
+    <p>Essas três tornam um problema localizável. Uma descrição sozinha, normalmente, não chega.</p>
+  </div>
+
+  <p class="close">O <b>help</b> lista todos os comandos, e o <b>cheatsheet</b> lista os mais usados. Se um projeto alguma vez passar de alguns gigabytes, o <b>clean</b> mostra o que ele carrega de que já não precisa.</p>
+
+</div>
+<script>
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".copy") : null;
+    if (!btn) return;
+    var pre = btn.parentNode.querySelector("pre");
+    function said(word) { btn.textContent = word; setTimeout(function () { btn.textContent = "Copy"; }, 1800); }
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      said("Press \u2318C / Ctrl+C");
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(pre.textContent).then(function () { said("Copied"); }, selectIt);
+    } else { selectIt(); }
+  });
+</script>
+</body>
+</html>

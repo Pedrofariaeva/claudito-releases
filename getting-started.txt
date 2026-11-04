@@ -35,6 +35,13 @@ TAKES: about 30min well dedicated, including the search, screen, edit and publis
 YOU NEED: Install Claudito (GitHub), your ORCID, your colleague's ORCID and e-mail, a GitLab account (a GitHub account is optional)
 
 
+=== BOX: What Claudito is — and is not
+A **local command-line tool**: everything happens in your research folder, on your computer.
+**Not an AI agent**: it never acts on its own and never writes your paper. (The full promise: https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md)
+**Local models** (Ollama) handle screening and classification offline. Optional own-key cloud models (Kimi, Claude) only answer screening questions — titles and abstracts, never full text.
+**One-way safety**: your work goes only to your own machine and your own GitLab/Gitee. Claudito collects nothing and phones nowhere.
+
+
 === BOX: Prepare 1 — install Claudito
 Create both a free **GitLab** (recommended) and ** GitHub** (optional) account before you start, https://gitlab.com and https://github.com and use the same e-mail you will give in Claudito. It will be used to share your projects with the teams.
 
@@ -59,9 +66,9 @@ After install, Claudito asks for this information, in this order:
 **Your name** (whatever you want to be called), your **ORCID** and your **e-mail** (preferably your ORCID's e-mail). Team invitations work with the ORCID number and e-mail, so type them carefully.
 **If you were invited to a team,** Claudito finds the invitation here and joins you to that team. A confirmation code is e-mailed to you, so check your spam folder too.
 **Which folder is your research:** accept the folder Claudito suggests, or give the one you already have.
-**Ollama**, the default AI engine Claudito uses in the back end: it installs automatically, is free and needs no key. We recommend it. (If it can't be installed, setup carries on and you can add it later with `setup`).
-**Kimi key** (optional): For a stronger engine you can add kimi code. press Enter to skip if you don't have one.
-**Claude key** (optional): For a stronger engine you can add Claude code. press Enter to skip if you don't have one.
+**Ollama**, the default AI engine Claudito uses in the back end: it installs automatically, is free and needs no key. We recommend it. This model runs locally on your machine — screening stays offline. (If it can't be installed, setup carries on and you can add it later with `setup`).
+**Kimi key** (optional): a stronger engine for screening questions. Your key stays on your computer and is never shared — not even with your team. Press Enter to skip if you don't have one.
+**Claude key** (optional): a stronger engine for screening questions. Your key stays on your computer and is never shared — not even with your team. Press Enter to skip if you don't have one.
 **GitHub username** (optional): a GitHub account lets you register on GitLab with **Sign in with GitHub**, which works where signing up on gitlab.com directly does not. Press Enter to skip if you don't have one.
 **GitLab:** type your GitLab username. Claudito opens GitLab already filled in. Click **Create personal access token**, copy the token, and paste it back into the CLI.
 **Database keys** (optional): the search already works with no key, through the free databases. A key unlocks more (IEEE Xplore, Scopus, Springer, Web of Science, CNKI…). Press Enter to skip; add keys later with `dbs setup`.
@@ -147,6 +154,13 @@ TYPE: `ref list` then `ref organise` then `plan`
 `ref list` shows the papers the search found. `ref organise` sorts them into folders under `references`. That folder structure is the shape your document will follow.
 Look at those folders, then type `plan` and write what you intend to do, following that structure.
 NOTE: **Optional:** `screen all` has the AI judge which papers are actually relevant. It is slow on a large search.
+
+
+=== STEP: Compile the PDF — and the slides
+WHERE: Inside the project
+TYPE: `p`
+Claudito compiles your project into a typeset PDF and a Word file, from the publisher template you chose — the same text, both formats, always in sync.
+NOTE: **Slides too:** `new slide` starts a presentation from the school template, and `build slides` compiles the deck to PDF — same material, another format, no PowerPoint.
 
 
 === STEP: Close the plan, check it saved, and leave properly

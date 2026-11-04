@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Claudito 做什么、为何重要——从检索文献到产出论文，始终与你的团队保持同步。">
+<title>深入 Claudito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:      #F3F5F1;
+    --surface:    #FBFCFA;
+    --ink:        #1A1D19;
+    --ink-soft:   #4E554B;
+    --ink-faint:  #7C8478;
+    --rule:       #DCE0D6;
+    --accent:     #5F8A1B;
+    --accent-dim: #EBF1DF;
+    --code-bg:    #ECEFE7;
+    --shadow:     0 1px 2px rgba(26,29,25,.05), 0 8px 24px -16px rgba(26,29,25,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #131612;
+      --surface:    #1B1F19;
+      --ink:        #E9EDE4;
+      --ink-soft:   #AFB8A8;
+      --ink-faint:  #7E8777;
+      --rule:       #2C3228;
+      --accent:     #A6CE39;
+      --accent-dim: #232A19;
+      --code-bg:    #202619;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #131612;
+    --surface:    #1B1F19;
+    --ink:        #E9EDE4;
+    --ink-soft:   #AFB8A8;
+    --ink-faint:  #7E8777;
+    --rule:       #2C3228;
+    --accent:     #A6CE39;
+    --accent-dim: #232A19;
+    --code-bg:    #202619;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+  }
+
+  /* ── masthead ─────────────────────────────────────────── */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; }
+
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: Newsreader, Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 1.1rem 0 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    margin-top: 1.6rem;
+    font-size: .82rem;
+    color: var(--ink-faint);
+  }
+  .meta b { color: var(--ink-soft); font-weight: 500; }
+  .langbtn { background: none; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-faint); font: inherit; font-size: .78rem; padding: .1rem .55rem; cursor: pointer; }
+  .langbtn:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── intro pitch ──────────────────────────────────────── */
+  .intro {
+    margin: 1.9rem 0 0;
+    font-size: 1.01rem;
+    color: var(--ink-soft);
+    max-width: 72ch;
+  }
+  .intro b { color: var(--ink); font-weight: 600; }
+
+  /* ── premise ──────────────────────────────────────────── */
+  .premise {
+    margin: 2.6rem 0 0;
+    padding: 1.5rem 1.7rem;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 2px;
+    box-shadow: var(--shadow);
+  }
+  .premise p { margin: 0; max-width: 68ch; }
+  .premise p + p { margin-top: .8rem; }
+
+  /* ── sections ─────────────────────────────────────────── */
+  section { margin-top: 3.4rem; }
+
+  h2 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(1.5rem, 3.2vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -.01em;
+    margin: 0 0 .35rem;
+    text-wrap: balance;
+  }
+
+  .why {
+    color: var(--ink-soft);
+    max-width: 66ch;
+    margin: 0 0 1.4rem;
+  }
+  .why strong { color: var(--ink); font-weight: 600; }
+
+  /* ── command tables ───────────────────────────────────── */
+  .cmds {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  table { border-collapse: collapse; width: 100%; min-width: 30rem; }
+  td {
+    padding: .62rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.cmd {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82rem;
+    color: var(--accent);
+    white-space: nowrap;
+    width: 1%;
+    font-weight: 500;
+  }
+  td.does { color: var(--ink-soft); font-size: .93rem; }
+
+  /* ── highlight cards ──────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1.4rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.15rem 1.25rem;
+    box-shadow: var(--shadow);
+  }
+  .card h3 {
+    font-size: .95rem;
+    font-weight: 600;
+    margin: 0 0 .4rem;
+    letter-spacing: -.005em;
+  }
+  .card p { margin: 0; font-size: .89rem; color: var(--ink-soft); }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .86em;
+    background: var(--code-bg);
+    padding: .12em .38em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  /* ── the syntax sheet ─────────────────────────────────── */
+  .syntax {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .1rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.2rem 1.4rem;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+  }
+  .syntax dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .82rem;
+    color: var(--accent);
+    white-space: nowrap;
+    padding: .3rem 0;
+    font-weight: 500;
+  }
+  .syntax dd {
+    margin: 0;
+    padding: .3rem 0;
+    font-size: .9rem;
+    color: var(--ink-soft);
+  }
+
+  /* ── closing ──────────────────────────────────────────── */
+  .close {
+    margin-top: 3.6rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--ink);
+    font-size: .88rem;
+    color: var(--ink-faint);
+    max-width: 66ch;
+  }
+  .close b { color: var(--ink-soft); font-weight: 500; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">功能参考</p>
+    <h1>深入 Claudito</h1>
+    <p class="standfirst">一个驻留在终端里的研究助手——从检索文献到产出论文，始终与你的团队保持同步。</p>
+    <div class="meta">
+      <span><b>自动更新</b> 每次启动时</span>
+      <span><b>运行于</b> macOS · Windows · Linux</span>
+      <span><b>许可</b> 专有，源码不公开</span>
+      <span><b>语言</b> <button class="langbtn" type="button" onclick="var f=location.pathname.split('/').pop()||'index.html',b=f.replace(/-(zh|pt)(?=\.html$)/,'');location.href=f===b?b.replace('.html','-zh.html'):f.indexOf('-zh')>0?b.replace('.html','-pt.html'):b">中文</button></span>
+    </div>
+  </header>
+
+  <p class="intro">Claudito 是一款免费的 CLI（命令行）学术研究工具，支持 Windows、macOS 和 Linux——本地优先，且不是 AI 智能体。它在整个研究流程中支持研究者及其团队：从 <b>500 个出版商数据库</b>——Springer、Elsevier、IEEE 等——检索、筛选并获取论文，在你的计算机上以干净的 BibTeX 参考文献按主题树组织一切，并通过 Git 与同事同步。最妙的是：<b>有了 Claudito，你不再需要 LaTeX</b>——只需写作、选择出版商，LaTeX、Word 和 PDF 文档数秒内即可就绪。（内置 LaTeX 编辑器，供需要者使用。）</p>
+
+  <div class="premise">
+    <p>大多数研究工具只解决一个环节——这里一个文献管理器，那里一个编辑器，别处一个共享网盘——让研究者在它们之间手工搬运工作。Claudito 在一个地方覆盖整个链条：检索数据库、保存参考文献、撰写文档、生成 PDF，并与项目成员共享。</p>
+    <p>它为“研究者优先”的人而造。以下任何功能都不需要懂 LaTeX、git 或云控制台。</p>
+    <p>它为何存在：为期刊重排论文格式每年耗费研究团队估计 11 亿美元的自有时间；仅生物医学领域，同行评审一年就占用了 6340 万小时；2010 至 2024 年间 Q1 期刊论文增长 +121%，而整体产出增长 84%。研究周期的 85 个流程中，58 个是机械性的——Claudito 承担这 58 个，把其余 27 个留给研究者。（<em>AI-Assisted Tools for Academic Researchers: A Full Automation Process</em>，预预览，2026。）</p>
+  </div>
+
+  <section>
+    <h2>检索文献</h2>
+    <p class="why">一次性检索你有权访问的每个数据库，一遍完成，并统计实际到达的数量。<strong>好处是不用在标签页之间来回切换就能获得完整覆盖</strong>——不必在十几个界面中重复同一查询，再手工核对结果。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">harvest</td><td class="does">检索所有已启用的数据库；目标数量按真实 PDF 计，而非命中数</td></tr>
+        <tr><td class="cmd">harvest --precision</td><td class="does">在广度与相关性之间取舍：<code>high</code>、<code>normal</code> 或 <code>low</code></td></tr>
+        <tr><td class="cmd">harvest --resync</td><td class="does">在检索更多文献之前，先重新筛选已有的文献</td></tr>
+        <tr><td class="cmd">search &lt;query&gt;</td><td class="does">在 100 多个数据库中检索</td></tr>
+        <tr><td class="cmd">search related</td><td class="does">基于你已写下的内容检索，而非输入的查询词</td></tr>
+        <tr><td class="cmd">legal harvest</td><td class="does">检索法律与法规来源</td></tr>
+        <tr><td class="cmd">dbs</td><td class="does">查看哪些数据库已启用、待启用或缺少 API 密钥</td></tr>
+        <tr><td class="cmd">track all</td><td class="does">保留本轮检索到的所有结果</td></tr>
+      </table>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>到达即去重</h3><p>同一篇论文来自四个数据库也只是一条参考文献，按 DOI 和标题相似度匹配。</p></div>
+      <div class="card"><h3>中西来源兼备</h3><p>CNKI、万方、VIP、Socolar，与 IEEE、Elsevier、Springer、Web of Science、JSTOR 并列。</p></div>
+      <div class="card"><h3>可断点续传</h3><p>采集状态会被保存，长时间运行中断后可以继续，而不必从头开始。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>管好参考文献</h2>
+    <p class="why">论文会被标记、归入你实际文档的结构，并接受相关性筛选。<strong>好处是参考文献列表与论文结构一致</strong>——你始终知道每条来源属于哪一章，以及还缺什么。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">ref list</td><td class="does">本项目保存的所有文献</td></tr>
+        <tr><td class="cmd">ref organize</td><td class="does">交互式标记并分配参考文献</td></tr>
+        <tr><td class="cmd">ref organize plan</td><td class="does">按你的计划建立章节文件夹，并把参考文献归档进去</td></tr>
+        <tr><td class="cmd">ref organize pdf</td><td class="does">按有无 PDF 分成两组</td></tr>
+        <tr><td class="cmd">screen all</td><td class="does">对已跟踪的参考文献做相关性筛选</td></tr>
+        <tr><td class="cmd">allocate &lt;doi&gt;</td><td class="does">把一篇论文分配给你文档的某一章</td></tr>
+        <tr><td class="cmd">ref suggest</td><td class="does">让 AI 建议每条参考文献的归属</td></tr>
+        <tr><td class="cmd">map references</td><td class="does">显示每条引用属于哪一章</td></tr>
+        <tr><td class="cmd">ref bib</td><td class="does">生成 <code>citations.bib</code></td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>写作无需 LaTeX</h2>
+    <p class="why">你写一份纯文本文件，Claudito 从中产出排版好的 PDF 和 Word 版本。<strong>好处是排版从不打断思考</strong>——同一来源生成两种格式，二者不可能产生分歧。</p>
+    <dl class="syntax">
+      <dt># Title</dt><dd>文档标题</dd>
+      <dt>## Section</dt><dd>章节标题——<code>###</code> 用于小节</dd>
+      <dt>[FIGURE: chart.png]</dt><dd>插入图片，居中，图片下方是 <code>Caption:</code> 行</dd>
+      <dt>[TABLE: results.csv]</dt><dd>把电子表格变成真正排版好的表格</dd>
+      <dt>[EQ: E = mc^2]</dt><dd>句内公式</dd>
+      <dt>[EQUATION: …]</dt><dd>带编号的独立公式</dd>
+      <dt>[CITE: doi]</dt><dd>一条引用，对照你的参考文献列表解析</dd>
+      <dt>- item</dt><dd>项目符号列表——<code>1.</code> 用于编号列表</dd>
+      <dt>// note</dt><dd>写给自己的备注；绝不出现在输出中</dd>
+    </dl>
+    <div class="grid">
+      <div class="card"><h3>同一来源产出 PDF 与 Word</h3><p>两者出自同一文本文件，因此不可能相互矛盾。</p></div>
+      <div class="card"><h3>期刊模板</h3><p>Elsevier 与 Springer 版式、NSFC 申请书工作区，以及会议幻灯片。</p></div>
+      <div class="card"><h3>每份草稿都归档</h3><p>每次编译都保留带时间戳的副本，早期版本永远可以找回。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>产出成果</h2>
+    <p class="why">不止论文本身：幻灯片、基金申请书、图表和概念图，全部来自项目中已有的材料。<strong>好处是不必为每个受众重做同样的内容</strong>。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">p</td><td class="does">把项目文档编译为 PDF</td></tr>
+        <tr><td class="cmd">new slide</td><td class="does">用学校模板开始一份演示文稿</td></tr>
+        <tr><td class="cmd">build slides</td><td class="does">把演示文稿编译为 PDF</td></tr>
+        <tr><td class="cmd">new proposal nsfc</td><td class="does">创建 NSFC 申请书工作区</td></tr>
+        <tr><td class="cmd">nsfc update</td><td class="does">用你的参考文献填写申请书，并列出缺口</td></tr>
+        <tr><td class="cmd">proposal feasibility</td><td class="does">检查申请书还缺什么</td></tr>
+        <tr><td class="cmd">diagram research</td><td class="does">生成研究思路图</td></tr>
+        <tr><td class="cmd">export graph</td><td class="does">从 JSON 或 CSV 生成图表</td></tr>
+        <tr><td class="cmd">export html</td><td class="does">生成项目的网页版本</td></tr>
+        <tr><td class="cmd">export publications</td><td class="does">把筛选后的论文推送到网站</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>团队协作</h2>
+    <p class="why">你通过 ORCID 邀请协作者。对方安装 Claudito、回答一个问题，共享项目就会出现。<strong>好处是协作者在任何地方都无需注册账户</strong>——不需要 GitLab、不需要服务器权限、没有任何要注册的东西。下载凭证随邀请一同传递，用发送到其邮箱的验证码密封。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">invite &lt;orcid&gt;</td><td class="does">通过 ORCID 邀请某人加入团队</td></tr>
+        <tr><td class="cmd">t</td><td class="does">团队：创建、加入、切换，或为项目设定团队</td></tr>
+        <tr><td class="cmd">t list</td><td class="does">你所属的团队</td></tr>
+        <tr><td class="cmd">team invites</td><td class="does">谁已被邀请、谁已加入</td></tr>
+        <tr><td class="cmd">team members</td><td class="does">谁真正能打开项目（从 git 托管方读取）</td></tr>
+        <tr><td class="cmd">invite mail-log</td><td class="does">这台计算机发出的每个验证码的去向</td></tr>
+      </table>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>身份即 ORCID</h3><p>研究者已用于署名的同一标识符，并对照验证码发送到的邮箱核验。</p></div>
+      <div class="card"><h3>所有者掌控访问权限</h3><p>没有人能仅凭知道团队名称加入。邀请由所有者发出，访问权限可以在托管方真正撤销。</p></div>
+      <div class="card"><h3>项目自动到达</h3><p>成员一旦加入，团队项目会在其下次启动时自动下载。无需克隆，无需配置。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>工作的署名</h2>
+    <p class="why">作者顺序和贡献百分比记录在项目中，并附有每个人实际所做工作的日志。<strong>好处是署名依据记录确定</strong>，而不是投稿时凭记忆争论。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">authors</td><td class="does">当前记录的贡献情况</td></tr>
+        <tr><td class="cmd">authors set P:50 T:50</td><td class="does">设定份额</td></tr>
+        <tr><td class="cmd">authors first &lt;name&gt;</td><td class="does">设定第一作者</td></tr>
+        <tr><td class="cmd">authors score</td><td class="does">数字背后的自动评分</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>一切都不会丢失</h2>
+    <p class="why">每个项目都是一个 git 仓库——无论你是否知道这意味着什么。提交和推送都由工具代劳。<strong>好处是任何版本都不会被覆盖</strong>——离线一天也没有任何代价，因为提交保存在本地，网络恢复后即发送。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">git sync</td><td class="does">提交并推送所有内容</td></tr>
+        <tr><td class="cmd">git pull</td><td class="does">拉取团队的最新内容</td></tr>
+        <tr><td class="cmd">organize</td><td class="does">把散落的文件归档并整理进项目结构</td></tr>
+        <tr><td class="cmd">pending</td><td class="does">等待批准的排队文件更新</td></tr>
+        <tr><td class="cmd">versions</td><td class="does">项目文档的早期版本</td></tr>
+        <tr><td class="cmd">trash &lt;path&gt;</td><td class="does">把文件移开——绝不直接删除</td></tr>
+        <tr><td class="cmd">restore</td><td class="does">找回被移走的条目</td></tr>
+        <tr><td class="cmd">status ongoing</td><td class="does">把项目标记为进行中、已完成或已归档</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>AI 由你选择</h2>
+    <p class="why">Ollama 在你自己的机器上运行，零成本、可离线。Kimi 和 Claude 可用你自己的密钥接入。<strong>好处是没有什么能强迫你的材料进入别人的云端</strong>，工作也不需要任何订阅。Claudito 中的模型只回答问题——筛选、分类、修改建议。它不能运行命令、调用 API 或读取你的 PDF：每个操作都由 Claudito 自己的代码执行，并且它绝不会替你写论文。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">ai status</td><td class="does">当前在回答问题的是哪个模型</td></tr>
+        <tr><td class="cmd">ai switch</td><td class="does">在 Kimi、Claude、Ollama 或自动模式之间切换</td></tr>
+        <tr><td class="cmd">ai key</td><td class="does">设置你自己的 API 密钥</td></tr>
+        <tr><td class="cmd">screen &lt;doi&gt;</td><td class="does">判断一篇论文与你问题的相关性</td></tr>
+        <tr><td class="cmd">kimi / claude / ollama</td><td class="does">专门向某一个模型提问</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>单向设计</h2>
+    <p class="why">Claudito 是一个本地优先的命令行工具，不是 AI 智能体，也不是云服务。<strong>好处是你的工作只存在于你自己拥有的基础设施上</strong>——没有什么可泄露的，因为它无处可去。</p>
+    <div class="grid">
+      <div class="card"><h3>不是 AI 智能体</h3><p>一个本地优先的命令行工具。它只做你要求的事，且只在你要求时做——并且绝不会替你写论文。</p></div>
+      <div class="card"><h3>仅下载式更新</h3><p>更新只沿一个方向流动：从本发布页面到你的机器。关于你和你工作的任何信息都不会被回传。</p></div>
+      <div class="card"><h3>你的内容属于你</h3><p>项目只同步到你自己私有的 GitLab/Gitee 账户。Claudito 没有服务器、没有账户系统、没有遥测。</p></div>
+      <div class="card"><h3>密钥属于个人</h3><p>出版商和模型的 API 密钥存放在每位用户自己的机器上，绝不共享、转发或上传——即使是团队成员之间也不例外。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>带论文走完同行评审</h2>
+    <p class="why">投稿、审稿意见和附信作为一轮轮记录保存在项目中，就在所属稿件旁边。<strong>好处是六个月后的重投仍然带着完整历史</strong>——问了什么、改了什么、为什么改。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">review new &lt;name&gt;</td><td class="does">为一次投稿开启一个评审轮次</td></tr>
+        <tr><td class="cmd">review status</td><td class="does">每次评审及其所处阶段</td></tr>
+        <tr><td class="cmd">review note</td><td class="does">为当前轮次记录一条备注</td></tr>
+        <tr><td class="cmd">review screen</td><td class="does">筛查论文的方法学缺陷</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>声明 AI 的使用方式</h2>
+    <p class="why">每个 AI 辅助操作在发生时即被记录，期刊日益要求的披露声明就根据这份日志生成。<strong>好处是一份诚实、完整的声明</strong>——依据记录写成，而非投稿时凭记忆重构。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">show provenance</td><td class="does">本项目中每一个 AI 辅助操作</td></tr>
+        <tr><td class="cmd">generate disclosure</td><td class="does">生成 AI 使用披露文档</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>多个项目，多重角色</h2>
+    <p class="why">每个工作区有自己的研究文件夹、自己的团队和自己的设置，一条命令即可在它们之间切换。<strong>好处是导师的项目和你自己的学位论文互不干扰</strong>，也无需安装多份。</p>
+    <div class="cmds">
+      <table>
+        <tr><td class="cmd">profile</td><td class="does">你所在的工作区及你在其中的角色</td></tr>
+        <tr><td class="cmd">profile switch</td><td class="does">切换到另一个工作区</td></tr>
+        <tr><td class="cmd">project team &lt;team&gt;</td><td class="does">把项目移入某个团队——贡献者随之一同转移</td></tr>
+        <tr><td class="cmd">project team none</td><td class="does">把项目从其团队中移出</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>它会照顾好自己</h2>
+    <div class="grid">
+      <div class="card"><h3>主动更新</h3><p>每次启动都检查新版本并安装。没有人会停留在旧版本上。</p></div>
+      <div class="card"><h3>自动安装所需组件</h3><p>缺少 Git 时会替你安装，而不是报错。</p></div>
+      <div class="card"><h3>可离线工作</h3><p>写作、编译和本地 AI 无需联网。提交会保存下来，联网后即发送。</p></div>
+      <div class="card"><h3>身份受保护</h3><p>ORCID、邮箱和团队成员身份都有快照，配置损坏时可恢复。</p></div>
+      <div class="card"><h3>内置健康检查</h3><p><code>clt --doctor</code> 报告安装出了什么问题以及如何修复。</p></div>
+      <div class="card"><h3>一行命令安装</h3><p>macOS 或 Windows 上一行命令，装完直接进入运行中的 Claudito。</p></div>
+    </div>
+  </section>
+
+  <p class="close">以上列出的是项目命令行中可用的命令；输入 <b>help</b> 查看完整列表，<b>cheatsheet</b> 查看常用命令，或在 Claudito 内输入 <b>features</b> 查看功能概览。可用命令取决于你的角色——团队成员会看到协作命令，集群命令只对有服务器权限的人显示。</p>
+
+</div>
+</body>
+</html>

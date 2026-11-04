@@ -106,6 +106,8 @@
     color: var(--ink-faint);
   }
   .meta b { color: var(--ink-soft); font-weight: 500; }
+  .langbtn { background: none; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-faint); font: inherit; font-size: .78rem; padding: .1rem .55rem; cursor: pointer; }
+  .langbtn:hover { color: var(--accent); border-color: var(--accent); }
 
   /* ── intro pitch ──────────────────────────────────────── */
   .intro {
@@ -257,14 +259,16 @@
       <span><b>Updates itself</b> every time you start it</span>
       <span><b>Runs on</b> macOS · Windows · Linux</span>
       <span><b>Licence</b> proprietary, source private</span>
+      <span><b>Language</b> <button class="langbtn" type="button" onclick="var f=location.pathname.split('/').pop()||'index.html',b=f.replace(/-(zh|pt)(?=\.html$)/,'');location.href=f===b?b.replace('.html','-zh.html'):f.indexOf('-zh')>0?b.replace('.html','-pt.html'):b">EN</button></span>
     </div>
   </header>
 
-  <p class="intro">Claudito is a free CLI (command-line) tool for academic research, available for Windows, macOS and Linux. It helps researchers and their teams automate research papers, conferences and theses end to end: it searches, screens and fetches papers from <b>500 publisher databases</b> — Springer, Elsevier, IEEE and more — organises everything on your computer with clean BibTeX references in a subject tree, and syncs it all through Git with your colleagues. And best of all, besides an offline AI assistant for the LaTeX editor: <b>with Claudito you don't need LaTeX anymore</b> — just write, choose the publisher, and the LaTeX, Word and PDF documents are ready in seconds.</p>
+  <p class="intro">Claudito is a free CLI (command-line) tool for academic research, available for Windows, macOS and Linux — local-first, and not an AI agent. It supports researchers and their teams through the whole research workflow: it searches, screens and fetches papers from <b>500 publisher databases</b> — Springer, Elsevier, IEEE and more — organises everything on your computer with clean BibTeX references in a subject tree, and syncs it all through Git with your colleagues. And best of all: <b>with Claudito you don't need LaTeX anymore</b> — just write, choose the publisher, and the LaTeX, Word and PDF documents are ready in seconds. (A LaTeX editor is built in for those who want one.)</p>
 
   <div class="premise">
     <p>Most research tooling solves one slice — a reference manager here, an editor there, a shared drive somewhere else — and leaves the researcher to carry work between them by hand. Claudito covers the whole span in one place: search the databases, keep the references, write the document, produce the PDF, and share it with the people on the project.</p>
     <p>It is built for people who are researchers first. Nothing below requires knowing LaTeX, git, or a cloud console.</p>
+    <p>Why it exists: reformatting papers for journals costs research teams an estimated US$1.1 billion a year in their own time, peer review absorbed 63.4 million hours in biomedicine in a single year, and papers in Q1 journals grew +121% between 2010 and 2024 while output overall grew 84%. Of the 85 processes in the research cycle, 58 are mechanical — Claudito carries those, and leaves the other 27 to the researcher. (<em>AI-Assisted Tools for Academic Researchers: A Full Automation Process</em>, pre-preview, 2026.)</p>
   </div>
 
   <section>
@@ -399,7 +403,7 @@
 
   <section>
     <h2>The AI is yours to choose</h2>
-    <p class="why">Ollama runs on your own machine at no cost and works offline. Kimi and Claude are available with your own key. <strong>The benefit is that nothing forces your material into someone else's cloud</strong>, and no subscription is required to work.</p>
+    <p class="why">Ollama runs on your own machine at no cost and works offline. Kimi and Claude are available with your own key. <strong>The benefit is that nothing forces your material into someone else's cloud</strong>, and no subscription is required to work. A model inside Claudito only answers questions — screening, classification, edit suggestions. It cannot run commands, call APIs, or read your PDFs: every action is performed by Claudito's own code, and it never writes the paper for you.</p>
     <div class="cmds">
       <table>
         <tr><td class="cmd">ai status</td><td class="does">Which model is answering right now</td></tr>
@@ -408,6 +412,17 @@
         <tr><td class="cmd">screen &lt;doi&gt;</td><td class="does">Judge a paper's relevance to your question</td></tr>
         <tr><td class="cmd">kimi / claude / ollama</td><td class="does">Put a question to one model specifically</td></tr>
       </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>One-way by design</h2>
+    <p class="why">Claudito is a local-first command-line tool, not an AI agent and not a cloud service. <strong>The benefit is that your work lives only on infrastructure you own</strong> — there is nothing to leak, because there is nowhere for it to go.</p>
+    <div class="grid">
+      <div class="card"><h3>Not an AI agent</h3><p>A local-first command-line tool. It does only what you ask, when you ask — and it never writes the paper for you.</p></div>
+      <div class="card"><h3>Download-only updates</h3><p>Updates flow one way, from this release page to you. Nothing about you or your work is ever sent back.</p></div>
+      <div class="card"><h3>Your content stays yours</h3><p>Projects sync only to your own private GitLab/Gitee account. Claudito has no server, no account system, no telemetry.</p></div>
+      <div class="card"><h3>Keys are personal</h3><p>Publisher and model API keys live on each user's machine and are never shared, relayed, or uploaded — not even between team members.</p></div>
     </div>
   </section>
 

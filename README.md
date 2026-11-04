@@ -7,6 +7,10 @@ releases themselves, so it cannot go out of date.
 
 Public installers for Claudito. The source code repository is private.
 
+Claudito is a local-first CLI tool — not an AI agent and not a cloud service.
+Updates download one-way from this page; your work syncs only to your own
+private GitLab/Gitee. How AI is used: [ETHICS.md](ETHICS.md).
+
 **[What Claudito does →](https://pedrofariaeva.github.io/claudito-releases/)** — the full
 list of features, in plain language.
 

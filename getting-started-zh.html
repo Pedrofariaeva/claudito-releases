@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="九个步骤，从一个简单项目到团队同步">
+<title>你的第一个 Claudito 项目</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:      #F3F5F1;
+    --surface:    #FBFCFA;
+    --ink:        #1A1D19;
+    --ink-soft:   #4E554B;
+    --ink-faint:  #7C8478;
+    --rule:       #DCE0D6;
+    --accent:     #5F8A1B;
+    --accent-dim: #EBF1DF;
+    --code-bg:    #ECEFE7;
+    --warn:       #9A5B00;
+    --warn-dim:   #FBF0DC;
+    --shadow:     0 1px 2px rgba(26,29,25,.05), 0 8px 24px -16px rgba(26,29,25,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #131612;
+      --surface:    #1B1F19;
+      --ink:        #E9EDE4;
+      --ink-soft:   #AFB8A8;
+      --ink-faint:  #7E8777;
+      --rule:       #2C3228;
+      --accent:     #A6CE39;
+      --accent-dim: #232A19;
+      --code-bg:    #202619;
+      --warn:       #F0B45A;
+      --warn-dim:   #2E2413;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #131612;
+    --surface:    #1B1F19;
+    --ink:        #E9EDE4;
+    --ink-soft:   #AFB8A8;
+    --ink-faint:  #7E8777;
+    --rule:       #2C3228;
+    --accent:     #A6CE39;
+    --accent-dim: #232A19;
+    --code-bg:    #202619;
+    --warn:       #F0B45A;
+    --warn-dim:   #2E2413;
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 8px 24px -16px rgba(0,0,0,.8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+  }
+
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 1.6rem; }
+
+  .eyebrow {
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: Newsreader, Georgia, serif;
+    font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 1.1rem 0 0;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.4rem;
+    margin-top: 1.6rem;
+    font-size: .82rem;
+    color: var(--ink-faint);
+  }
+  .meta b { color: var(--ink-soft); font-weight: 500; }
+  .langbtn { background: none; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-faint); font: inherit; font-size: .78rem; padding: .1rem .55rem; cursor: pointer; }
+  .langbtn:hover { color: var(--accent); border-color: var(--accent); }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .86em;
+    background: var(--code-bg);
+    padding: .12em .38em;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  .close {
+    margin-top: 3.6rem;
+    padding-top: 1.6rem;
+    border-top: 2px solid var(--ink);
+    font-size: .88rem;
+    color: var(--ink-faint);
+    max-width: 66ch;
+  }
+  .close b { color: var(--ink-soft); font-weight: 500; }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ── the walkthrough ─────────────────────────────────── */
+  .steps { counter-reset: step; margin-top: 2.2rem; display: grid; gap: 1.1rem; }
+
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 1.3rem 1.5rem 1.4rem 3.6rem;
+    position: relative;
+    box-shadow: var(--shadow);
+  }
+  .step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 1.25rem; top: 1.3rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-dim);
+    width: 1.6rem; height: 1.6rem;
+    display: grid; place-items: center;
+    border-radius: 50%;
+  }
+  .step h2 {
+    font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    margin: 0 0 .15rem;
+  }
+  .step p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 62ch; }
+  .step p + p { margin-top: .55rem; }
+
+  .where {
+    display: block;
+    font-size: .7rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin: 0 0 .6rem;
+  }
+
+  .seq {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .45rem .5rem;
+    margin: .1rem 0 .75rem;
+  }
+  .type {
+    display: inline-flex;
+    align-items: baseline;
+    gap: .55rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .88rem;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .4rem .75rem;
+    color: var(--ink);
+  }
+  .type b {
+    font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+    font-weight: 500;
+    font-size: .7rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .then { font-size: .8rem; color: var(--ink-faint); }
+
+  .watch {
+    margin-top: .7rem;
+    padding-left: .85rem;
+    border-left: 2px solid var(--rule);
+    font-size: .89rem;
+    color: var(--ink-faint);
+  }
+  .watch b { color: var(--ink-soft); font-weight: 500; }
+
+  .warn {
+    margin-top: .75rem;
+    padding: .6rem .85rem;
+    background: var(--warn-dim);
+    border-left: 3px solid var(--warn);
+    border-radius: 2px;
+    font-size: .91rem;
+    color: var(--ink);
+    max-width: 62ch;
+  }
+  .warn b { color: var(--warn); font-weight: 600; }
+
+  .first { border-left: 3px solid var(--accent); }
+
+  .callout {
+    margin: 2.4rem 0 0;
+    padding: 1.3rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+  }
+  .callout h2 { font-family: "IBM Plex Sans", ui-sans-serif, sans-serif;
+                font-size: 1rem; font-weight: 600; margin: 0 0 .5rem; }
+  .callout p { margin: 0; color: var(--ink-soft); font-size: .94rem; max-width: 64ch; }
+  .callout p + p { margin-top: .55rem; }
+
+  .places {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: .9rem;
+    margin-top: .9rem;
+  }
+  .place {
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: .85rem 1rem;
+    background: var(--paper);
+  }
+  .place h3 { font-size: .9rem; font-weight: 600; margin: 0 0 .45rem; }
+  .place p { font-size: .88rem; }
+  .prompt {
+    display: block;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .8rem;
+    background: var(--code-bg);
+    border-radius: 2px;
+    padding: .45rem .6rem;
+    margin: 0 0 .55rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+
+  /* spacing that used to be written inline */
+  .callout p.after-places { margin-top: .9rem; }
+  .step p + .seq { margin-top: .6rem; }
+
+  /* copyable commands */
+  .code { position: relative; margin: .55rem 0 .15rem; }
+  .code pre {
+    margin: 0;
+    padding: .7rem 4.8rem .7rem .85rem;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .74rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: var(--ink);
+  }
+  .copy {
+    position: absolute; top: .4rem; right: .4rem;
+    font: 500 .72rem "IBM Plex Sans", ui-sans-serif, sans-serif;
+    padding: .3rem .65rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .copy:hover { color: var(--ink); border-color: var(--ink-faint); }
+  .callout .watch, .callout .warn { margin-top: .75rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">快速上手</p>
+    <h1>你的第一个 Claudito 项目</h1>
+    <p class="standfirst">九个步骤，从一个简单项目到团队同步</p>
+    <div class="meta">
+      <span><b>耗时</b> 专注投入约 30 分钟，包括检索、筛选、编辑和发布 LaTeX 文件</span>
+      <span><b>你需要</b> 安装 Claudito（GitHub）、你的 ORCID、你同事的 ORCID 和邮箱、一个 GitLab 账户（GitHub 账户可选）</span>
+      <span><b>语言</b> <button class="langbtn" type="button" onclick="var f=location.pathname.split('/').pop()||'index.html',b=f.replace(/-(zh|pt)(?=\.html$)/,'');location.href=f===b?b.replace('.html','-zh.html'):f.indexOf('-zh')>0?b.replace('.html','-pt.html'):b">中文</button></span>
+    </div>
+  </header>
+
+  <div class="callout">
+    <h2>Claudito 是什么——以及不是什么</h2>
+    <p>一个<b>本地命令行工具</b>：一切都发生在你的研究文件夹里，在你的计算机上。</p>
+    <p><b>不是 AI 智能体</b>：它绝不擅自行动，也绝不替你写论文。（完整承诺见：<a href="https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md">https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md</a>）</p>
+    <p><b>本地模型</b>（Ollama）离线处理筛选与分类。可选的自有密钥云端模型（Kimi、Claude）只回答筛选问题——仅标题和摘要，绝不涉及全文。</p>
+    <p><b>单向安全</b>：你的工作只流向你自己的机器和你自己的 GitLab/Gitee。Claudito 不收集任何数据，也不向任何地方回传。</p>
+  </div>
+
+  <div class="callout">
+    <h2>准备 1 —— 安装 Claudito</h2>
+    <p>开始前请注册一个免费的 <b>GitLab</b>（推荐）账户和 <b>GitHub</b>（可选）账户：<a href="https://gitlab.com">https://gitlab.com</a> 和 <a href="https://github.com">https://github.com</a>，并使用你将在 Claudito 中填写的同一邮箱。该邮箱将用于与团队共享你的项目。</p>
+    <div class="places">
+      <div class="place">
+        <h3>在 Mac 上</h3>
+        <p>打开 <b>Terminal</b>（终端）：按 <b>Cmd + Space</b>，输入 <code>Terminal</code> 并按回车。粘贴下面这行命令并按回车：</p>
+        <div class="code"><pre>cd "$(mktemp -d)" &amp;&amp; (curl -fsSL https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/claudito-macos.tar.gz -o claudito.tar.gz || curl -fsSL https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/claudito-macos.tar.gz -o claudito.tar.gz) &amp;&amp; tar -xzf claudito.tar.gz &amp;&amp; cd claudito-external-v* &amp;&amp; ./install.sh</pre><button class="copy" type="button">复制</button></div>
+      </div>
+      <div class="place">
+        <h3>在 Windows 上</h3>
+        <p>打开 <b>PowerShell</b>：按 <b>Windows 键</b>，输入 <code>PowerShell</code> 并按回车。粘贴下面这行命令并按回车：</p>
+        <div class="code"><pre>[Net.ServicePointManager]::SecurityProtocol='Tls12'; Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force; try { irm https://github.com/Pedrofariaeva/claudito-releases/releases/latest/download/install.ps1 | iex } catch { irm https://gitlab.com/Pedrofariaeva/claudito-releases/-/raw/main/install.ps1 | iex }</pre><button class="copy" type="button">复制</button></div>
+      </div>
+    </div>
+    <p class="after-places">同样的一行命令始终可在 GitHub 上找到：<a href="https://github.com/Pedrofariaeva/claudito-releases">https://github.com/Pedrofariaeva/claudito-releases</a></p>
+    <p class="warn"><b>只能在 Terminal 或 PowerShell 中运行。</b>不要使用其他编辑器</p>
+    <p class="watch">如果提示<b>无法连接，</b>请再运行一次同一命令。它先尝试 GitHub，再尝试镜像；网络较慢时往往需要第二次尝试。</p>
+  </div>
+
+  <div class="callout">
+    <h2>准备 2 —— 设置问题</h2>
+    <p>安装完成后，Claudito 会按以下顺序询问这些信息：</p>
+    <p><b>你的姓名</b>（希望别人如何称呼你）、你的 <b>ORCID</b> 和你的<b>邮箱</b>（最好是 ORCID 绑定的邮箱）。团队邀请依赖 ORCID 编号和邮箱，请仔细输入。</p>
+    <p><b>如果你是被邀请加入团队的，</b>Claudito 会在这里找到邀请并让你加入该团队。确认码会发送到你的邮箱，请也检查垃圾邮件文件夹。</p>
+    <p><b>哪个文件夹是你的研究目录：</b>接受 Claudito 建议的文件夹，或给出你已有的文件夹。</p>
+    <p><b>Ollama</b>——Claudito 后端默认使用的 AI 引擎：自动安装、免费、无需密钥，我们推荐使用。该模型在你的机器上本地运行——筛选全程离线。（如果无法安装，设置会继续进行，之后可用 <code>setup</code> 再添加。）</p>
+    <p><b>Kimi 密钥</b>（可选）：更强的筛选问答引擎。你的密钥留在你的计算机上，绝不共享——即使与你的团队也不共享。没有的话按回车跳过。</p>
+    <p><b>Claude 密钥</b>（可选）：更强的筛选问答引擎。你的密钥留在你的计算机上，绝不共享——即使与你的团队也不共享。没有的话按回车跳过。</p>
+    <p><b>GitHub 用户名</b>（可选）：拥有 GitHub 账户后，你可以用 <b>Sign in with GitHub</b> 注册 GitLab——在无法直接于 gitlab.com 注册的情况下这个办法可行。没有的话按回车跳过。</p>
+    <p><b>GitLab：</b>输入你的 GitLab 用户名。Claudito 会打开已填好信息的 GitLab 页面。点击 <b>Create personal access token</b>，复制令牌，粘贴回命令行。</p>
+    <p><b>数据库密钥</b>（可选）：没有密钥时检索已可通过免费数据库进行。密钥可以解锁更多数据库（IEEE Xplore、Scopus、Springer、Web of Science、CNKI……）。按回车跳过；之后可用 <code>dbs setup</code> 添加。</p>
+    <p class="watch"><b>按回车保留已有内容。</b>输入 <code>back</code> 返回上一个问题，或输入 <code>quit</code> 不保存并取消。最后 Claudito 会显示摘要供你核对，然后询问<b>保存？</b></p>
+    <p class="watch"><b>出了问题或跳过了某个问题？</b>设置从不会半途而废。之后在项目列表处输入 <code>setup</code> 即可补答。</p>
+    <p class="watch"><b>Claudito 中的任何 AI 都不会替你写论文或学位论文；它受一份伦理宣言约束，其边界仅限于提供各种辅助与自动化。更多内容见 <a href="https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md">https://github.com/Pedrofariaeva/claudito-releases/blob/master/ETHICS.md</a></b></p>
+  </div>
+
+  <div class="callout">
+    <h2>准备 3 —— 确认它能运行</h2>
+    <p>关闭窗口，打开一个新的 <b>Terminal</b> 或 <b>PowerShell</b>，</p>
+    <p>输入 <code>clt</code> 并按 <code>Enter</code></p>
+    <p>查看版本号，例如 <code>✓ claudito v2.11.48</code>。如果以后报告问题，这一行是首先要发给 Pedro 的内容。</p>
+    <p class="watch"><b>如果无法识别 <code>clt</code>，</b>关闭窗口并重新打开一个。</p>
+    <p class="watch"><b>如果设置时跳过了任何问题，</b>在开始处输入 <code>setup</code>。</p>
+  </div>
+
+  <div class="callout">
+    <h2>如何开始</h2>
+    <div class="places">
+      <div class="place">
+        <h3>项目列表</h3>
+        <span class="prompt">Which one? [number/n/o/q/help]:</span>
+        <p>在这里创建项目（<code>n</code>）、管理团队（<code>t</code>）</p>
+        <p><b>输入项目编号即可打开该项目</b>。</p>
+      </div>
+      <div class="place">
+        <h3>项目内部</h3>
+        <span class="prompt">[personal | myproject | Ollama] &gt;</span>
+        <p>提示符显示你的项目名称。这里的其他一切命令（invite、abstract、harvest、plan）<b>只在这个项目中生效</b>。</p>
+      </div>
+    </div>
+    <p class="after-places">如果 Claudito 回答<b>“Invalid choice”（无效选择）</b>，说明你正处在项目列表。输入项目编号后再试。</p>
+  </div>
+
+  <div class="steps">
+    <div class="step first">
+      <h2>创建项目</h2>
+      <span class="where">在项目列表</span>
+      <div class="seq"><span class="type"><b>输入</b> n</span><span class="then">用于第一个项目（new project）（如果你已有项目，输入其编号，例如</span><span class="type">TYPE: 01</span><span class="then">）</span></div>
+      <p>给项目起一个不含空格的代号，例如 <code>myproject</code>。它会带着编号出现在你的列表中。</p>
+      <p class="watch"><b>如果你还没有团队，</b>项目暂时是私有的。这是正常的。如果你已有团队，Claudito 会询问属于哪个团队。</p>
+    </div>
+    <div class="step">
+      <h2>创建团队，并把项目放进去</h2>
+      <span class="where">先在项目列表，再进入项目</span>
+      <div class="seq"><span class="type"><b>输入</b> t</span><span class="then">，查看列表并选择</span><span class="type">3</span><span class="then">（创建团队）输入团队名称，然后</span><span class="type">b</span><span class="then">返回</span></div>
+      <p>现在输入项目编号打开项目，把它放入团队：</p>
+      <div class="seq"><span class="type"><b>输入</b> [[your-team-name]]</span></div>
+      <p class="warn"><b>不要跳过第二部分。</b>创建团队并不会把你已建好的项目移进去。少了这一步，你的同事加入的是一个空团队，看起来就像共享功能坏了一样。</p>
+      <p>你也可以直接在命令行输入：<code>project team [[your-team-name]]</code></p>
+    </div>
+    <div class="step">
+      <h2>邀请成员</h2>
+      <span class="where">在团队菜单内</span>
+      <div class="seq"><span class="type"><b>输入</b> 4</span></div>
+      <p>或在团队菜单外，</p>
+      <div class="seq"><span class="type"><b>输入</b> b</span><span class="then">先返回，然后……</span></div>
+      <span class="where">选择一个项目编号，在项目内部：</span>
+      <div class="seq"><span class="type"><b>输入</b> invite</span></div>
+      <p>Claudito 会询问对方的 ORCID，显示查到的姓名供你确认是本人，然后询问其邮箱地址。</p>
+      <p>邀请一位<b>尚未</b>加入你任何团队的人。这才是值得测试的情形。</p>
+      <p class="watch"><b>告诉对方：</b>他们会收到一封带验证码的邮件，可能会进垃圾邮件。如果找不到，请搜索 <code>trackonperformance</code>。</p>
+    </div>
+    <div class="step">
+      <h2>撰写摘要</h2>
+      <span class="where">在项目内部</span>
+      <div class="seq"><span class="type"><b>输入</b> abstract</span></div>
+      <p>一个文件会打开。写几行项目简介，然后保存并关闭文件。</p>
+      <p class="watch"><b>为什么先写摘要：</b>下一步的检索会读取它来确定要找什么。</p>
+    </div>
+    <div class="step">
+      <h2>检索文献</h2>
+      <span class="where">在项目内部</span>
+      <div class="seq"><span class="type"><b>输入</b> harvest</span></div>
+      <p>Claudito 会显示一个可据以检索的文档编号列表，并询问使用哪一个。</p>
+      <p class="warn"><b>输入 <code>abstract.txt</code> 旁边的编号，不要直接按回车。</b>选项 1 是空的计划模板，检索会去找它的占位问题，而不是你的主题。</p>
+      <p class="watch"><b>这需要一些时间。</b>它会检索你能访问的每个数据库，去除重复，并报告找到多少篇论文、其中多少篇附带 PDF。</p>
+    </div>
+    <div class="step">
+      <h2>探索帮助</h2>
+      <span class="where">在项目内部</span>
+      <div class="seq"><span class="type"><b>输入</b> help</span><span class="then">或</span><span class="type">cheatsheet</span></div>
+      <p><code>help</code> 按用途分组列出所有命令。<code>cheatsheet</code> 只显示最常用的命令。</p>
+      <p>挑一两个看起来有用的试试。其余功能就是这样学会的。</p>
+    </div>
+    <div class="step">
+      <h2>检查参考文献，然后写项目计划</h2>
+      <span class="where">在项目内部</span>
+      <div class="seq"><span class="type"><b>输入</b> ref list</span><span class="then">然后</span><span class="type">ref organise</span><span class="then">然后</span><span class="type">plan</span></div>
+      <p><code>ref list</code> 显示检索到的论文。<code>ref organise</code> 把它们整理进 <code>references</code> 下的文件夹。这个文件夹结构就是你的文档将遵循的形状。</p>
+      <p>看看这些文件夹，然后输入 <code>plan</code>，按照这个结构写下你打算做什么。</p>
+      <p class="watch"><b>可选：</b><code>screen all</code> 让 AI 判断哪些论文真正相关。检索量较大时会很慢。</p>
+    </div>
+    <div class="step">
+      <h2>编译 PDF——以及幻灯片</h2>
+      <span class="where">在项目内部</span>
+      <div class="seq"><span class="type"><b>输入</b> p</span></div>
+      <p>Claudito 会用你选择的出版商模板，把项目编译成排版好的 PDF 和一个 Word 文件——同一份文本，两种格式，始终同步。</p>
+      <p class="watch"><b>幻灯片也可以：</b><code>new slide</code> 用学校模板开始一份演示文稿，<code>build slides</code> 把演示文稿编译为 PDF——同样的材料，另一种格式，无需 PowerPoint。</p>
+    </div>
+    <div class="step">
+      <h2>关闭计划，确认已保存，并正确退出</h2>
+      <span class="where">在项目内部</span>
+      <div class="seq"><span class="type"><b>输入</b> plan</span><span class="then">完成后</span><span class="type">clt</span></div>
+      <p>保存并关闭计划文件。再次输入 <code>plan</code>，确认你的文字还在。</p>
+      <p>要在不懂 LaTeX 的情况下添加图、表或公式，先关闭文件，再在 Claudito 提示符下输入 <code>format</code>。在文件内部输入是无效的。</p>
+      <p class="warn"><b>用 <code>clt</code> 退出，绝不要直接关窗口。</b><code>clt</code> 会保存并上传你的工作。直接关窗口会把一切留在你自己的计算机上，你的同事什么都看不到。</p>
+    </div>
+    <div class="step">
+      <h2>确认你的同事收到了项目</h2>
+      <span class="where">在你同事的计算机上</span>
+      <div class="seq"><span class="type"><b>对方输入</b> clt</span></div>
+      <p>你的项目应该会出现在对方的项目列表中，并带有其内容：摘要、参考文献和你的计划。</p>
+    </div>
+  </div>
+  <div class="callout">
+    <h2>项目与团队</h2>
+    <p>新项目加入哪个团队：</p>
+    <div class="places">
+      <div class="place">
+        <h3>还没有团队</h3>
+        <p>项目是私有的。只有你能看到它。</p>
+      </div>
+      <div class="place">
+        <h3>有一个或多个团队</h3>
+        <p>Claudito 会询问<b>“这个项目属于哪个团队？”</b>输入团队编号，或选择<b>“不加入团队——自己留着”</b>独自工作。</p>
+      </div>
+    </div>
+    <p class="after-places"><b>想之后再把项目加入团队，</b>打开它并输入 <code>project team team-name</code>。同一条命令也可把项目移到另一个团队。</p>
+    <p><b>想把项目移出团队，</b>打开它并输入 <code>project team none</code>。此后它不再被共享；已下载过它的同事保留他们的副本。</p>
+    <p class="watch"><b>查看你的团队，</b>输入 <code>t</code> 再输入 <code>1</code>。项目列表会在每个项目名后显示其团队，如 <code>@aonipepe</code>。</p>
+  </div>
+
+  <div class="callout">
+    <h2>如果哪里不工作</h2>
+    <p>给 Pedro 发三样东西：第一个界面上的<b>版本行</b>、<b>你输入的内容</b>、以及<b>屏幕照片</b>。</p>
+    <p>有了这三样，问题就能被定位。单靠一段描述通常不行。</p>
+  </div>
+
+  <p class="close"><b>help</b> 列出所有命令，<b>cheatsheet</b> 列出最常用的命令。如果某个项目膨胀到几千兆字节以上，<b>clean</b> 会显示它携带了哪些不再需要的东西。</p>
+
+</div>
+<script>
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest ? e.target.closest(".copy") : null;
+    if (!btn) return;
+    var pre = btn.parentNode.querySelector("pre");
+    function said(word) { btn.textContent = word; setTimeout(function () { btn.textContent = "Copy"; }, 1800); }
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      said("Press \u2318C / Ctrl+C");
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(pre.textContent).then(function () { said("Copied"); }, selectIt);
+    } else { selectIt(); }
+  });
+</script>
+</body>
+</html>
